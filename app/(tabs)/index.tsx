@@ -1,6 +1,8 @@
+import { transactions } from "@/assets/data";
 import Header from "@/components/header";
 import { Ionicons } from "@expo/vector-icons";
 import {
+  FlatList,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,7 +10,50 @@ import {
   View,
 } from "react-native";
 
+export interface Transaction {
+  id: string;
+  title: string;
+  type: "expense" | "income";
+  amount: number;
+  date: string;
+}
+
 export default function Home() {
+  const renderTransactionItem = ({ item }: { item: Transaction }) => {
+    const isExpense = item.type === "expense";
+    return (
+      <View style={styles.transactionItem}>
+        <View style={styles.transactionLeft}>
+          <View
+            style={[
+              styles.transactionIcon,
+              isExpense ? styles.expenseIcon : styles.incomeIcon,
+            ]}
+          >
+            <Ionicons
+              name={isExpense ? "arrow-up-outline" : "arrow-down-outline"}
+              size={16}
+              color={isExpense ? "#f43f5e" : "#22c55e"}
+            />
+          </View>
+          <View>
+            <Text style={styles.transactionTitle}>{item.title}</Text>
+            <Text style={styles.transactionDate}>{item.date}</Text>
+          </View>
+        </View>
+        <View style={styles.transactionRight}>
+          <Text style={isExpense ? styles.expenseAmount : styles.incomeAmount}>
+            {isExpense ? "-" : "+"}₱
+            {item.amount.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -71,188 +116,12 @@ export default function Home() {
             </TouchableOpacity>
           </View>
 
-          {/* Transaction Items */}
-          <View style={styles.transactionsList}>
-            {/* Transaction 1 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Grocery Store</Text>
-                  <Text style={styles.transactionDate}>Today, 10:45 AM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱1,250.00</Text>
-              </View>
-            </View>
-
-            {/* Transaction 2 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.incomeIcon]}>
-                  <Ionicons
-                    name="arrow-down-outline"
-                    size={16}
-                    color="#22c55e"
-                  />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Salary Deposit</Text>
-                  <Text style={styles.transactionDate}>Yesterday, 9:30 AM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.incomeAmount}>+₱15,000.00</Text>
-              </View>
-            </View>
-
-            {/* Transaction 3 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-
-            {/* Transaction 3 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-
-            {/* Transaction 3 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-
-            {/* Transaction 3 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-
-            {/* Transaction 3 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-
-            {/* Transaction 3 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-
-            {/* Transaction 3 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-
-            {/* Transaction 3 */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-
-            {/* Additional transactions */}
-            <View style={styles.transactionItem}>
-              <View style={styles.transactionLeft}>
-                <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                  <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-                </View>
-                <View>
-                  <Text style={styles.transactionTitle}>Electric Bill</Text>
-                  <Text style={styles.transactionDate}>May 2, 2:15 PM</Text>
-                </View>
-              </View>
-              <View style={styles.transactionRight}>
-                <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-              </View>
-            </View>
-          </View>
+          <FlatList
+            data={transactions}
+            renderItem={renderTransactionItem}
+            keyExtractor={(item) => item.id}
+            scrollEnabled={false}
+          />
         </View>
       </ScrollView>
     </View>
