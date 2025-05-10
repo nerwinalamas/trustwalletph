@@ -1,5 +1,6 @@
 import Header from "@/components/header";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import {
   ScrollView,
   StyleSheet,
@@ -9,6 +10,8 @@ import {
 } from "react-native";
 
 export default function Settings() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -30,7 +33,10 @@ export default function Settings() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>ACCOUNT</Text>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/security")}
+          >
             <View style={styles.menuLeft}>
               <View style={[styles.menuIcon, styles.icon]}>
                 <Ionicons
@@ -49,7 +55,10 @@ export default function Settings() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/privacy")}
+          >
             <View style={styles.menuLeft}>
               <View style={[styles.menuIcon, styles.icon]}>
                 <Ionicons
@@ -68,7 +77,10 @@ export default function Settings() {
             </View>
           </TouchableOpacity>
 
-          <View style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/notifications")}
+          >
             <View style={styles.menuLeft}>
               <View style={[styles.menuIcon, styles.icon]}>
                 <Ionicons
@@ -85,9 +97,12 @@ export default function Settings() {
               </View>
               <Ionicons name="chevron-forward" size={20} color="#64748b" />
             </View>
-          </View>
+          </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/language")}
+          >
             <View style={styles.menuLeft}>
               <View style={[styles.menuIcon, styles.icon]}>
                 <Ionicons name="language-outline" size={20} color="#1e3a8a" />
@@ -105,7 +120,10 @@ export default function Settings() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>PREFERENCES</Text>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/payment-method")}
+          >
             <View style={styles.menuLeft}>
               <View style={[styles.menuIcon, styles.icon]}>
                 <Ionicons name="card-outline" size={20} color="#1e3a8a" />
@@ -120,7 +138,10 @@ export default function Settings() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/account-limits")}
+          >
             <View style={styles.menuLeft}>
               <View style={[styles.menuIcon, styles.icon]}>
                 <Ionicons name="wallet-outline" size={20} color="#1e3a8a" />
@@ -140,7 +161,10 @@ export default function Settings() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>SUPPORT</Text>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/help-center")}
+          >
             <View style={styles.menuLeft}>
               <View style={[styles.menuIcon, styles.icon]}>
                 <Ionicons
@@ -159,7 +183,10 @@ export default function Settings() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/about")}
+          >
             <View style={styles.menuLeft}>
               <View style={[styles.menuIcon, styles.icon]}>
                 <Ionicons

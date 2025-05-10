@@ -1,6 +1,7 @@
 import { transactions } from "@/assets/data";
 import Header from "@/components/header";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import {
   FlatList,
   ScrollView,
@@ -19,6 +20,8 @@ export interface Transaction {
 }
 
 export default function Home() {
+  const router = useRouter();
+
   const renderTransactionItem = ({ item }: { item: Transaction }) => {
     const isExpense = item.type === "expense";
     return (
@@ -78,28 +81,40 @@ export default function Home() {
 
         {/* Quick Actions */}
         <View style={styles.quickActions}>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => router.push("/(quick-actions)/send")}
+          >
             <View style={styles.actionIcon}>
               <Ionicons name="arrow-up-outline" size={20} color="#1e3a8a" />
             </View>
             <Text style={styles.actionText}>Send</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => router.push("/(quick-actions)/receive")}
+          >
             <View style={styles.actionIcon}>
               <Ionicons name="arrow-down-outline" size={20} color="#1e3a8a" />
             </View>
             <Text style={styles.actionText}>Receive</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => router.push("/(quick-actions)/scan")}
+          >
             <View style={[styles.actionIcon, styles.scanIcon]}>
               <Ionicons name="qr-code-outline" size={20} color="#1e3a8a" />
             </View>
             <Text style={styles.actionText}>Scan</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => router.push("/(quick-actions)/pay")}
+          >
             <View style={styles.actionIcon}>
               <Ionicons name="card-outline" size={20} color="#1e3a8a" />
             </View>
@@ -111,7 +126,7 @@ export default function Home() {
         <View style={styles.transactionsContainer}>
           <View style={styles.transactionsHeader}>
             <Text style={styles.transactionsTitle}>Recent Transactions</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.replace("/(tabs)/history")}>
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
