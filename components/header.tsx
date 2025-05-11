@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Avatar from "./avatar";
 
 export default function Header() {
   const insets = useSafeAreaInsets();
@@ -22,8 +23,8 @@ export default function Header() {
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="notifications-outline" size={24} color="#1e3a8a" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.avatarContainer}>
-            <View style={styles.avatar} />
+          <TouchableOpacity>
+            <Avatar size={32} />
           </TouchableOpacity>
         </View>
       </View>
@@ -59,17 +60,5 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     marginRight: 16,
-  },
-  avatarContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    overflow: "hidden",
-  },
-  avatar: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#e2e8f0",
-    borderRadius: 16,
   },
 });
