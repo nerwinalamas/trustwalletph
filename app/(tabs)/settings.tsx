@@ -1,4 +1,6 @@
+import Avatar from "@/components/avatar";
 import Header from "@/components/header";
+import { useClerk, useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import {
@@ -10,7 +12,18 @@ import {
 } from "react-native";
 
 export default function Settings() {
+  const { signOut } = useClerk();
+  const { user } = useUser();
   const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.replace("/(auth)/sign-in");
+    } catch (error) {
+      console.log("OAuth error:", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -23,10 +36,12 @@ export default function Settings() {
         {/* Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.profileImageContainer}>
-            <View style={styles.profileImage} />
+            <Avatar size={80} />
           </View>
-          <Text style={styles.profileName}>Juan Dela Cruz</Text>
-          <Text style={styles.profileEmail}>juandelacruz@example.com</Text>
+          <Text style={styles.profileName}>{user?.fullName}</Text>
+          <Text style={styles.profileEmail}>
+            {user?.emailAddresses[0].emailAddress}
+          </Text>
         </View>
 
         {/* Account Section */}
@@ -205,7 +220,7 @@ export default function Settings() {
         </View>
 
         {/* Log Out Button */}
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
           <Ionicons name="log-out-outline" size={20} color="#ef4444" />
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
@@ -236,12 +251,6 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     marginBottom: 12,
-  },
-  profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#e2e8f0",
   },
   profileName: {
     fontSize: 18,
