@@ -14,20 +14,43 @@ export const createUser = mutation({
   },
 
   handler: async (ctx, args) => {
-    // Generate secure random digits (8 digits)
-    const randomDigits = Array.from({ length: 8 }, () =>
-      Math.floor(Math.random() * 10)
-    ).join("");
-
-    const accountNumber = `TW-${randomDigits.slice(0, 4)}-${randomDigits.slice(4)}`;
-
-    // Check if user already exists
-    const existingUser = await ctx.db
+    // Check for existing user by BOTH Clerk ID AND Email
+    const existingByClerkId = await ctx.db
       .query("users")
       .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", args.clerkUserId))
       .first();
 
-    if (existingUser) return;
+    const existingByEmail = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) =>
+        q.eq("email", args.email.toLowerCase().trim())
+      )
+      .first();
+
+    // Handle merge cases
+    if (existingByClerkId && existingByEmail) {
+      if (existingByClerkId._id !== existingByEmail._id) {
+        // Merge accounts if same email but different Clerk IDs
+        await ctx.db.patch(existingByEmail._id, {
+          clerkUserId: args.clerkUserId,
+          profileImageUrl: args.profileImageUrl,
+        });
+        await ctx.db.delete(existingByClerkId._id);
+      }
+      return; // User already exists
+    }
+
+    if (existingByEmail) {
+      // Update existing email user with new Clerk ID
+      return await ctx.db.patch(existingByEmail._id, {
+        clerkUserId: args.clerkUserId,
+        firstName: args.firstName,
+        lastName: args.lastName,
+        profileImageUrl: args.profileImageUrl,
+      });
+    }
+
+    const accountNumber = generateAccountNumber();
 
     await ctx.db.insert("users", {
       clerkUserId: args.clerkUserId,
@@ -44,3 +67,11 @@ export const createUser = mutation({
     });
   },
 });
+
+function generateAccountNumber() {
+  const randomDigits = Array.from({ length: 8 }, () =>
+    Math.floor(Math.random() * 10)
+  ).join("");
+
+  return `TW-${randomDigits.slice(0, 4)}-${randomDigits.slice(4)}`;
+}
