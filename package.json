@@ -12,11 +12,13 @@
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.3",
+    "@clerk/clerk-react": "^5.31.2",
     "@clerk/types": "^4.58.0",
     "@expo/vector-icons": "^14.1.0",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
+    "convex": "^1.24.1",
     "expo": "~53.0.6",
     "expo-blur": "~14.1.4",
     "expo-constants": "~17.1.5",
