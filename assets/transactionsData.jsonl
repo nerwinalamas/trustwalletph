@@ -1,0 +1,5 @@
+{"userId":"jh7bxpewn1qd4jdgt7nmgyvp5x7g3ag5","transactionType":"send","title":"Grocery Store","amount":1250.00,"description":"food","recipientType":"bill","recipientId":"grocery"}
+{"userId":"jh7bxpewn1qd4jdgt7nmgyvp5x7g3ag5","transactionType":"receive","title":"Salary Deposit","amount":1250.00,"description":"salary"}
+{"userId":"jh7bxpewn1qd4jdgt7nmgyvp5x7g3ag5","transactionType":"bill","title":"Electric Bill","amount":2450.75,"recipientType":"bill","recipientId":"meralco"}
+{"userId":"jh7bxpewn1qd4jdgt7nmgyvp5x7g3ag5","transactionType":"send","title":"Coffee Shop","amount":180.00,"description":"food","recipientType":"bill","recipientId":"coffee"}
+{"userId":"jh7bxpewn1qd4jdgt7nmgyvp5x7g3ag5","transactionType":"receive","title":"Freelance Payment","amount":7500.00,"description":"freelance"}
