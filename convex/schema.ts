@@ -16,7 +16,6 @@ export default defineSchema({
 
     // Wallet information
     walletBalance: v.number(), // in smallest currency unit (e.g., cents)
-    currency: v.string(), // e.g., "PHP"
     accountNumber: v.string(), // e.g., "•••• 4832"
 
     // Security
@@ -27,41 +26,36 @@ export default defineSchema({
 
   transactions: defineTable({
     // User reference
-    userId: v.id("users"),
+    userId: v.id("users"), // Owner of this transaction record
+
+    // Transaction Type
+    transactionType: v.union(
+      v.literal("receive"), // Money received
+      v.literal("send"), // Money sent (to user or bill)
+      v.literal("bill") // Bill payment
+    ),
 
     // Transaction details
-    type: v.union(v.literal("income"), v.literal("expense")),
     title: v.string(),
     amount: v.number(),
-    currency: v.string(),
-
-    // Transaction metadata
-    category: v.union(
-      v.literal("shopping"),
-      v.literal("food"),
-      v.literal("transport"),
-      v.literal("salary"),
-      v.literal("transfer"),
-      v.literal("bill"),
-      v.literal("other")
-    ),
-    date: v.number(), // timestamp
     description: v.optional(v.string()),
 
-    // For transfers
-    recipientId: v.optional(v.id("users")),
-    senderId: v.optional(v.id("users")),
-
-    // Status
-    status: v.union(
-      v.literal("pending"),
-      v.literal("completed"),
-      v.literal("failed"),
-      v.literal("cancelled")
+    // Recipient Handling (Improved)
+    recipientType: v.optional(
+      v.union(
+        v.literal("user"), // When sending to another user
+        v.literal("bill") // When paying bills
+      )
+    ),
+    recipientId: v.optional(
+      v.union(
+        v.id("users"), // For user transfers
+        v.string() // For bill references
+      )
     ),
   })
     .index("by_user", ["userId"])
-    .index("by_date", ["userId", "date"]),
+    .index("by_recipient", ["recipientType", "recipientId"]),
 
   cards: defineTable({
     // User reference
@@ -81,7 +75,6 @@ export default defineSchema({
 
     // Metadata
     isDefault: v.boolean(),
-    addedAt: v.number(), // timestamp
   }).index("by_user", ["userId"]),
 
   bankAccounts: defineTable({
@@ -101,9 +94,6 @@ export default defineSchema({
     // Verification status
     isVerified: v.boolean(),
     verifiedAt: v.optional(v.number()),
-
-    // Metadata
-    addedAt: v.number(), // timestamp
   }).index("by_user", ["userId"]),
 
   qrCodes: defineTable({
