@@ -1,6 +1,8 @@
-import { transactions } from "@/assets/data";
 import Header from "@/components/header";
+import { api } from "@/convex/_generated/api";
+import { formatTransactionDate } from "@/utils/format-transaction-date";
 import { Ionicons } from "@expo/vector-icons";
+import { useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import {
   FlatList,
@@ -12,18 +14,27 @@ import {
 } from "react-native";
 
 export interface Transaction {
-  id: string;
+  _id: string;
+  _creationTime: number;
+  userId: string;
+  transactionType: "receive" | "send" | "bill";
   title: string;
-  type: "expense" | "income";
   amount: number;
-  date: string;
+  description?: string;
+  recipientType?: "user" | "bill";
+  recipientId?: string;
 }
 
 export default function Home() {
+  const transactions = useQuery(api.transactions.getUserTransactions);
   const router = useRouter();
 
   const renderTransactionItem = ({ item }: { item: Transaction }) => {
-    const isExpense = item.type === "expense";
+    const isReceive = item.transactionType === "receive";
+    const isBill = item.transactionType === "bill";
+    const isExpense = isReceive || isBill;
+    const transactionDate = new Date(item._creationTime);
+
     return (
       <View style={styles.transactionItem}>
         <View style={styles.transactionLeft}>
@@ -41,7 +52,9 @@ export default function Home() {
           </View>
           <View>
             <Text style={styles.transactionTitle}>{item.title}</Text>
-            <Text style={styles.transactionDate}>{item.date}</Text>
+            <Text style={styles.transactionDate}>
+              {formatTransactionDate(transactionDate)}
+            </Text>
           </View>
         </View>
         <View style={styles.transactionRight}>
@@ -134,7 +147,7 @@ export default function Home() {
           <FlatList
             data={transactions}
             renderItem={renderTransactionItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
             scrollEnabled={false}
           />
         </View>
