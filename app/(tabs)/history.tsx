@@ -1,111 +1,116 @@
 import Header from "@/components/header";
+import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
+import { useQuery } from "convex/react";
+import { format, isToday, isYesterday } from "date-fns";
 import {
-  ScrollView,
+  SectionList,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { Transaction } from ".";
 
 export default function History() {
+  const transactions = useQuery(api.transactions.getUserTransactions);
+
+  // Transform data into sections
+  const getSections = () => {
+    if (!transactions) return [];
+
+    const grouped: { [key: string]: any[] } = {};
+
+    // Group by date
+    transactions.forEach((tx) => {
+      const date = new Date(tx._creationTime);
+      const dateKey = format(date, "yyyy-MM-dd");
+
+      if (!grouped[dateKey]) {
+        grouped[dateKey] = [];
+      }
+      grouped[dateKey].push(tx);
+    });
+
+    // Convert to SectionList format
+    return Object.keys(grouped)
+      .map((date) => {
+        const sectionDate = new Date(date);
+        let title;
+
+        if (isToday(sectionDate)) {
+          title = "Today";
+        } else if (isYesterday(sectionDate)) {
+          title = "Yesterday";
+        } else {
+          title = format(sectionDate, "MMMM d, yyyy");
+        }
+
+        return {
+          title,
+          data: grouped[date],
+        };
+      })
+      .sort(
+        (a, b) =>
+          new Date(b.data[0]._creationTime).getTime() - new Date(a.data[0]._creationTime).getTime()
+      ); // Newest first
+  };
+
+  const renderItem = ({ item }: { item: Transaction }) => {
+    const isReceive = item.transactionType === "receive";
+
+    return (
+      <TouchableOpacity style={styles.transactionItem}>
+        <View style={styles.transactionLeft}>
+          <View
+            style={[
+              styles.transactionIcon,
+              isReceive ? styles.incomeIcon : styles.expenseIcon,
+            ]}
+          >
+            <Ionicons
+              name={isReceive ? "arrow-down-outline" : "arrow-up-outline"}
+              size={16}
+              color={isReceive ? "#22c55e" : "#f43f5e"}
+            />
+          </View>
+          <View>
+            <Text style={styles.transactionTitle}>{item.title}</Text>
+            <Text style={styles.transactionDate}>
+              {format(new Date(item._creationTime), "h:mm a")}
+            </Text>
+          </View>
+        </View>
+        <Text style={isReceive ? styles.incomeAmount : styles.expenseAmount}>
+          {isReceive ? "+" : "-"}₱{item.amount.toFixed(2)}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderSectionHeader = ({ section }: { section: any }) => (
+    <View style={styles.dateSection}>
+      <Text style={styles.dateLabel}>{section.title}</Text>
+      <View style={styles.dateDivider} />
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      {/* Header */}
       <Header />
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.pageTitle}>Transaction History</Text>
-
-        {/* Today's Transactions */}
-        <View style={styles.dateSection}>
-          <Text style={styles.dateLabel}>Today</Text>
-          <View style={styles.dateDivider} />
-
-          <TouchableOpacity style={styles.transactionItem}>
-            <View style={styles.transactionLeft}>
-              <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-              </View>
-              <View>
-                <Text style={styles.transactionTitle}>Grocery Store</Text>
-                <Text style={styles.transactionDate}>10:45 AM</Text>
-              </View>
-            </View>
-            <Text style={styles.expenseAmount}>-₱1,250.00</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Yesterday's Transactions */}
-        <View style={styles.dateSection}>
-          <Text style={styles.dateLabel}>Yesterday</Text>
-          <View style={styles.dateDivider} />
-
-          <TouchableOpacity style={styles.transactionItem}>
-            <View style={styles.transactionLeft}>
-              <View style={[styles.transactionIcon, styles.incomeIcon]}>
-                <Ionicons name="arrow-down-outline" size={16} color="#22c55e" />
-              </View>
-              <View>
-                <Text style={styles.transactionTitle}>Salary Deposit</Text>
-                <Text style={styles.transactionDate}>9:30 AM</Text>
-              </View>
-            </View>
-            <Text style={styles.incomeAmount}>+₱15,000.00</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* May 2, 2023 Transactions */}
-        <View style={styles.dateSection}>
-          <Text style={styles.dateLabel}>May 2, 2023</Text>
-          <View style={styles.dateDivider} />
-
-          <TouchableOpacity style={styles.transactionItem}>
-            <View style={styles.transactionLeft}>
-              <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-              </View>
-              <View>
-                <Text style={styles.transactionTitle}>Electric Bill</Text>
-                <Text style={styles.transactionDate}>2:15 PM</Text>
-              </View>
-            </View>
-            <Text style={styles.expenseAmount}>-₱2,450.75</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* April 30, 2023 Transactions */}
-        <View style={styles.dateSection}>
-          <Text style={styles.dateLabel}>April 30, 2023</Text>
-          <View style={styles.dateDivider} />
-
-          <TouchableOpacity style={styles.transactionItem}>
-            <View style={styles.transactionLeft}>
-              <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-              </View>
-              <View>
-                <Text style={styles.transactionTitle}>Shopping Mall</Text>
-                <Text style={styles.transactionDate}>4:20 PM</Text>
-              </View>
-            </View>
-            <Text style={styles.expenseAmount}>-₱2,350.50</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.transactionItem}>
-            <View style={styles.transactionLeft}>
-              <View style={[styles.transactionIcon, styles.expenseIcon]}>
-                <Ionicons name="arrow-up-outline" size={16} color="#f43f5e" />
-              </View>
-              <View>
-                <Text style={styles.transactionTitle}>Restaurant</Text>
-                <Text style={styles.transactionDate}>1:30 PM</Text>
-              </View>
-            </View>
-            <Text style={styles.expenseAmount}>-₱850.00</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      <SectionList
+        sections={getSections()}
+        keyExtractor={(item) => item._id}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+        stickySectionHeadersEnabled={false}
+        contentContainerStyle={styles.content}
+        ListHeaderComponent={
+          <Text style={styles.pageTitle}>Transaction History</Text>
+        }
+      />
     </View>
   );
 }
