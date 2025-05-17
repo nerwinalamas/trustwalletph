@@ -61,7 +61,6 @@ export const createUser = mutation({
       phoneNumber: args.phoneNumber,
       profileImageUrl: args.profileImageUrl,
       walletBalance: 0,
-      currency: "PHP",
       accountNumber: accountNumber,
       isVerified: false,
     });
