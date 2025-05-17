@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 // Create a new task with the given text
 export const createUser = mutation({
@@ -74,3 +74,24 @@ function generateAccountNumber() {
 
   return `TW-${randomDigits.slice(0, 4)}-${randomDigits.slice(4)}`;
 }
+
+export const getUserWallet = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    // Get user by Clerk ID
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+
+    if (!user) return null;
+
+    return {
+      balance: user.walletBalance,
+      accountNumber: user.accountNumber,
+    };
+  },
+});
