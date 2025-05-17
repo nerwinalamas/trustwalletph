@@ -1,20 +1,45 @@
+import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
+import { useQuery } from "convex/react";
+import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function BalanceCard() {
+  const walletData = useQuery(api.users.getUserWallet);
+  const [showBalance, setShowBalance] = useState(true);
+
+  // Format balance with commas
+  const formattedBalance = walletData?.balance
+    ? walletData.balance.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    : "0.00";
+
+  // Mask account number
+  const maskedAccount = walletData?.accountNumber
+    ? `•••• ${walletData.accountNumber.slice(-4)}`
+    : "•••• ••••";
+
   return (
     <View style={styles.balanceCard}>
       <View style={styles.balanceRow}>
         <Text style={styles.balanceLabel}>Available Balance</Text>
-        <TouchableOpacity>
-          <Ionicons name="eye-outline" size={24} color="white" />
+        <TouchableOpacity onPress={() => setShowBalance(!showBalance)}>
+          <Ionicons
+            name={showBalance ? "eye-outline" : "eye-off-outline"}
+            size={24}
+            color="white"
+          />
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.balanceAmount}>₱ 24,850.75</Text>
+      <Text style={styles.balanceAmount}>
+        ₱ {showBalance ? formattedBalance : "••••"}
+      </Text>
 
       <View style={styles.accountRow}>
-        <Text style={styles.accountNumber}>Account: •••• 4832</Text>
+        <Text style={styles.accountNumber}>Account: {maskedAccount}</Text>
       </View>
     </View>
   );
