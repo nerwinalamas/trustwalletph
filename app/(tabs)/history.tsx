@@ -18,6 +18,7 @@ export default function History() {
   // Transform data into sections
   const getSections = () => {
     if (!transactions) return [];
+    if (transactions.length === 0) return [];
 
     const grouped: { [key: string]: any[] } = {};
 
@@ -53,7 +54,8 @@ export default function History() {
       })
       .sort(
         (a, b) =>
-          new Date(b.data[0]._creationTime).getTime() - new Date(a.data[0]._creationTime).getTime()
+          new Date(b.data[0]._creationTime).getTime() -
+          new Date(a.data[0]._creationTime).getTime()
       ); // Newest first
   };
 
@@ -110,6 +112,15 @@ export default function History() {
         ListHeaderComponent={
           <Text style={styles.pageTitle}>Transaction History</Text>
         }
+        ListEmptyComponent={
+          <View style={styles.emptyState}>
+            <Ionicons name="receipt-outline" size={48} color="#9ca3af" />
+            <Text style={styles.emptyStateTitle}>No transactions yet</Text>
+            <Text style={styles.emptyStateText}>
+              Your transaction history will appear here
+            </Text>
+          </View>
+        }
       />
     </View>
   );
@@ -130,6 +141,26 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#0f172a",
     marginBottom: 20,
+  },
+  emptyState: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    marginTop: 40,
+  },
+  emptyStateTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#374151",
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  emptyStateText: {
+    fontSize: 14,
+    color: "#6b7280",
+    textAlign: "center",
   },
   dateSection: {
     marginBottom: 20,

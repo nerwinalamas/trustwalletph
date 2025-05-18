@@ -132,12 +132,22 @@ export default function Home() {
             </TouchableOpacity>
           </View>
 
-          <FlatList
-            data={transactions}
-            renderItem={renderTransactionItem}
-            keyExtractor={(item) => item._id}
-            scrollEnabled={false}
-          />
+          {transactions?.length === 0 ? (
+            <View style={styles.emptyState}>
+              <Ionicons name="receipt-outline" size={48} color="#9ca3af" />
+              <Text style={styles.emptyStateTitle}>No transactions yet</Text>
+              <Text style={styles.emptyStateText}>
+                Your recent transactions will appear here
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              data={transactions}
+              renderItem={renderTransactionItem}
+              keyExtractor={(item) => item._id}
+              scrollEnabled={false}
+            />
+          )}
         </View>
       </ScrollView>
     </View>
@@ -197,6 +207,24 @@ const styles = StyleSheet.create({
   seeAllText: {
     color: "#4f46e5",
     fontWeight: "500",
+  },
+  emptyState: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
+  emptyStateTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#374151",
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  emptyStateText: {
+    fontSize: 14,
+    color: "#6b7280",
+    textAlign: "center",
   },
   transactionsList: {
     flex: 1,
