@@ -3,7 +3,7 @@ import { api } from "@/convex/_generated/api";
 import { SendMoneyFormData, sendMoneySchema } from "@/utils/schema";
 import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -76,6 +76,8 @@ export default function Send() {
 
   const searchUserByEmail = useMutation(api.users.searchUserByEmail);
   const sendMoney = useMutation(api.users.sendMoney);
+  const wallet = useQuery(api.users.getUserWallet);
+  const availableBalance = wallet?.balance || 0;
 
   const {
     control,
@@ -321,6 +323,8 @@ export default function Send() {
       case 2:
         if (!selectedRecipient) return null;
 
+        const remainingBalance = availableBalance - amount;
+
         return (
           <>
             <Text style={styles.stepTitle}>How much are you sending?</Text>
@@ -350,7 +354,7 @@ export default function Send() {
                     onChangeText={(text) => {
                       const numericValue =
                         text === "" ? 0 : Number(text.replace(/[^0-9.]/g, ""));
-                        
+
                       onChange(numericValue);
                       trigger("amount");
                     }}
@@ -363,13 +367,29 @@ export default function Send() {
               />
             </View>
 
-            {errors.amount && (
+            {/* {errors.amount && (
               <Text style={[styles.errorText, styles.amountError]}>
                 {errors.amount.message}
               </Text>
-            )}
+            )} */}
 
-            <Text style={styles.balanceText}>Available Balance: ₱0.00</Text>
+            <Text
+              style={[
+                styles.balanceText,
+                amount > 0 && remainingBalance < 0
+                  ? styles.negativeBalance
+                  : {},
+              ]}
+            >
+              Available Balance: ₱
+              {(amount > 0
+                ? remainingBalance
+                : availableBalance
+              ).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </Text>
 
             <Controller
               control={control}
@@ -466,7 +486,10 @@ export default function Send() {
             style={[
               styles.nextButton,
               (step === 1 && (!emailValue || !!errors.email)) ||
-              (step === 2 && (amount <= 0 || !!errors.amount)) ||
+              (step === 2 &&
+                (amount <= 0 ||
+                  !!errors.amount ||
+                  amount > availableBalance)) ||
               isSearching
                 ? styles.disabledButton
                 : {},
@@ -474,7 +497,10 @@ export default function Send() {
             onPress={step === 3 ? handleSubmit(onSubmit) : goToNextStep}
             disabled={
               (step === 1 && (!emailValue || !!errors.email)) ||
-              (step === 2 && (amount <= 0 || !!errors.amount)) ||
+              (step === 2 &&
+                (amount <= 0 ||
+                  !!errors.amount ||
+                  amount > availableBalance)) ||
               isSearching
             }
           >
@@ -798,5 +824,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#4f46e5",
     marginLeft: 8,
+  },
+  negativeBalance: {
+    color: "#ef4444", // Red for negative balance
   },
 });
