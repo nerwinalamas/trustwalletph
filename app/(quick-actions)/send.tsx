@@ -326,10 +326,7 @@ export default function Send() {
                     style={styles.amountInput}
                     value={value === 0 ? "" : String(value)}
                     onChangeText={(text) => {
-                      const numericValue =
-                        text === "" ? 0 : Number(text.replace(/[^0-9.]/g, ""));
-
-                      onChange(numericValue);
+                      onChange(text);
                       trigger("amount");
                     }}
                     onBlur={onBlur}
