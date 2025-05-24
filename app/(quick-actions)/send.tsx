@@ -1,3 +1,4 @@
+import Avatar from "@/components/avatar";
 import BackHeader from "@/components/back-header";
 import { api } from "@/convex/_generated/api";
 import { SendMoneyFormData, sendMoneySchema } from "@/utils/schema";
@@ -25,46 +26,6 @@ interface Recipient {
   avatar: string | null;
 }
 
-// Sample recent recipients data - in a real app, this would come from an API or store
-const recentRecipients: Recipient[] = [
-  {
-    id: "1",
-    name: "Maria Santos",
-    email: "maria.santos@example.com",
-    avatar: null,
-  },
-  {
-    id: "2",
-    name: "Juan Dela Cruz",
-    email: "juan.delacruz@example.com",
-    avatar: null,
-  },
-  {
-    id: "3",
-    name: "Ana Reyes",
-    email: "ana.reyes@example.com",
-    avatar: null,
-  },
-  {
-    id: "4",
-    name: "Maria Santos",
-    email: "maria.santos@example.com",
-    avatar: null,
-  },
-  {
-    id: "5",
-    name: "Juan Dela Cruz",
-    email: "juan.delacruz@example.com",
-    avatar: null,
-  },
-  {
-    id: "6",
-    name: "Ana Reyes",
-    email: "ana.reyes@example.com",
-    avatar: null,
-  },
-];
-
 export default function Send() {
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -78,6 +39,7 @@ export default function Send() {
   const sendMoney = useMutation(api.users.sendMoney);
   const wallet = useQuery(api.users.getUserWallet);
   const availableBalance = wallet?.balance || 0;
+  const recentRecipients = useQuery(api.users.getRecentRecipients) || [];
 
   const {
     control,
@@ -195,7 +157,7 @@ export default function Send() {
       style={styles.recipientItem}
       onPress={() => selectRecipient(item)}
     >
-      <View style={styles.avatarPlaceholder}>{/* Avatar placeholder */}</View>
+      <Avatar size={40} imageUrl={item.avatar} name={item.name} />
       <View style={styles.recipientInfo}>
         <Text style={styles.recipientName}>{item.name}</Text>
         <Text style={styles.recipientEmail}>{item.email}</Text>
@@ -296,7 +258,11 @@ export default function Send() {
 
             {selectedRecipient && (
               <View style={styles.selectedRecipientPreview}>
-                <View style={styles.avatarPlaceholder} />
+                <Avatar
+                  size={40}
+                  imageUrl={selectedRecipient.avatar}
+                  name={selectedRecipient.name}
+                />
                 <View style={styles.recipientInfo}>
                   <Text style={styles.recipientName}>
                     {selectedRecipient.name}
@@ -331,7 +297,11 @@ export default function Send() {
             <Text style={styles.stepDescription}>Enter amount to send</Text>
 
             <View style={styles.recipientCard}>
-              <View style={styles.avatarPlaceholder} />
+              <Avatar
+                size={40}
+                imageUrl={selectedRecipient.avatar}
+                name={selectedRecipient.name}
+              />
               <View style={styles.recipientInfo}>
                 <Text style={styles.recipientName}>
                   {selectedRecipient.name}
@@ -634,15 +604,9 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 1,
   },
-  avatarPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#e2e8f0",
-    marginRight: 12,
-  },
   recipientInfo: {
     flex: 1,
+    marginLeft: 12,
   },
   recipientName: {
     fontSize: 16,
