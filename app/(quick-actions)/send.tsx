@@ -1,8 +1,14 @@
 import BackHeader from "@/components/back-header";
+import { api } from "@/convex/_generated/api";
+import { SendMoneyFormData, sendMoneySchema } from "@/utils/schema";
 import { Ionicons } from "@expo/vector-icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "convex/react";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
+  ActivityIndicator,
   FlatList,
   ScrollView,
   StyleSheet,
@@ -62,24 +68,97 @@ const recentRecipients: Recipient[] = [
 export default function Send() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [searchText, setSearchText] = useState("");
   const [selectedRecipient, setSelectedRecipient] = useState<Recipient | null>(
     null
   );
-  const [amount, setAmount] = useState("");
-  const [note, setNote] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState("");
+
+  const searchUserByEmail = useMutation(api.users.searchUserByEmail);
+  const sendMoney = useMutation(api.users.sendMoney);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+    trigger,
+    getValues,
+  } = useForm<SendMoneyFormData>({
+    resolver: zodResolver(sendMoneySchema),
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      amount: 0,
+      note: "",
+    },
+  });
+
+  const emailValue = watch("email");
+  const amount = watch("amount");
+  const note = watch("note");
 
   // Move to the next step
-  const goToNextStep = () => {
-    if (step === 1 && !selectedRecipient) return;
-    if (step === 2 && (!amount || parseFloat(amount) <= 0)) return;
+  const goToNextStep = async () => {
+    if (step === 1) {
+      // Check if email is valid
+      const isValid = await trigger("email");
+      if (!isValid) return;
+
+      if (!selectedRecipient) {
+        // Search for user before moving to next step
+        await searchUser(getValues("email"));
+        return; // Don't proceed yet, wait for search to complete
+      }
+    }
+
+    if (step === 2 && (!amount || errors.amount)) return;
 
     setStep(step + 1);
+  };
+
+  // Search for user by email
+  const searchUser = async (email: string) => {
+    if (!email || isSearching) return;
+
+    setIsSearching(true);
+    setSearchError("");
+
+    try {
+      const user = await searchUserByEmail({ email });
+      console.log("Search result:", user);
+
+      if (user) {
+        const recipient: Recipient = {
+          id: user._id,
+          name: user.fullName,
+          email: user.email,
+          avatar: user.profileImageUrl || null,
+        };
+
+        setSelectedRecipient(recipient);
+        setValue("email", recipient.email, { shouldValidate: true });
+        setSearchError("");
+        setStep(2);
+      } else {
+        setSearchError("User not found. Please check the email and try again.");
+      }
+    } catch (error) {
+      console.error("Error searching for user:", error);
+      setSearchError("Error searching for user. Please try again.");
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   // Going back to previous step
   const goToPreviousStep = () => {
     if (step > 1) {
+      if (step === 2) {
+        // Clear amount when going back from step 2 to 1
+        setValue("amount", 0);
+      }
       setStep(step - 1);
     }
   };
@@ -87,13 +166,25 @@ export default function Send() {
   // Handle recipient selection
   const selectRecipient = (recipient: Recipient) => {
     setSelectedRecipient(recipient);
+    setValue("email", recipient.email, { shouldValidate: true });
+    trigger("email");
   };
 
-  // Handle completion of the transaction
-  const handleConfirmSend = () => {
-    // Here you would handle the actual transaction processing
-    // Then navigate back to home or a success screen
-    router.replace("/(tabs)");
+  // Handle form submission
+  const onSubmit = async (data: SendMoneyFormData) => {
+    if (!selectedRecipient) return;
+
+    try {
+      await sendMoney({
+        recipientEmail: selectedRecipient.email,
+        amount: data.amount,
+        note: data.note,
+      });
+
+      router.replace("/(tabs)");
+    } catch (error) {
+      console.log("Transaction failed. Please try again:", error);
+    }
   };
 
   // Render recipient item for the FlatList
@@ -158,14 +249,65 @@ export default function Send() {
                 color="#9ca3af"
                 style={styles.searchIcon}
               />
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Email address"
-                placeholderTextColor="#9ca3af"
-                value={searchText}
-                onChangeText={setSearchText}
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={styles.searchInput}
+                    placeholder="Email address"
+                    placeholderTextColor="#9ca3af"
+                    value={value}
+                    onChangeText={(text) => {
+                      onChange(text);
+                      if (
+                        selectedRecipient &&
+                        text !== selectedRecipient.email
+                      ) {
+                        setSelectedRecipient(null);
+                      }
+                      setSearchError("");
+                    }}
+                    onBlur={onBlur}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                  />
+                )}
               />
             </View>
+
+            {errors.email && (
+              <Text style={styles.errorText}>{errors.email.message}</Text>
+            )}
+
+            {searchError !== "" && (
+              <Text style={styles.errorText}>{searchError}</Text>
+            )}
+
+            {isSearching && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="small" color="#4f46e5" />
+                <Text style={styles.loadingText}>Searching for user...</Text>
+              </View>
+            )}
+
+            {selectedRecipient && (
+              <View style={styles.selectedRecipientPreview}>
+                <View style={styles.avatarPlaceholder} />
+                <View style={styles.recipientInfo}>
+                  <Text style={styles.recipientName}>
+                    {selectedRecipient.name}
+                  </Text>
+                  <Text style={styles.recipientEmail}>
+                    {selectedRecipient.email}
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={() => setSelectedRecipient(null)}>
+                  <Ionicons name="close" size={20} color="#9ca3af" />
+                </TouchableOpacity>
+              </View>
+            )}
 
             <Text style={styles.sectionTitle}>Recent</Text>
             <FlatList
@@ -198,25 +340,53 @@ export default function Send() {
 
             <View style={styles.amountContainer}>
               <Text style={styles.currencySymbol}>₱</Text>
-              <TextInput
-                style={styles.amountInput}
-                value={amount}
-                onChangeText={setAmount}
-                keyboardType="decimal-pad"
-                placeholder="0.00"
-                placeholderTextColor="#9ca3af"
+              <Controller
+                control={control}
+                name="amount"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={styles.amountInput}
+                    value={value === 0 ? "" : String(value)}
+                    onChangeText={(text) => {
+                      const numericValue =
+                        text === "" ? 0 : Number(text.replace(/[^0-9.]/g, ""));
+                        
+                      onChange(numericValue);
+                      trigger("amount");
+                    }}
+                    onBlur={onBlur}
+                    keyboardType="decimal-pad"
+                    placeholder="0.00"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
             </View>
 
+            {errors.amount && (
+              <Text style={[styles.errorText, styles.amountError]}>
+                {errors.amount.message}
+              </Text>
+            )}
+
             <Text style={styles.balanceText}>Available Balance: ₱0.00</Text>
 
-            <Text style={styles.noteLabel}>Note (Optional)</Text>
-            <TextInput
-              style={styles.noteInput}
-              placeholder="What's this for?"
-              placeholderTextColor="#9ca3af"
-              value={note}
-              onChangeText={setNote}
+            <Controller
+              control={control}
+              name="note"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <>
+                  <Text style={styles.noteLabel}>Note (Optional)</Text>
+                  <TextInput
+                    style={styles.noteInput}
+                    placeholder="What's this for?"
+                    placeholderTextColor="#9ca3af"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                  />
+                </>
+              )}
             />
           </>
         );
@@ -295,16 +465,26 @@ export default function Send() {
           <TouchableOpacity
             style={[
               styles.nextButton,
-              (step === 1 && !selectedRecipient) ||
-              (step === 2 && (!amount || parseFloat(amount) <= 0))
+              (step === 1 && (!emailValue || !!errors.email)) ||
+              (step === 2 && (amount <= 0 || !!errors.amount)) ||
+              isSearching
                 ? styles.disabledButton
                 : {},
             ]}
-            onPress={step === 3 ? handleConfirmSend : goToNextStep}
+            onPress={step === 3 ? handleSubmit(onSubmit) : goToNextStep}
+            disabled={
+              (step === 1 && (!emailValue || !!errors.email)) ||
+              (step === 2 && (amount <= 0 || !!errors.amount)) ||
+              isSearching
+            }
           >
-            <Text style={styles.nextButtonText}>
-              {step === 3 ? "Confirm and Send" : "Next"}
-            </Text>
+            {isSearching && step === 1 ? (
+              <ActivityIndicator size="small" color="#ffffff" />
+            ) : (
+              <Text style={styles.nextButtonText}>
+                {step === 3 ? "Confirm and Send" : "Next"}
+              </Text>
+            )}
           </TouchableOpacity>
 
           {step > 1 && (
@@ -581,6 +761,40 @@ const styles = StyleSheet.create({
   },
   disclaimerText: {
     flex: 1,
+    fontSize: 14,
+    color: "#4f46e5",
+    marginLeft: 8,
+  },
+  errorText: {
+    color: "#ef4444",
+    fontSize: 12,
+    marginTop: -16,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+  },
+  amountError: {
+    textAlign: "center",
+  },
+  selectedRecipientPreview: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  loadingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  loadingText: {
     fontSize: 14,
     color: "#4f46e5",
     marginLeft: 8,
