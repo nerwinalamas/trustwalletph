@@ -277,13 +277,17 @@ export default function Send() {
               </View>
             )}
 
-            <Text style={styles.sectionTitle}>Recent</Text>
-            <FlatList
-              data={recentRecipients}
-              renderItem={renderRecipientItem}
-              keyExtractor={(item) => item.id}
-              scrollEnabled={false}
-            />
+            {recentRecipients.length > 0 && (
+              <>
+                <Text style={styles.sectionTitle}>Recent</Text>
+                <FlatList
+                  data={recentRecipients}
+                  renderItem={renderRecipientItem}
+                  keyExtractor={(item) => item.id}
+                  scrollEnabled={false}
+                />
+              </>
+            )}
           </>
         );
       case 2:
@@ -790,6 +794,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   negativeBalance: {
-    color: "#ef4444", // Red for negative balance
+    color: "#ef4444",
   },
 });
