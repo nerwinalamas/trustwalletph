@@ -31,9 +31,9 @@ export default function Home() {
   const router = useRouter();
 
   const renderTransactionItem = ({ item }: { item: Transaction }) => {
-    const isReceive = item.transactionType === "receive";
+    const isSend = item.transactionType === "send";
     const isBill = item.transactionType === "bill";
-    const isExpense = isReceive || isBill;
+    const isExpense = isSend || isBill;
     const transactionDate = new Date(item._creationTime);
 
     return (
