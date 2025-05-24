@@ -1,22 +1,33 @@
 import { useUser } from "@clerk/clerk-expo";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-export default function Avatar({ size = 64 }) {
+interface AvatarProps {
+  size?: number;
+  imageUrl?: string | null;
+  name?: string;
+}
+
+export default function Avatar({ size = 64, imageUrl, name }: AvatarProps) {
   const { user } = useUser();
 
-  const initials = user
-    ? `${user.firstName?.charAt(0) || ""}${
-        user.lastName?.charAt(0) || ""
-      }`.toUpperCase()
-    : "";
+  const displayImageUrl = imageUrl ?? user?.imageUrl;
+  const displayName = name ?? `${user?.firstName} ${user?.lastName}`;
+
+  const initials =
+    displayName
+      ?.split(" ")
+      .map((part) => part.charAt(0))
+      .join("")
+      .toUpperCase()
+      .substring(0, 2) || "?";
 
   return (
     <View style={[styles.avatarContainer, { width: size, height: size }]}>
-      {user?.imageUrl ? (
-        <Image source={{ uri: user.imageUrl }} style={styles.avatarImage} />
+      {displayImageUrl ? (
+        <Image source={{ uri: displayImageUrl }} style={styles.avatarImage} />
       ) : (
         <Text style={[styles.initialsText, { fontSize: size * 0.4 }]}>
-          {initials || "?"}
+          {initials}
         </Text>
       )}
     </View>
