@@ -95,3 +95,89 @@ export const getUserWallet = query({
     };
   },
 });
+
+export const searchUserByEmail = mutation({
+  args: { email: v.string() },
+  handler: async (ctx, { email }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    // Don't allow searching yourself
+    const currentUser = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+
+    if (currentUser?.email.toLowerCase() === email.toLowerCase()) {
+      throw new Error("Cannot send to yourself");
+    }
+
+    return await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", email.toLowerCase()))
+      .first();
+  },
+});
+
+export const sendMoney = mutation({
+  args: {
+    recipientEmail: v.string(),
+    amount: v.number(),
+    note: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    // Get sender
+    const sender = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+    if (!sender) throw new Error("Sender not found");
+
+    // Get recipient
+    const recipient = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.recipientEmail))
+      .unique();
+    if (!recipient) throw new Error("Recipient not found");
+
+    // Validate balance
+    if (sender.walletBalance < args.amount) {
+      throw new Error("Insufficient balance");
+    }
+
+    // Perform transaction
+    await ctx.db.patch(sender._id, {
+      walletBalance: sender.walletBalance - args.amount,
+    });
+
+    await ctx.db.patch(recipient._id, {
+      walletBalance: recipient.walletBalance + args.amount,
+    });
+
+    // Create transaction records
+    const transactionId = await ctx.db.insert("transactions", {
+      userId: sender._id,
+      transactionType: "send",
+      title: `Sent to ${recipient.fullName}`,
+      amount: args.amount,
+      description: args.note,
+      recipientType: "user",
+      recipientId: recipient._id,
+    });
+
+    await ctx.db.insert("transactions", {
+      userId: recipient._id,
+      transactionType: "receive",
+      title: `Received from ${sender.fullName}`,
+      amount: args.amount,
+      description: args.note,
+      recipientType: "user",
+      recipientId: sender._id,
+    });
+
+    return transactionId;
+  },
+});
