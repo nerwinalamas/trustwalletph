@@ -181,3 +181,57 @@ export const sendMoney = mutation({
     return transactionId;
   },
 });
+
+export const getRecentRecipients = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return [];
+
+    // Get current user
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+
+    if (!user) return [];
+
+    // Get last 5 send transactions
+    const sendTransactions = await ctx.db
+      .query("transactions")
+      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .filter((q) => q.eq(q.field("transactionType"), "send"))
+      .order("desc")
+      .take(5);
+
+    // Process recipients with proper type handling
+    const recipients = await Promise.all(
+      sendTransactions.map(async (tx) => {
+        if (tx.recipientType !== "user" || !tx.recipientId) return null;
+
+        // Handle both string and Id types
+        const recipientId =
+          typeof tx.recipientId === "string"
+            ? ctx.db.normalizeId("users", tx.recipientId)
+            : tx.recipientId;
+
+        if (!recipientId) return null;
+
+        const recipient = await ctx.db.get(recipientId);
+        if (!recipient || !("fullName" in recipient)) return null;
+
+        return {
+          id: recipient._id.toString(),
+          name: recipient.fullName,
+          email: recipient.email,
+          avatar: recipient.profileImageUrl || null,
+        };
+      })
+    );
+
+    // Filter and deduplicate
+    return recipients
+      .filter((r): r is NonNullable<(typeof recipients)[0]> => r !== null)
+      .filter((r, i, arr) => arr.findIndex((t) => t.id === r.id) === i)
+      .slice(0, 5);
+  },
+});
