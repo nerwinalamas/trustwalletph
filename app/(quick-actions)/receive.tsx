@@ -2,7 +2,7 @@ import BackHeader from "@/components/back-header";
 import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Modal,
   ScrollView,
@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import QRCode from "react-native-qrcode-svg";
 // import * as MediaLibrary from 'expo-media-library';
 // import { captureRef } from 'react-native-view-shot';
 
@@ -19,7 +20,7 @@ export default function Receive() {
   const user = useQuery(api.users.getCurrentUser);
   const [amount, setAmount] = useState("");
   const [showAmountSheet, setShowAmountSheet] = useState(false);
-  // const qrRef = useRef(null);
+  const qrRef = useRef(null);
   // const [hasMediaPermission, setHasMediaPermission] = useState(false);
 
   // const requestMediaPermission = async () => {
@@ -57,23 +58,23 @@ export default function Receive() {
     console.log("downloadQRCode")
   };
 
-  // const getQRValue = () => {
-  //   return JSON.stringify({
-  //     type: "payment-request",
-  //     email: user?.email,
-  //     accountNumber: user?.accountNumber,
-  //     name: user?.fullName,
-  //     amount: amount ? parseFloat(amount) : undefined,
-  //     timestamp: Date.now()
-  //   });
-  // };
+  const getQRValue = () => {
+    return JSON.stringify({
+      type: "payment-request",
+      email: user?.email,
+      accountNumber: user?.accountNumber,
+      name: user?.fullName,
+      amount: amount ? parseFloat(amount) : undefined,
+      timestamp: Date.now()
+    });
+  };
 
   return (
     <View style={styles.container}>
       <BackHeader title="Receive" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.qrContainer}>
+        <View style={styles.qrContainer}>
           <View style={styles.qrCodeWrapper} ref={qrRef}>
             <QRCode
               value={getQRValue()}
@@ -82,10 +83,7 @@ export default function Receive() {
               backgroundColor="#ffffff"
             />
           </View>
-          <Text style={styles.qrInstruction}>
-            Scan this QR code to receive money
-          </Text>
-        </View> */}
+        </View>
 
         <View style={styles.detailsContainer}>
           <View style={styles.accountInfo}>
@@ -230,12 +228,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderWidth: 1,
     borderColor: "#e2e8f0",
-  },
-  qrInstruction: {
-    fontSize: 16,
-    color: "#64748b",
-    textAlign: "center",
-    marginTop: 8,
   },
   detailsContainer: {
     backgroundColor: "#ffffff",
