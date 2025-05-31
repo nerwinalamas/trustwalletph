@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8fafc",
   },
   content: {
-    flex: 1,
+    flexGrow: 1, 
     paddingHorizontal: 16,
     paddingTop: 16,
   },
