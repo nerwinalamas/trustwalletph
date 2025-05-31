@@ -1,10 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
+  Animated,
   Dimensions,
+  Easing,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,7 +16,28 @@ import {
 export default function Scan() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+  const [isScanning, setIsScanning] = useState(true);
   const router = useRouter();
+  const scanLinePos = useRef(new Animated.Value(0)).current;
+
+  // Animation effect
+  useEffect(() => {
+    const animateScanLine = () => {
+      scanLinePos.setValue(0);
+      Animated.timing(scanLinePos, {
+        toValue: 1,
+        duration: 2000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }).start(() => {
+        if (isScanning) animateScanLine();
+      });
+    };
+
+    if (isScanning) {
+      animateScanLine();
+    }
+  }, [isScanning, scanLinePos]);
 
   useEffect(() => {
     const getPermission = async () => {
@@ -37,12 +60,24 @@ export default function Scan() {
     data: string;
   }) => {
     setScanned(true);
+    setIsScanning(false);
     Alert.alert("QR Code Scanned", `Type: ${type}\nData: ${data}`, [
       {
         text: "OK",
-        onPress: () => setScanned(false),
+        onPress: () => {
+          setScanned(false);
+          setIsScanning(true);
+          router.back();
+        },
       },
     ]);
+  };
+
+  const toggleScanning = () => {
+    setIsScanning(!isScanning);
+    if (!scanned) {
+      setScanned(!isScanning);
+    }
   };
 
   if (!permission) {
@@ -69,12 +104,17 @@ export default function Scan() {
     );
   }
 
+  const scanLineTranslate = scanLinePos.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, scanFrameSize - 4], // -4 to account for line height
+  });
+
   return (
     <View style={styles.container}>
       <CameraView
         style={styles.camera}
         facing="back"
-        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarcodeScanned={isScanning ? handleBarCodeScanned : undefined}
         barcodeScannerSettings={{
           barcodeTypes: ["qr", "pdf417", "ean13", "ean8", "upc_a", "upc_e"],
         }}
@@ -93,7 +133,16 @@ export default function Scan() {
 
           <View style={styles.middleOverlay}>
             <View style={styles.sideOverlay} />
-            <View style={styles.focusBox} />
+            <View style={styles.focusBox}>
+              {isScanning && (
+                <Animated.View
+                  style={[
+                    styles.scanLine,
+                    { transform: [{ translateY: scanLineTranslate }] },
+                  ]}
+                />
+              )}
+            </View>
             <View style={styles.sideOverlay} />
           </View>
 
@@ -101,6 +150,19 @@ export default function Scan() {
             <Text style={styles.instructionText}>
               Align QR code within the frame to scan
             </Text>
+            <TouchableOpacity
+              style={styles.scanButton}
+              onPress={toggleScanning}
+            >
+              <Ionicons
+                name={isScanning ? "pause" : "play"}
+                size={24}
+                color="white"
+              />
+              <Text style={styles.scanButtonText}>
+                {isScanning ? "Pause Scanning" : "Resume Scanning"}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </CameraView>
@@ -159,7 +221,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 50,
     paddingHorizontal: 20,
-    backgroundColor: "rgba(0,0,0,0.5)",
   },
   backButton: {
     padding: 8,
@@ -174,7 +235,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   sideOverlay: {
-    backgroundColor: "rgba(0,0,0,0.5)",
     height: scanFrameSize,
     width: (width - scanFrameSize) / 2,
   },
@@ -185,11 +245,17 @@ const styles = StyleSheet.create({
     borderColor: "white",
     backgroundColor: "transparent",
     borderRadius: 16,
+    overflow: "hidden",
+  },
+  scanLine: {
+    height: 4,
+    width: scanFrameSize,
+    backgroundColor: "#4f46e5",
+    position: "absolute",
   },
   bottomOverlay: {
     alignItems: "center",
     paddingBottom: 40,
-    backgroundColor: "rgba(0,0,0,0.5)",
   },
   instructionText: {
     color: "white",
@@ -198,7 +264,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 40,
   },
-  flashButton: {
+  scanButton: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "rgba(79, 70, 229, 0.8)",
@@ -207,7 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginTop: 10,
   },
-  flashButtonText: {
+  scanButtonText: {
     color: "white",
     fontSize: 16,
     fontWeight: "600",
