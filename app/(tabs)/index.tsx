@@ -142,7 +142,9 @@ export default function Home() {
             </View>
           ) : (
             <FlatList
-              data={transactions}
+              data={transactions
+                ?.sort((a, b) => b._creationTime - a._creationTime)
+                .slice(0, 4)}
               renderItem={renderTransactionItem}
               keyExtractor={(item) => item._id}
               scrollEnabled={false}
