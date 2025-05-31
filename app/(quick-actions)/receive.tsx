@@ -13,49 +13,15 @@ import {
   View,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
-// import * as MediaLibrary from 'expo-media-library';
-// import { captureRef } from 'react-native-view-shot';
 
 export default function Receive() {
   const user = useQuery(api.users.getCurrentUser);
   const [amount, setAmount] = useState("");
   const [showAmountSheet, setShowAmountSheet] = useState(false);
   const qrRef = useRef(null);
-  // const [hasMediaPermission, setHasMediaPermission] = useState(false);
-
-  // const requestMediaPermission = async () => {
-  //   const { status } = await MediaLibrary.requestPermissionsAsync();
-  //   setHasMediaPermission(status === 'granted');
-  //   return status === 'granted';
-  // };
 
   const downloadQRCode = async () => {
-    // try {
-    //   if (!hasMediaPermission && !(await requestMediaPermission())) {
-    //     Alert.alert("Permission required", "We need permission to save the QR code to your gallery");
-    //     return;
-    //   }
-
-    //   if (!qrRef.current) return;
-
-    //   const uri = await captureRef(qrRef, {
-    //     format: 'png',
-    //     quality: 1,
-    //   });
-
-    //   const album = await MediaLibrary.getAlbumAsync('TrustWalletPH');
-    //   if (album === null) {
-    //     await MediaLibrary.createAlbumAsync('TrustWalletPH', uri, false);
-    //   } else {
-    //     await MediaLibrary.addAssetsToAlbumAsync([uri], album, false);
-    //   }
-
-    //   Alert.alert("Success", "QR code saved to your gallery");
-    // } catch (error) {
-    //   console.error("Error saving QR code:", error);
-    //   Alert.alert("Error", "Failed to save QR code");
-    // }
-    console.log("downloadQRCode")
+    console.log("downloadQRCode");
   };
 
   const getQRValue = () => {
@@ -65,9 +31,14 @@ export default function Receive() {
       accountNumber: user?.accountNumber,
       name: user?.fullName,
       amount: amount ? parseFloat(amount) : undefined,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   };
+
+  // Mask account number
+  const maskedAccount = user?.accountNumber
+    ? `•••• ${user.accountNumber.slice(-4)}`
+    : "•••• ••••";
 
   return (
     <View style={styles.container}>
@@ -102,39 +73,45 @@ export default function Receive() {
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Account Number</Text>
               <View style={styles.infoValueContainer}>
-                <Text style={styles.infoValue}>{user?.accountNumber}</Text>
+                <Text style={styles.infoValue}>{maskedAccount}</Text>
               </View>
             </View>
-            
+
             {/* Amount Button */}
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.amountButton}
               onPress={() => setShowAmountSheet(true)}
             >
-              <Ionicons 
-                name={amount ? "checkmark-circle" : "add-circle"} 
-                size={20} 
-                color={amount ? "#10b981" : "#4f46e5"} 
+              <Ionicons
+                name={amount ? "checkmark-circle" : "add-circle"}
+                size={20}
+                color={amount ? "#10b981" : "#4f46e5"}
               />
               <Text style={styles.amountButtonText}>
-                {amount ? `Amount: ₱${parseFloat(amount).toFixed(2)}` : "Add Amount"}
+                {amount
+                  ? `Amount: ₱${parseFloat(amount).toFixed(2)}`
+                  : "Add Amount"}
               </Text>
             </TouchableOpacity>
           </View>
 
           {/* Buttons Container */}
           <View style={styles.buttonsContainer}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.actionButton, styles.downloadButton]}
               onPress={downloadQRCode}
             >
               <Ionicons name="download-outline" size={20} color="#4f46e5" />
-              <Text style={[styles.actionButtonText, { color: "#4f46e5" }]}>Download</Text>
+              <Text style={[styles.actionButtonText, { color: "#4f46e5" }]}>
+                Download
+              </Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity style={[styles.actionButton, styles.shareButton]}>
               <Ionicons name="share-social-outline" size={20} color="#ffffff" />
-              <Text style={[styles.actionButtonText, { color: "#ffffff" }]}>Share</Text>
+              <Text style={[styles.actionButtonText, { color: "#ffffff" }]}>
+                Share
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -162,7 +139,7 @@ export default function Receive() {
         <View style={styles.bottomSheetOverlay}>
           <View style={styles.bottomSheetContainer}>
             <Text style={styles.bottomSheetTitle}>Enter Amount</Text>
-            
+
             <View style={styles.amountInputContainer}>
               <Text style={styles.currencySymbol}>₱</Text>
               <TextInput
@@ -175,9 +152,9 @@ export default function Receive() {
                 autoFocus={true}
               />
             </View>
-            
+
             <View style={styles.bottomSheetButtons}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={[styles.bottomSheetButton, styles.cancelButton]}
                 onPress={() => {
                   setAmount("");
@@ -186,8 +163,8 @@ export default function Receive() {
               >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
-              
-              <TouchableOpacity 
+
+              <TouchableOpacity
                 style={[styles.bottomSheetButton, styles.confirmButton]}
                 onPress={() => setShowAmountSheet(false)}
               >
@@ -211,15 +188,8 @@ const styles = StyleSheet.create({
   },
   qrContainer: {
     alignItems: "center",
-    paddingVertical: 32,
-    paddingHorizontal: 16,
+    padding: 16,
     backgroundColor: "#ffffff",
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
   },
   qrCodeWrapper: {
     padding: 16,
@@ -344,7 +314,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 8,
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 4,
     borderWidth: 1,
     borderColor: "#e2e8f0",
     marginBottom: 24,
