@@ -137,7 +137,7 @@ export default function Pay() {
 
   const handleCategoryPress = (category: Category) => {
     setSelectedCategory(category);
-    if (category.id === "electric") {
+    if (category.id === "Electric") {
       setCurrentView("companies");
     }
   };
@@ -194,19 +194,6 @@ export default function Pay() {
             <Text style={styles.categoryName}>{category.name}</Text>
           </TouchableOpacity>
         ))}
-
-        {/* Empty slots */}
-        <View style={styles.categoryCard}>
-          <View style={styles.emptyCategoryIcon}>
-            <Ionicons name="add" size={24} color="#9ca3af" />
-          </View>
-        </View>
-
-        <View style={styles.categoryCard}>
-          <View style={styles.emptyCategoryIcon}>
-            <Ionicons name="add" size={24} color="#9ca3af" />
-          </View>
-        </View>
       </View>
     </>
   );
