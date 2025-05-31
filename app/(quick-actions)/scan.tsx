@@ -134,6 +134,15 @@ export default function Scan() {
           <View style={styles.middleOverlay}>
             <View style={styles.sideOverlay} />
             <View style={styles.focusBox}>
+              {/* Top Left Corner */}
+              <View style={[styles.corner, styles.topLeftCorner]} />
+              {/* Top Right Corner */}
+              <View style={[styles.corner, styles.topRightCorner]} />
+              {/* Bottom Left Corner */}
+              <View style={[styles.corner, styles.bottomLeftCorner]} />
+              {/* Bottom Right Corner */}
+              <View style={[styles.corner, styles.bottomRightCorner]} />
+
               {isScanning && (
                 <Animated.View
                   style={[
@@ -171,7 +180,9 @@ export default function Scan() {
 }
 
 const { width } = Dimensions.get("window");
-const scanFrameSize = width * 0.7;
+const scanFrameSize = width * 0.8;
+const cornerSize = 40;
+const cornerWidth = 5;
 
 const styles = StyleSheet.create({
   container: {
@@ -219,8 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 50,
-    paddingHorizontal: 20,
+    padding: 20,
   },
   backButton: {
     padding: 8,
@@ -241,11 +251,38 @@ const styles = StyleSheet.create({
   focusBox: {
     width: scanFrameSize,
     height: scanFrameSize,
-    borderWidth: 2,
-    borderColor: "white",
     backgroundColor: "transparent",
-    borderRadius: 16,
-    overflow: "hidden",
+    position: "relative",
+  },
+  corner: {
+    position: "absolute",
+    width: cornerSize,
+    height: cornerSize,
+    borderColor: "#4f46e5",
+  },
+  topLeftCorner: {
+    top: 0,
+    left: 0,
+    borderTopWidth: cornerWidth,
+    borderLeftWidth: cornerWidth,
+  },
+  topRightCorner: {
+    top: 0,
+    right: 0,
+    borderTopWidth: cornerWidth,
+    borderRightWidth: cornerWidth,
+  },
+  bottomLeftCorner: {
+    bottom: 0,
+    left: 0,
+    borderBottomWidth: cornerWidth,
+    borderLeftWidth: cornerWidth,
+  },
+  bottomRightCorner: {
+    bottom: 0,
+    right: 0,
+    borderBottomWidth: cornerWidth,
+    borderRightWidth: cornerWidth,
   },
   scanLine: {
     height: 4,
