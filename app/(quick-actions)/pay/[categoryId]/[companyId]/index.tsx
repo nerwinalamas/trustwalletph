@@ -61,6 +61,8 @@ const companyDetails: Record<
   },
 };
 
+const SERVICE_FEE = 15;
+
 export default function Payment() {
   const { companyId } = useLocalSearchParams();
   const [accountNumber, setAccountNumber] = useState("");
@@ -75,6 +77,9 @@ export default function Payment() {
     icon: "business",
     color: "#64748b",
   };
+
+  const amountValue = parseFloat(amount) || 0;
+  const totalAmount = amountValue + SERVICE_FEE;
 
   return (
     <View style={styles.container}>
@@ -132,15 +137,15 @@ export default function Payment() {
           <View style={styles.summaryContainer}>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>Amount</Text>
-              <Text style={styles.summaryValue}>₱{amount || "0.00"}</Text>
+              <Text style={styles.summaryValue}>₱{amountValue.toFixed(2)}</Text>
             </View>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>Service Fee</Text>
-              <Text style={styles.summaryValue}>₱0.00</Text>
+              <Text style={styles.summaryValue}>₱{SERVICE_FEE.toFixed(2)}</Text>
             </View>
             <View style={[styles.summaryRow, styles.totalRow]}>
               <Text style={styles.totalLabel}>Total</Text>
-              <Text style={styles.totalValue}>₱{amount || "0.00"}</Text>
+              <Text style={styles.totalValue}>₱{totalAmount.toFixed(2)}</Text>
             </View>
           </View>
 
