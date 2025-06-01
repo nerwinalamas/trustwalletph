@@ -15,7 +15,6 @@ import {
 
 export default function Scan() {
   const [permission, requestPermission] = useCameraPermissions();
-  const [scanned, setScanned] = useState(false);
   const [isScanning, setIsScanning] = useState(true);
   const router = useRouter();
   const scanLinePos = useRef(new Animated.Value(0)).current;
@@ -59,25 +58,16 @@ export default function Scan() {
     type: string;
     data: string;
   }) => {
-    setScanned(true);
     setIsScanning(false);
     Alert.alert("QR Code Scanned", `Type: ${type}\nData: ${data}`, [
       {
         text: "OK",
         onPress: () => {
-          setScanned(false);
           setIsScanning(true);
           router.back();
         },
       },
     ]);
-  };
-
-  const toggleScanning = () => {
-    setIsScanning(!isScanning);
-    if (!scanned) {
-      setScanned(!isScanning);
-    }
   };
 
   if (!permission) {
@@ -159,19 +149,6 @@ export default function Scan() {
             <Text style={styles.instructionText}>
               Align QR code within the frame to scan
             </Text>
-            <TouchableOpacity
-              style={styles.scanButton}
-              onPress={toggleScanning}
-            >
-              <Ionicons
-                name={isScanning ? "pause" : "play"}
-                size={24}
-                color="white"
-              />
-              <Text style={styles.scanButtonText}>
-                {isScanning ? "Pause Scanning" : "Resume Scanning"}
-              </Text>
-            </TouchableOpacity>
           </View>
         </View>
       </CameraView>
@@ -300,20 +277,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
     paddingHorizontal: 40,
-  },
-  scanButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(79, 70, 229, 0.8)",
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 24,
-    marginTop: 10,
-  },
-  scanButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "600",
-    marginLeft: 8,
   },
 });
