@@ -2,7 +2,14 @@ import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface Company {
   id: string;
@@ -10,35 +17,51 @@ interface Company {
   type: string;
 }
 
-const electricCompanies: Company[] = [
-  {
-    id: "meralco",
-    name: "Manila Electric Company (MERALCO)",
-    type: "Electric",
-  },
-  { id: "davao", name: "Davao Light & Power Co.", type: "Electric" },
-  { id: "visayan", name: "Visayan Electric Company", type: "Electric" },
-  {
-    id: "cagayan",
-    name: "Cagayan Electric Power & Light Co.",
-    type: "Electric",
-  },
-  {
-    id: "zamboanga",
-    name: "Zamboanga City Electric Cooperative",
-    type: "Electric",
-  },
-  { id: "benguet", name: "Benguet Electric Cooperative", type: "Electric" },
-  { id: "palawan", name: "Palawan Electric Cooperative", type: "Electric" },
-  { id: "bohol", name: "Bohol Light Company", type: "Electric" },
-];
+const companiesData: Record<string, Company[]> = {
+  Electric: [
+    {
+      id: "meralco",
+      name: "Manila Electric Company (MERALCO)",
+      type: "Electric",
+    },
+    { id: "davao", name: "Davao Light & Power Co.", type: "Electric" },
+    { id: "visayan", name: "Visayan Electric Company", type: "Electric" },
+    {
+      id: "cagayan",
+      name: "Cagayan Electric Power & Light Co.",
+      type: "Electric",
+    },
+  ],
+  Water: [
+    { id: "manila_water", name: "Manila Water Company", type: "Water" },
+    { id: "maynilad", name: "Maynilad Water Services", type: "Water" },
+    { id: "laguna_water", name: "Laguna Water District", type: "Water" },
+    { id: "cebu_water", name: "Cebu Water District", type: "Water" },
+  ],
+  Internet: [
+    { id: "pldt", name: "PLDT", type: "Internet" },
+    { id: "globe", name: "Globe Telecom", type: "Internet" },
+    { id: "converge", name: "Converge ICT", type: "Internet" },
+    { id: "sky", name: "Sky Cable", type: "Internet" },
+  ],
+  Schools: [
+    { id: "up", name: "University of the Philippines", type: "School" },
+    { id: "ust", name: "University of Santo Tomas", type: "School" },
+    { id: "dlsu", name: "De La Salle University", type: "School" },
+    { id: "ateneo", name: "Ateneo de Manila University", type: "School" },
+  ],
+};
 
 export default function CategoryList() {
   const { categoryId } = useLocalSearchParams();
-
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredCompanies = electricCompanies.filter((company) =>
+  const categoryName = Array.isArray(categoryId)
+    ? categoryId[0]
+    : categoryId || "";
+  const companies = companiesData[categoryName] || [];
+
+  const filteredCompanies = companies.filter((company) =>
     company.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -57,7 +80,7 @@ export default function CategoryList() {
             />
             <TextInput
               style={styles.searchInput}
-              placeholder="Search electric companies"
+              placeholder={`Search ${categoryName.toLowerCase()} companies`}
               placeholderTextColor="#9ca3af"
               autoCapitalize="none"
               autoCorrect={false}
@@ -75,7 +98,7 @@ export default function CategoryList() {
                 href={{
                   pathname: "/(quick-actions)/pay/[categoryId]/[companyId]",
                   params: {
-                    categoryId: Array.isArray(categoryId) ? categoryId[0] : categoryId,
+                    categoryId: categoryName,
                     companyId: company.id,
                   },
                 }}
