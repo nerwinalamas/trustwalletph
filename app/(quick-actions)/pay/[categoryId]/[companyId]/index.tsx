@@ -1,18 +1,79 @@
 import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
+const companyDetails: Record<
+  string,
+  { name: string; type: string; icon: string; color: string }
+> = {
+  meralco: {
+    name: "Manila Electric Company (MERALCO)",
+    type: "Electric",
+    icon: "flash",
+    color: "#f59e0b",
+  },
+  davao: {
+    name: "Davao Light & Power Co.",
+    type: "Electric",
+    icon: "flash",
+    color: "#f59e0b",
+  },
+  manila_water: {
+    name: "Manila Water Company",
+    type: "Water",
+    icon: "water",
+    color: "#3b82f6",
+  },
+  maynilad: {
+    name: "Maynilad Water Services",
+    type: "Water",
+    icon: "water",
+    color: "#3b82f6",
+  },
+  pldt: { name: "PLDT", type: "Internet", icon: "wifi", color: "#10b981" },
+  globe: {
+    name: "Globe Telecom",
+    type: "Internet",
+    icon: "wifi",
+    color: "#10b981",
+  },
+  up: {
+    name: "University of the Philippines",
+    type: "School",
+    icon: "school",
+    color: "#8b5cf6",
+  },
+  ust: {
+    name: "University of Santo Tomas",
+    type: "School",
+    icon: "school",
+    color: "#8b5cf6",
+  },
+};
+
 export default function Payment() {
+  const { companyId } = useLocalSearchParams();
   const [accountNumber, setAccountNumber] = useState("");
   const [amount, setAmount] = useState("");
+
+  const companyIdStr = Array.isArray(companyId)
+    ? companyId[0]
+    : companyId || "";
+  const company = companyDetails[companyIdStr] || {
+    name: "Unknown Company",
+    type: "Unknown",
+    icon: "business",
+    color: "#64748b",
+  };
 
   return (
     <View style={styles.container}>
@@ -21,12 +82,21 @@ export default function Payment() {
       <View style={styles.mainContent}>
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
           <View style={styles.companyHeader}>
-            <View style={styles.companyHeaderIcon}>
-              <Ionicons name="flash" size={24} color="#f59e0b" />
+            <View
+              style={[
+                styles.companyHeaderIcon,
+                { backgroundColor: `${company.color}20` },
+              ]}
+            >
+              <Ionicons
+                name={company.icon as any}
+                size={24}
+                color={company.color}
+              />
             </View>
             <View style={styles.companyHeaderInfo}>
-              <Text style={styles.companyHeaderTitle}>Electric Company</Text>
-              <Text style={styles.companyHeaderSubtitle}>Utilities</Text>
+              <Text style={styles.companyHeaderTitle}>{company.name}</Text>
+              <Text style={styles.companyHeaderSubtitle}>{company.type}</Text>
             </View>
           </View>
 
@@ -74,7 +144,7 @@ export default function Payment() {
           </View>
 
           <View style={styles.noticeContainer}>
-            <Ionicons name="information-circle" size={20} color="#3b82f6" />
+            <Ionicons name="information-circle" size={20} color="#4f46e5" />
             <Text style={styles.noticeText}>
               Payment processing may take up to 24 hours. You will receive a
               notification once the payment is complete.
@@ -238,12 +308,12 @@ const styles = StyleSheet.create({
   noticeText: {
     flex: 1,
     fontSize: 14,
-    color: "#3b82f6",
+    color: "#4f46e5",
     marginLeft: 8,
     lineHeight: 20,
   },
   payButton: {
-    backgroundColor: "#8b5cf6",
+    backgroundColor: "#4f46e5",
     borderRadius: 8,
     paddingVertical: 16,
     alignItems: "center",
