@@ -91,28 +91,45 @@ export default function CategoryList() {
 
           <View style={styles.line} />
 
-          <View style={styles.companiesList}>
-            {filteredCompanies.map((company) => (
-              <Link
-                key={company.id}
-                href={{
-                  pathname: "/(quick-actions)/pay/[categoryId]/[companyId]",
-                  params: {
-                    categoryId: categoryName,
-                    companyId: company.id,
-                  },
-                }}
-                asChild
-              >
-                <TouchableOpacity style={styles.companyItem}>
-                  <View style={styles.companyIcon}>
-                    <Ionicons name="business" size={20} color="#3b82f6" />
-                  </View>
-                  <Text style={styles.companyName}>{company.name}</Text>
-                </TouchableOpacity>
-              </Link>
-            ))}
-          </View>
+          {filteredCompanies.length > 0 ? (
+            <View style={styles.companiesList}>
+              {filteredCompanies.map((company) => (
+                <Link
+                  key={company.id}
+                  href={{
+                    pathname: "/(quick-actions)/pay/[categoryId]/[companyId]",
+                    params: {
+                      categoryId: categoryName,
+                      companyId: company.id,
+                    },
+                  }}
+                  asChild
+                >
+                  <TouchableOpacity style={styles.companyItem}>
+                    <View style={styles.companyIcon}>
+                      <Ionicons name="business" size={20} color="#3b82f6" />
+                    </View>
+                    <Text style={styles.companyName}>{company.name}</Text>
+                  </TouchableOpacity>
+                </Link>
+              ))}
+            </View>
+          ) : (
+            <View style={styles.emptyState}>
+              <Ionicons
+                name="search-outline"
+                size={48}
+                color="#cbd5e1"
+                style={styles.emptyIcon}
+              />
+              <Text style={styles.emptyTitle}>No companies found</Text>
+              <Text style={styles.emptyText}>
+                {searchQuery.trim() !== ""
+                  ? "No results match your search query"
+                  : "No companies available for this category"}
+              </Text>
+            </View>
+          )}
         </ScrollView>
       </View>
     </View>
@@ -186,5 +203,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: "#0f172a",
+  },
+  emptyState: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
+  emptyIcon: {
+    marginBottom: 16,
+  },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#0f172a",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  emptyText: {
+    fontSize: 14,
+    color: "#64748b",
+    textAlign: "center",
+    lineHeight: 20,
   },
 });
