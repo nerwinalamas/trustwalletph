@@ -1,3 +1,4 @@
+import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
 import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
@@ -115,17 +116,7 @@ export default function Receive() {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.noteContainer}>
-            <Ionicons
-              name="information-circle-outline"
-              size={20}
-              color="#4f46e5"
-            />
-            <Text style={styles.noteText}>
-              You can receive money by sharing your QR code or account number
-              with others.
-            </Text>
-          </View>
+          <Alerts description="You can receive money by sharing your QR code or account number with others." />
         </View>
       </ScrollView>
 
@@ -274,18 +265,6 @@ const styles = StyleSheet.create({
   actionButtonText: {
     fontSize: 16,
     fontWeight: "600",
-    marginLeft: 8,
-  },
-  noteContainer: {
-    flexDirection: "row",
-    backgroundColor: "#eff6ff",
-    borderRadius: 8,
-    padding: 16,
-  },
-  noteText: {
-    flex: 1,
-    fontSize: 14,
-    color: "#4f46e5",
     marginLeft: 8,
   },
   // Bottom Sheet Styles

@@ -1,3 +1,4 @@
+import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
@@ -143,13 +144,7 @@ export default function Payment() {
             </View>
           </View>
 
-          <View style={styles.noticeContainer}>
-            <Ionicons name="information-circle" size={20} color="#4f46e5" />
-            <Text style={styles.noticeText}>
-              Payment processing may take up to 24 hours. You will receive a
-              notification once the payment is complete.
-            </Text>
-          </View>
+          <Alerts description="Payment processing may take up to 24 hours. You will receive a notification once the payment is complete." />
 
           <TouchableOpacity style={styles.payButton}>
             <Text style={styles.payButtonText}>Pay Now</Text>
@@ -297,20 +292,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
     color: "#0f172a",
-  },
-  noticeContainer: {
-    flexDirection: "row",
-    backgroundColor: "#eff6ff",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 24,
-  },
-  noticeText: {
-    flex: 1,
-    fontSize: 14,
-    color: "#4f46e5",
-    marginLeft: 8,
-    lineHeight: 20,
   },
   payButton: {
     backgroundColor: "#4f46e5",

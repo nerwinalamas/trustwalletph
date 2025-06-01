@@ -1,3 +1,4 @@
+import Alerts from "@/components/alerts";
 import Avatar from "@/components/avatar";
 import BackHeader from "@/components/back-header";
 import { api } from "@/convex/_generated/api";
@@ -422,13 +423,7 @@ export default function Send() {
               </View>
             </View>
 
-            <View style={styles.disclaimerContainer}>
-              <Ionicons name="information-circle" size={20} color="#4f46e5" />
-              <Text style={styles.disclaimerText}>
-                By proceeding, you confirm that all details are correct and you
-                authorize this transaction.
-              </Text>
-            </View>
+            <Alerts description="By proceeding, you confirm that all details are correct and you authorize this transaction." />
           </>
         );
       default:
@@ -742,19 +737,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#0f172a",
     textAlign: "right",
-  },
-  disclaimerContainer: {
-    flexDirection: "row",
-    backgroundColor: "#eff6ff",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 24,
-  },
-  disclaimerText: {
-    flex: 1,
-    fontSize: 14,
-    color: "#4f46e5",
-    marginLeft: 8,
   },
   errorText: {
     color: "#ef4444",
