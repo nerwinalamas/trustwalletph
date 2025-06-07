@@ -2,7 +2,7 @@ import { categories, companiesData } from "@/assets/data";
 import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -21,13 +21,24 @@ export interface Category {
 
 export default function Pay() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+
   const allCompanies = Object.values(companiesData).flat();
 
+  // Debounce effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   const filteredCompanies = allCompanies.filter((company) =>
-    company.name.toLowerCase().includes(searchQuery.toLowerCase())
+    company.name.toLowerCase().includes(debouncedQuery.toLowerCase())
   );
 
-  const showSearchResults = searchQuery.trim() !== "";
+  const showSearchResults = debouncedQuery.trim() !== "";
 
   return (
     <View style={styles.container}>
@@ -44,13 +55,21 @@ export default function Pay() {
             />
             <TextInput
               style={styles.searchInput}
-              placeholder="Search"
+              placeholder="Search companies..."
               placeholderTextColor="#9ca3af"
               autoCapitalize="none"
               autoCorrect={false}
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
+            {searchQuery.trim() !== "" && (
+              <TouchableOpacity
+                onPress={() => setSearchQuery("")}
+                style={styles.clearButton}
+              >
+                <Ionicons name="close" size={18} color="#64748b" />
+              </TouchableOpacity>
+            )}
           </View>
 
           {showSearchResults && (
@@ -173,6 +192,10 @@ const styles = StyleSheet.create({
     height: 48,
     fontSize: 16,
     color: "#0f172a",
+  },
+  clearButton: {
+    padding: 8,
+    marginLeft: 4,
   },
   line: {
     height: 1,
