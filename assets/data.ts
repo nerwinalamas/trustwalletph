@@ -1,39 +1,44 @@
-import { Transaction } from "@/app/(tabs)";
+import { Category } from "@/app/(quick-actions)/pay";
+import { Company } from "@/app/(quick-actions)/pay/[categoryId]";
 
-export const transactions: Transaction[] = [
-  {
-    id: "1",
-    title: "Grocery Store",
-    type: "expense",
-    amount: 1250.0,
-    date: "Today, 10:45 AM",
-  },
-  {
-    id: "2",
-    title: "Salary Deposit",
-    type: "income",
-    amount: 1250.0,
-    date: "Yesterday, 9:30 AM",
-  },
-  {
-    id: "3",
-    title: "Electric Bill",
-    type: "expense",
-    amount: 2450.75,
-    date: "May 2, 2:15 PM",
-  },
-  {
-    id: "4",
-    title: "Coffee Shop",
-    type: "expense",
-    amount: 180.0,
-    date: "May 1, 8:15 AM",
-  },
-  {
-    id: "5",
-    title: "Freelance Payment",
-    type: "income",
-    amount: 7500.0,
-    date: "April 30, 3:45 PM",
-  },
+export const categories: Category[] = [
+  { id: "Electric", name: "Electric", icon: "flash", color: "#f59e0b" },
+  { id: "Water", name: "Water", icon: "water", color: "#3b82f6" },
+  { id: "Internet", name: "Cable/Internet", icon: "wifi", color: "#10b981" },
+  { id: "Schools", name: "Schools", icon: "school", color: "#8b5cf6" },
 ];
+
+export const companiesData: Record<string, Company[]> = {
+  Electric: [
+    {
+      id: "meralco",
+      name: "Manila Electric Company (MERALCO)",
+      type: "Electric",
+    },
+    { id: "davao", name: "Davao Light & Power Co.", type: "Electric" },
+    { id: "visayan", name: "Visayan Electric Company", type: "Electric" },
+    {
+      id: "cagayan",
+      name: "Cagayan Electric Power & Light Co.",
+      type: "Electric",
+    },
+  ],
+  Water: [
+    { id: "manila_water", name: "Manila Water Company", type: "Water" },
+    { id: "maynilad", name: "Maynilad Water Services", type: "Water" },
+    { id: "laguna_water", name: "Laguna Water District", type: "Water" },
+    { id: "cebu_water", name: "Cebu Water District", type: "Water" },
+  ],
+  Internet: [
+    { id: "pldt", name: "PLDT", type: "Internet" },
+    { id: "globe", name: "Globe Telecom", type: "Internet" },
+    { id: "converge", name: "Converge ICT", type: "Internet" },
+    { id: "sky", name: "Sky Cable", type: "Internet" },
+  ],
+  Schools: [
+    { id: "up", name: "University of the Philippines", type: "School" },
+    { id: "ust", name: "University of Santo Tomas", type: "School" },
+    { id: "dlsu", name: "De La Salle University", type: "School" },
+    { id: "ateneo", name: "Ateneo de Manila University", type: "School" },
+  ],
+};
