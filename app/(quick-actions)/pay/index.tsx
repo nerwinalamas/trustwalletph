@@ -1,31 +1,34 @@
+import { categories, companiesData } from "@/assets/data";
 import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
-interface Category {
+export interface Category {
   id: string;
   name: string;
   icon: keyof typeof Ionicons.glyphMap;
   color: string;
 }
 
-const categories: Category[] = [
-  { id: "Electric", name: "Electric", icon: "flash", color: "#f59e0b" },
-  { id: "Water", name: "Water", icon: "water", color: "#3b82f6" },
-  { id: "Internet", name: "Cable/Internet", icon: "wifi", color: "#10b981" },
-  { id: "Schools", name: "Schools", icon: "school", color: "#8b5cf6" },
-];
-
 export default function Pay() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const allCompanies = Object.values(companiesData).flat();
+
+  const filteredCompanies = allCompanies.filter((company) =>
+    company.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const showSearchResults = searchQuery.trim() !== "";
+
   return (
     <View style={styles.container}>
       <BackHeader title="Pay" />
@@ -45,8 +48,60 @@ export default function Pay() {
               placeholderTextColor="#9ca3af"
               autoCapitalize="none"
               autoCorrect={false}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
           </View>
+
+          {showSearchResults && (
+            <>
+              <Text style={styles.sectionTitle}>
+                Search Results ({filteredCompanies.length})
+              </Text>
+
+              {filteredCompanies.length > 0 ? (
+                <View style={styles.searchResults}>
+                  {filteredCompanies.map((company) => (
+                    <Link
+                      key={company.id}
+                      href={{
+                        pathname:
+                          "/(quick-actions)/pay/[categoryId]/[companyId]",
+                        params: {
+                          categoryId: company.id,
+                          companyId: company.id,
+                        },
+                      }}
+                      asChild
+                    >
+                      <TouchableOpacity style={styles.companyItem}>
+                        <View style={styles.companyIcon}>
+                          <Ionicons name="business" size={20} color="#3b82f6" />
+                        </View>
+                        <View style={styles.companyInfo}>
+                          <Text style={styles.companyName}>{company.name}</Text>
+                          <Text style={styles.companyType}>{company.type}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </Link>
+                  ))}
+                </View>
+              ) : (
+                <View style={styles.emptyState}>
+                  <Ionicons
+                    name="search-outline"
+                    size={48}
+                    color="#cbd5e1"
+                    style={styles.emptyIcon}
+                  />
+                  <Text style={styles.emptyTitle}>No companies found</Text>
+                  <Text style={styles.emptyText}>
+                    No results match your search query
+                  </Text>
+                </View>
+              )}
+            </>
+          )}
 
           <View style={styles.line} />
 
@@ -162,5 +217,71 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#0f172a",
     textAlign: "center",
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#0f172a",
+    marginVertical: 16,
+  },
+  searchResults: {
+    gap: 8,
+  },
+  companyItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  companyIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#eff6ff",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+  companyInfo: {
+    flex: 1,
+  },
+  companyName: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#0f172a",
+    marginBottom: 2,
+  },
+  companyType: {
+    fontSize: 14,
+    color: "#64748b",
+  },
+  emptyState: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
+  emptyIcon: {
+    marginBottom: 16,
+  },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#0f172a",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  emptyText: {
+    fontSize: 14,
+    color: "#64748b",
+    textAlign: "center",
+    lineHeight: 20,
   },
 });
