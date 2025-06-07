@@ -51,8 +51,14 @@ export default function Home() {
               color={isExpense ? "#f43f5e" : "#22c55e"}
             />
           </View>
-          <View>
-            <Text style={styles.transactionTitle}>{item.title}</Text>
+          <View style={styles.transactionDetails}>
+            <Text
+              style={styles.transactionTitle}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {item.title}
+            </Text>
             <Text style={styles.transactionDate}>
               {formatTransactionDate(transactionDate)}
             </Text>
@@ -240,6 +246,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e2e8f0",
   },
   transactionLeft: {
+    width: "75%",
     flexDirection: "row",
     alignItems: "center",
   },
@@ -257,11 +264,15 @@ const styles = StyleSheet.create({
   incomeIcon: {
     backgroundColor: "#dcfce7",
   },
+  transactionDetails: {
+    flex: 1,
+  },
   transactionTitle: {
+    flex: 1,
+    flexWrap: "wrap",
     fontSize: 16,
     fontWeight: "500",
     color: "#0f172a",
-    marginBottom: 2,
   },
   transactionDate: {
     fontSize: 14,
