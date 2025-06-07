@@ -1,3 +1,4 @@
+import { companiesData } from "@/assets/data";
 import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
@@ -11,46 +12,11 @@ import {
   View,
 } from "react-native";
 
-interface Company {
+export interface Company {
   id: string;
   name: string;
   type: string;
 }
-
-const companiesData: Record<string, Company[]> = {
-  Electric: [
-    {
-      id: "meralco",
-      name: "Manila Electric Company (MERALCO)",
-      type: "Electric",
-    },
-    { id: "davao", name: "Davao Light & Power Co.", type: "Electric" },
-    { id: "visayan", name: "Visayan Electric Company", type: "Electric" },
-    {
-      id: "cagayan",
-      name: "Cagayan Electric Power & Light Co.",
-      type: "Electric",
-    },
-  ],
-  Water: [
-    { id: "manila_water", name: "Manila Water Company", type: "Water" },
-    { id: "maynilad", name: "Maynilad Water Services", type: "Water" },
-    { id: "laguna_water", name: "Laguna Water District", type: "Water" },
-    { id: "cebu_water", name: "Cebu Water District", type: "Water" },
-  ],
-  Internet: [
-    { id: "pldt", name: "PLDT", type: "Internet" },
-    { id: "globe", name: "Globe Telecom", type: "Internet" },
-    { id: "converge", name: "Converge ICT", type: "Internet" },
-    { id: "sky", name: "Sky Cable", type: "Internet" },
-  ],
-  Schools: [
-    { id: "up", name: "University of the Philippines", type: "School" },
-    { id: "ust", name: "University of Santo Tomas", type: "School" },
-    { id: "dlsu", name: "De La Salle University", type: "School" },
-    { id: "ateneo", name: "Ateneo de Manila University", type: "School" },
-  ],
-};
 
 export default function CategoryList() {
   const { categoryId } = useLocalSearchParams();
