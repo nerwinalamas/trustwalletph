@@ -1,8 +1,9 @@
 import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   ScrollView,
   StyleSheet,
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { z } from "zod";
 
 const companyDetails: Record<
   string,
@@ -61,12 +63,33 @@ const companyDetails: Record<
   },
 };
 
+const paymentSchema = z.object({
+  accountNumber: z
+    .string()
+    .min(1, "Account number is required")
+    .min(6, "Account number must be at least 6 characters"),
+  amount: z.string().min(1, "Amount is required"),
+});
+
+type PaymentFormData = z.infer<typeof paymentSchema>;
+
 const SERVICE_FEE = 15;
 
 export default function Payment() {
   const { companyId } = useLocalSearchParams();
-  const [accountNumber, setAccountNumber] = useState("");
-  const [amount, setAmount] = useState("");
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<PaymentFormData>({
+    resolver: zodResolver(paymentSchema),
+    defaultValues: {
+      accountNumber: "",
+      amount: "",
+    },
+  });
 
   const companyIdStr = Array.isArray(companyId)
     ? companyId[0]
@@ -78,8 +101,17 @@ export default function Payment() {
     color: "#64748b",
   };
 
-  const amountValue = parseFloat(amount) || 0;
+  const amountValue = Number(watch("amount")) || 0;
   const totalAmount = amountValue + SERVICE_FEE;
+
+  const onSubmit = (data: PaymentFormData) => {
+    console.log("Payment submitted:", {
+      ...data,
+      amount: Number(data.amount),
+      totalAmount,
+      company: company.name,
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -109,28 +141,55 @@ export default function Payment() {
           <View style={styles.formContainer}>
             <View style={styles.inputGroup}>
               <Text style={styles.inputLabel}>Account/Reference Number</Text>
-              <TextInput
-                style={styles.textInput}
-                placeholder="Enter account or reference number"
-                placeholderTextColor="#9ca3af"
-                value={accountNumber}
-                onChangeText={setAccountNumber}
+              <Controller
+                control={control}
+                name="accountNumber"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={[
+                      styles.textInput,
+                      errors.accountNumber ? styles.errorInput : {},
+                    ]}
+                    placeholder="Enter account or reference number"
+                    placeholderTextColor="#9ca3af"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                  />
+                )}
               />
+
+              {errors.accountNumber && (
+                <Text style={styles.errorText}>
+                  {errors.accountNumber.message}
+                </Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.inputLabel}>Amount</Text>
               <View style={styles.amountInputContainer}>
                 <Text style={styles.currencySymbol}>₱</Text>
-                <TextInput
-                  style={styles.amountInput}
-                  placeholder="0.00"
-                  placeholderTextColor="#9ca3af"
-                  keyboardType="decimal-pad"
-                  value={amount}
-                  onChangeText={setAmount}
+                <Controller
+                  control={control}
+                  name="amount"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={styles.amountInput}
+                      placeholder="0.00"
+                      placeholderTextColor="#9ca3af"
+                      keyboardType="decimal-pad"
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                    />
+                  )}
                 />
               </View>
+
+              {errors.amount && (
+                <Text style={styles.errorText}>{errors.amount.message}</Text>
+              )}
             </View>
           </View>
 
@@ -151,7 +210,10 @@ export default function Payment() {
 
           <Alerts description="Payment processing may take up to 24 hours. You will receive a notification once the payment is complete." />
 
-          <TouchableOpacity style={styles.payButton}>
+          <TouchableOpacity
+            style={styles.payButton}
+            onPress={handleSubmit(onSubmit)}
+          >
             <Text style={styles.payButtonText}>Pay Now</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -309,5 +371,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#ffffff",
+  },
+  errorText: {
+    color: "#ef4444",
+    fontSize: 12,
+    marginTop: -12,
+    marginBottom: 4,
+  },
+  errorInput: {
+    borderColor: "#ef4444",
+    borderWidth: 1,
   },
 });
