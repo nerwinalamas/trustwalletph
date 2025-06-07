@@ -1,8 +1,11 @@
 import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
+import { api } from "@/convex/_generated/api";
+import { SERVICE_FEE } from "@/convex/payments";
 import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocalSearchParams } from "expo-router";
+import { useMutation } from "convex/react";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import {
   ScrollView,
@@ -73,10 +76,11 @@ const paymentSchema = z.object({
 
 type PaymentFormData = z.infer<typeof paymentSchema>;
 
-const SERVICE_FEE = 15;
-
 export default function Payment() {
+  const router = useRouter();
   const { companyId } = useLocalSearchParams();
+
+  const payBill = useMutation(api.payments.payBill);
 
   const {
     control,
@@ -104,13 +108,21 @@ export default function Payment() {
   const amountValue = Number(watch("amount")) || 0;
   const totalAmount = amountValue + SERVICE_FEE;
 
-  const onSubmit = (data: PaymentFormData) => {
-    console.log("Payment submitted:", {
-      ...data,
-      amount: Number(data.amount),
-      totalAmount,
-      company: company.name,
-    });
+  const onSubmit = async (data: PaymentFormData) => {
+    if (!companyIdStr) return;
+
+    try {
+      await payBill({
+        companyId: companyIdStr,
+        companyName: company.name,
+        accountNumber: data.accountNumber,
+        amount: Number(data.amount),
+      });
+
+      router.replace("/(tabs)");
+    } catch (error) {
+      console.log("Transaction failed. Please try again:", error);
+    }
   };
 
   return (
