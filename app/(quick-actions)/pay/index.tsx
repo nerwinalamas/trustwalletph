@@ -62,14 +62,6 @@ export default function Pay() {
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
-            {searchQuery.trim() !== "" && (
-              <TouchableOpacity
-                onPress={() => setSearchQuery("")}
-                style={styles.clearButton}
-              >
-                <Ionicons name="close" size={18} color="#64748b" />
-              </TouchableOpacity>
-            )}
           </View>
 
           {showSearchResults && (
@@ -192,10 +184,6 @@ const styles = StyleSheet.create({
     height: 48,
     fontSize: 16,
     color: "#0f172a",
-  },
-  clearButton: {
-    padding: 8,
-    marginLeft: 4,
   },
   line: {
     height: 1,
