@@ -77,8 +77,14 @@ export default function History() {
               color={isReceive ? "#22c55e" : "#f43f5e"}
             />
           </View>
-          <View>
-            <Text style={styles.transactionTitle}>{item.title}</Text>
+          <View style={styles.transactionDetails}>
+            <Text
+              style={styles.transactionTitle}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {item.title}
+            </Text>
             <Text style={styles.transactionDate}>
               {format(new Date(item._creationTime), "h:mm a")}
             </Text>
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8fafc",
   },
   content: {
-    flexGrow: 1, 
+    flexGrow: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
   },
@@ -184,6 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   transactionLeft: {
+    width: "75%",
     flexDirection: "row",
     alignItems: "center",
   },
@@ -201,11 +208,15 @@ const styles = StyleSheet.create({
   incomeIcon: {
     backgroundColor: "#dcfce7",
   },
+  transactionDetails: {
+    flex: 1,
+  },
   transactionTitle: {
+    flex: 1,
+    flexWrap: "wrap",
     fontSize: 16,
     fontWeight: "600",
     color: "#0f172a",
-    marginBottom: 2,
   },
   transactionDate: {
     fontSize: 14,
