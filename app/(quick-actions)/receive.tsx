@@ -18,7 +18,9 @@ import QRCode from "react-native-qrcode-svg";
 export default function Receive() {
   const user = useQuery(api.users.getCurrentUser);
   const [amount, setAmount] = useState("");
+  const [confirmedAmount, setConfirmedAmount] = useState("");
   const [showAmountSheet, setShowAmountSheet] = useState(false);
+  const [qrTimestamp, setQrTimestamp] = useState(Date.now());
   const qrRef = useRef(null);
 
   const downloadQRCode = async () => {
@@ -31,9 +33,20 @@ export default function Receive() {
       email: user?.email,
       accountNumber: user?.accountNumber,
       name: user?.fullName,
-      amount: amount ? parseFloat(amount) : undefined,
-      timestamp: Date.now(),
+      amount: confirmedAmount ? parseFloat(confirmedAmount) : undefined,
+      timestamp: qrTimestamp,
     });
+  };
+
+  const handleConfirmAmount = () => {
+    setConfirmedAmount(amount);
+    setQrTimestamp(Date.now());
+    setShowAmountSheet(false);
+  };
+
+  const handleCancelAmount = () => {
+    setAmount(confirmedAmount);
+    setShowAmountSheet(false);
   };
 
   // Mask account number
@@ -81,16 +94,19 @@ export default function Receive() {
             {/* Amount Button */}
             <TouchableOpacity
               style={styles.amountButton}
-              onPress={() => setShowAmountSheet(true)}
+              onPress={() => {
+                setAmount(confirmedAmount);
+                setShowAmountSheet(true);
+              }}
             >
               <Ionicons
-                name={amount ? "checkmark-circle" : "add-circle"}
+                name={confirmedAmount ? "checkmark-circle" : "add-circle"}
                 size={20}
-                color={amount ? "#10b981" : "#4f46e5"}
+                color={confirmedAmount ? "#10b981" : "#4f46e5"}
               />
               <Text style={styles.amountButtonText}>
-                {amount
-                  ? `Amount: ₱${parseFloat(amount).toFixed(2)}`
+                {confirmedAmount
+                  ? `Amount: ₱${parseFloat(confirmedAmount).toFixed(2)}`
                   : "Add Amount"}
               </Text>
             </TouchableOpacity>
@@ -147,17 +163,14 @@ export default function Receive() {
             <View style={styles.bottomSheetButtons}>
               <TouchableOpacity
                 style={[styles.bottomSheetButton, styles.cancelButton]}
-                onPress={() => {
-                  setAmount("");
-                  setShowAmountSheet(false);
-                }}
+                onPress={handleCancelAmount}
               >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[styles.bottomSheetButton, styles.confirmButton]}
-                onPress={() => setShowAmountSheet(false)}
+                onPress={handleConfirmAmount}
               >
                 <Text style={styles.confirmButtonText}>Confirm</Text>
               </TouchableOpacity>
