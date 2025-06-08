@@ -51,23 +51,89 @@ export default function Scan() {
     getPermission();
   }, [requestPermission]);
 
-  const handleBarCodeScanned = ({
-    type,
-    data,
-  }: {
-    type: string;
-    data: string;
-  }) => {
+  const parseQRData = (data: string) => {
+    try {
+      // Try to parse as JSON first (for payment requests)
+      const parsed = JSON.parse(data);
+
+      if (parsed.type === "payment-request") {
+        return {
+          isPaymentRequest: true,
+          email: parsed.email,
+          accountNumber: parsed.accountNumber,
+          name: parsed.name,
+          amount: parsed.amount,
+          timestamp: parsed.timestamp,
+        };
+      }
+    } catch (error) {
+      // If JSON parsing fails, treat as plain text (could be email or other data)
+      console.log("QR data is not JSON, treating as plain text:", error);
+    }
+
+    // Check if it's an email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(data)) {
+      return {
+        isPaymentRequest: false,
+        email: data,
+      };
+    }
+
+    // Return null for unsupported formats
+    return null;
+  };
+
+  const handleBarCodeScanned = ({ data }: { data: string }) => {
     setIsScanning(false);
-    Alert.alert("QR Code Scanned", `Type: ${type}\nData: ${data}`, [
-      {
-        text: "OK",
-        onPress: () => {
-          setIsScanning(true);
-          router.back();
+
+    const qrData = parseQRData(data);
+
+    if (!qrData) {
+      // Show alert for unsupported QR codes
+      Alert.alert(
+        "Unsupported QR Code",
+        "This QR code format is not supported for payments.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              setIsScanning(true);
+            },
+          },
+          {
+            text: "Go Back",
+            onPress: () => router.back(),
+          },
+        ]
+      );
+      return;
+    }
+
+    if (qrData.isPaymentRequest && qrData.amount) {
+      // Navigate to send screen step 3 (confirmation) with all data pre-filled
+      router.replace({
+        pathname: "/send",
+        params: {
+          email: qrData.email,
+          amount: qrData.amount.toString(),
+          recipientName: qrData.name,
+          step: "3",
+          fromQR: "true",
         },
-      },
-    ]);
+      });
+    } else if (qrData.isPaymentRequest || qrData.email) {
+      // Navigate to send screen step 2 (amount entry) with email pre-filled
+      router.replace({
+        pathname: "/send",
+        params: {
+          email: qrData.email,
+          recipientName: qrData.name || "",
+          step: "2",
+          fromQR: "true",
+        },
+      });
+    }
   };
 
   if (!permission) {
@@ -148,6 +214,9 @@ export default function Scan() {
           <View style={styles.bottomOverlay}>
             <Text style={styles.instructionText}>
               Align QR code within the frame to scan
+            </Text>
+            <Text style={styles.subInstructionText}>
+              Supports payment requests and email addresses
             </Text>
           </View>
         </View>
@@ -275,7 +344,13 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 8,
+    paddingHorizontal: 40,
+  },
+  subInstructionText: {
+    color: "rgba(255,255,255,0.7)",
+    fontSize: 14,
+    textAlign: "center",
     paddingHorizontal: 40,
   },
 });
