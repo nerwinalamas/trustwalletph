@@ -1,4 +1,3 @@
-import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
 import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,9 +22,9 @@ export default function Receive() {
   const [qrTimestamp, setQrTimestamp] = useState(Date.now());
   const qrRef = useRef(null);
 
-  const downloadQRCode = async () => {
-    console.log("downloadQRCode");
-  };
+  // const downloadQRCode = async () => {
+  //   console.log("downloadQRCode");
+  // };
 
   const getQRValue = () => {
     return JSON.stringify({
@@ -113,7 +112,7 @@ export default function Receive() {
           </View>
 
           {/* Buttons Container */}
-          <View style={styles.buttonsContainer}>
+          {/* <View style={styles.buttonsContainer}>
             <TouchableOpacity
               style={[styles.actionButton, styles.downloadButton]}
               onPress={downloadQRCode}
@@ -130,9 +129,9 @@ export default function Receive() {
                 Share
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
-          <Alerts description="You can receive money by sharing your QR code or account number with others." />
+          {/* <Alerts description="You can receive money by sharing your QR code or email with others." /> */}
         </View>
       </ScrollView>
 
@@ -189,6 +188,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    backgroundColor: "#ffffff",
   },
   qrContainer: {
     alignItems: "center",
@@ -206,11 +206,6 @@ const styles = StyleSheet.create({
   detailsContainer: {
     backgroundColor: "#ffffff",
     padding: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
   },
   accountInfo: {
     marginBottom: 24,
