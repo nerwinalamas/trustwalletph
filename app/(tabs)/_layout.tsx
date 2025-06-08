@@ -38,14 +38,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="scan"
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="qr-code-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="history"
         options={{
           tabBarIcon: ({ size, color }) => (
