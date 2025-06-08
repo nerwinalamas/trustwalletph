@@ -1,12 +1,10 @@
 import BalanceCard from "@/components/balance-card";
 import Header from "@/components/header";
-import { Ionicons } from "@expo/vector-icons";
 import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 export default function Wallet() {
@@ -22,20 +20,20 @@ export default function Wallet() {
         <BalanceCard />
 
         {/* Your Cards Section */}
-        <View style={styles.sectionHeader}>
+        {/* <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Your Cards</Text>
           <TouchableOpacity>
             <Text style={styles.seeAllText}>See All</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Cards Carousel */}
-        <ScrollView
+        {/* <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           style={styles.cardsCarousel}
         >
-          {/* Credit Card */}
+          Credit Card
           <View style={[styles.card, styles.creditCard]}>
             <View style={styles.cardHeader}>
               <Text style={styles.cardType}>Credit Card</Text>
@@ -60,7 +58,7 @@ export default function Wallet() {
             </View>
           </View>
 
-          {/* Debit Card */}
+          Debit Card
           <View style={[styles.card, styles.debitCard]}>
             <View style={styles.cardHeader}>
               <Text style={styles.cardType}>Debit Card</Text>
@@ -82,23 +80,23 @@ export default function Wallet() {
             </View>
           </View>
 
-          {/* Add Card */}
+          Add Card
           <View style={styles.addCardContainer}>
             <View style={styles.addCardBox}>
               <Ionicons name="add" size={32} color="#94a3b8" />
               <Text style={styles.addCardText}>Add Card</Text>
             </View>
           </View>
-        </ScrollView>
+        </ScrollView> */}
 
         {/* Pagination Indicator */}
-        <View style={styles.pagination}>
+        {/* <View style={styles.pagination}>
           <View style={[styles.paginationDot, styles.activeDot]}></View>
           <View style={styles.paginationDot}></View>
-        </View>
+        </View> */}
 
         {/* Link Bank Accounts Section */}
-        <View style={styles.linkAccountsSection}>
+        {/* <View style={styles.linkAccountsSection}>
           <Text style={styles.sectionTitle}>Link Bank Accounts</Text>
           <Text style={styles.linkDescription}>
             Connect your bank accounts to easily manage all your finances in one
@@ -107,7 +105,7 @@ export default function Wallet() {
           <TouchableOpacity style={styles.connectButton}>
             <Text style={styles.connectButtonText}>Connect Bank Account</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );
