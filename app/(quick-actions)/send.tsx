@@ -6,8 +6,8 @@ import { SendMoneyFormData, sendMoneySchema } from "@/utils/schema";
 import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "convex/react";
-import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
@@ -29,12 +29,17 @@ interface Recipient {
 
 export default function Send() {
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const params = useLocalSearchParams();
+
+  const initialStep = params.step ? parseInt(params.step as string) : 1;
+  const [step, setStep] = useState(initialStep);
+
   const [selectedRecipient, setSelectedRecipient] = useState<Recipient | null>(
     null
   );
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState("");
+  const [qrDataProcessed, setQrDataProcessed] = useState(false); // Add this flag
 
   const searchUserByEmail = useMutation(api.users.searchUserByEmail);
   const sendMoney = useMutation(api.users.sendMoney);
@@ -54,8 +59,8 @@ export default function Send() {
     resolver: zodResolver(sendMoneySchema),
     mode: "onChange",
     defaultValues: {
-      email: "",
-      amount: 0,
+      email: (params.email as string) || "",
+      amount: params.amount ? parseFloat(params.amount as string) : 0,
       note: "",
     },
   });
@@ -63,6 +68,72 @@ export default function Send() {
   const emailValue = watch("email");
   const amount = watch("amount");
   const note = watch("note");
+
+  // Memoize the QR data handling function to prevent recreating on every render
+  const handleQRData = useCallback(async () => {
+    // Only process QR data once and if it hasn't been processed yet
+    if (params.fromQR !== "true" || !params.email || qrDataProcessed) {
+      return;
+    }
+
+    setQrDataProcessed(true); // Set flag to prevent re-processing
+
+    const email = params.email as string;
+    const recipientName = params.recipientName as string;
+    const paramAmount = params.amount ? parseFloat(params.amount as string) : 0;
+
+    setValue("email", email);
+    if (paramAmount > 0) {
+      setValue("amount", paramAmount);
+    }
+
+    if (recipientName) {
+      const recipient: Recipient = {
+        id: "temp",
+        name: recipientName,
+        email: email,
+        avatar: null,
+      };
+      setSelectedRecipient(recipient);
+    }
+
+    try {
+      setIsSearching(true);
+      const user = await searchUserByEmail({ email });
+
+      if (user) {
+        const recipient: Recipient = {
+          id: user._id,
+          name: user.fullName,
+          email: user.email,
+          avatar: user.profileImageUrl || null,
+        };
+        setSelectedRecipient(recipient);
+      } else {
+        setSearchError("User not found. Please check the email and try again.");
+        setStep(1);
+      }
+    } catch (error) {
+      console.error("Error searching for user:", error);
+      setSearchError("Error searching for user. Please try again.");
+      setStep(1);
+    } finally {
+      setIsSearching(false);
+    }
+  }, [
+    params.fromQR,
+    params.email,
+    params.recipientName,
+    params.amount,
+    qrDataProcessed,
+    setValue,
+    searchUserByEmail,
+  ]);
+
+  // Use useEffect with proper dependencies
+  useEffect(() => {
+    handleQRData();
+  }, [handleQRData]);
 
   // Move to the next step
   const goToNextStep = async () => {
