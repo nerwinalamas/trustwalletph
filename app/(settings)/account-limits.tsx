@@ -296,19 +296,6 @@ export default function AccountLimits() {
             </View>
           </View>
         </View>
-
-        {/* Contact Support */}
-        <View style={styles.supportCard}>
-          <Ionicons name="help-circle-outline" size={24} color="#1e3a8a" />
-          <Text style={styles.supportTitle}>Need Higher Limits?</Text>
-          <Text style={styles.supportText}>
-            Contact our support team to discuss custom limit increases for your
-            specific needs.
-          </Text>
-          <TouchableOpacity style={styles.supportButton}>
-            <Text style={styles.supportButtonText}>Contact Support</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </View>
   );
@@ -501,37 +488,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#64748b",
     lineHeight: 20,
-  },
-  supportCard: {
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 20,
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  supportTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#0f172a",
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  supportText: {
-    fontSize: 14,
-    color: "#64748b",
-    textAlign: "center",
-    lineHeight: 20,
-    marginBottom: 16,
-  },
-  supportButton: {
-    backgroundColor: "#1e3a8a",
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  supportButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "white",
   },
 });
