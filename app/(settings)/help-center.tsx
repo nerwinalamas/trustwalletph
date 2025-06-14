@@ -63,12 +63,6 @@ export default function HelpCenter() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Search Help */}
-        <TouchableOpacity style={styles.searchContainer}>
-          <Ionicons name="search-outline" size={20} color="#64748b" />
-          <Text style={styles.searchPlaceholder}>Search for help...</Text>
-        </TouchableOpacity>
-
         {/* Quick Actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
@@ -237,18 +231,6 @@ export default function HelpCenter() {
             <Ionicons name="open-outline" size={16} color="#64748b" />
           </TouchableOpacity>
         </View>
-
-        {/* Contact Info */}
-        <View style={styles.contactSection}>
-          <Text style={styles.contactTitle}>Still need help?</Text>
-          <Text style={styles.contactText}>
-            Our support team is available 24/7 to assist you with any questions
-            or concerns.
-          </Text>
-          <TouchableOpacity style={styles.contactButton}>
-            <Text style={styles.contactButtonText}>Contact Support</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </View>
   );
@@ -278,22 +260,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-  },
-  searchPlaceholder: {
-    fontSize: 16,
-    color: "#64748b",
-    marginLeft: 12,
   },
   section: {
     marginBottom: 24,
@@ -409,36 +375,5 @@ const styles = StyleSheet.create({
     color: "#0f172a",
     flex: 1,
     marginLeft: 12,
-  },
-  contactSection: {
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 20,
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  contactTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#0f172a",
-    marginBottom: 8,
-  },
-  contactText: {
-    fontSize: 14,
-    color: "#64748b",
-    textAlign: "center",
-    lineHeight: 20,
-    marginBottom: 16,
-  },
-  contactButton: {
-    backgroundColor: "#1e3a8a",
-    borderRadius: 8,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  contactButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "white",
   },
 });
