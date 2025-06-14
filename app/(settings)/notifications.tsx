@@ -66,8 +66,8 @@ export default function Notifications() {
       <Switch
         value={settings[key]}
         onValueChange={() => toggleSetting(key)}
-        trackColor={{ false: "#e2e8f0", true: "#bfdbfe" }}
-        thumbColor={settings[key] ? "#1e3a8a" : "#94a3b8"}
+        trackColor={{ false: "#e2e8f0", true: "#3b82f6" }}
+        thumbColor={settings[key] ? "#ffffff" : "#94a3b8"}
         disabled={!isEnabled}
       />
     </View>
