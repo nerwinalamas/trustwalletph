@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as Application from "expo-application";
 import { useRouter } from "expo-router";
 import {
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,6 +12,11 @@ import {
 
 export default function About() {
   const router = useRouter();
+
+  const appName = Application.applicationName || "TrustWalletPH";
+  const appVersion = Application.nativeApplicationVersion || "1.0.0";
+  const appBuild = Application.nativeBuildVersion || "2024.01.15";
+  const platformName = Platform.OS === "ios" ? "iOS" : "Android";
 
   return (
     <View style={styles.container}>
@@ -34,8 +41,8 @@ export default function About() {
                 color="#1e3a8a"
               />
             </View>
-            <Text style={styles.appName}>Your App Name</Text>
-            <Text style={styles.appVersion}>Version 1.0.0</Text>
+            <Text style={styles.appName}>{appName}</Text>
+            <Text style={styles.appVersion}>Version {appVersion}</Text>
             <Text style={styles.appDescription}>
               A modern and secure mobile application designed to provide you
               with the best user experience.
@@ -50,17 +57,17 @@ export default function About() {
           <View style={styles.infoCard}>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Version</Text>
-              <Text style={styles.infoValue}>1.0.0</Text>
+              <Text style={styles.infoValue}>{appVersion}</Text>
             </View>
 
             <View style={[styles.infoRow, styles.infoRowBorder]}>
               <Text style={styles.infoLabel}>Build</Text>
-              <Text style={styles.infoValue}>2024.01.15</Text>
+              <Text style={styles.infoValue}>{appBuild}</Text>
             </View>
 
             <View style={[styles.infoRow, styles.infoRowBorder]}>
               <Text style={styles.infoLabel}>Platform</Text>
-              <Text style={styles.infoValue}>iOS/Android</Text>
+              <Text style={styles.infoValue}>{platformName}</Text>
             </View>
 
             <View style={[styles.infoRow, styles.infoRowBorder]}>
