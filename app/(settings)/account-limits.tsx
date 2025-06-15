@@ -110,7 +110,7 @@ export default function AccountLimits() {
               </View>
               <View style={styles.limitInfo}>
                 <Text style={styles.limitTitle}>Daily Transaction Limit</Text>
-                <Text style={styles.limitAmount}>$2,450 / $5,000</Text>
+                <Text style={styles.limitAmount}>₱2,450 / ₱5,000</Text>
               </View>
               <TouchableOpacity
                 style={styles.increaseButton}
@@ -139,7 +139,7 @@ export default function AccountLimits() {
               </View>
               <View style={styles.limitInfo}>
                 <Text style={styles.limitTitle}>Monthly Transaction Limit</Text>
-                <Text style={styles.limitAmount}>$18,750 / $25,000</Text>
+                <Text style={styles.limitAmount}>₱18,750 / ₱25,000</Text>
               </View>
               <TouchableOpacity
                 style={styles.increaseButton}
@@ -166,7 +166,7 @@ export default function AccountLimits() {
               </View>
               <View style={styles.limitInfo}>
                 <Text style={styles.limitTitle}>Single Transaction Limit</Text>
-                <Text style={styles.limitAmount}>$0 / $1,000</Text>
+                <Text style={styles.limitAmount}>₱0 / ₱1,000</Text>
               </View>
               <TouchableOpacity
                 style={styles.increaseButton}
@@ -191,7 +191,7 @@ export default function AccountLimits() {
               </View>
               <View style={styles.limitInfo}>
                 <Text style={styles.limitTitle}>Account Balance Limit</Text>
-                <Text style={styles.limitAmount}>$8,950 / $10,000</Text>
+                <Text style={styles.limitAmount}>₱8,950 / ₱10,000</Text>
               </View>
               <TouchableOpacity
                 style={styles.increaseButton}
