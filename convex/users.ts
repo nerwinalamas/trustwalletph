@@ -63,6 +63,7 @@ export const createUser = mutation({
       walletBalance: 0,
       accountNumber: accountNumber,
       isVerified: false,
+      verificationTier: "basic",
     });
   },
 });
