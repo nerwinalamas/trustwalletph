@@ -18,7 +18,6 @@ import type * as migrations_addNewColumn from "../migrations/addNewColumn.js";
 import type * as payments from "../payments.js";
 import type * as transactions from "../transactions.js";
 import type * as users from "../users.js";
-import type * as utils_generate_account_number from "../utils/generate-account-number.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -34,7 +33,6 @@ declare const fullApi: ApiFromModules<{
   payments: typeof payments;
   transactions: typeof transactions;
   users: typeof users;
-  "utils/generate-account-number": typeof utils_generate_account_number;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
