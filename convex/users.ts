@@ -1,6 +1,13 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { generateAccountNumber } from "./utils/generate-account-number";
+
+const generateAccountNumber = () => {
+  const randomDigits = Array.from({ length: 8 }, () =>
+    Math.floor(Math.random() * 10)
+  ).join("");
+
+  return `TW-${randomDigits.slice(0, 4)}-${randomDigits.slice(4)}`;
+};
 
 // Create a new task with the given text
 const createUser = mutation({
