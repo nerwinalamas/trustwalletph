@@ -2,6 +2,7 @@ import Avatar from "@/components/avatar";
 import Header from "@/components/header";
 import { useClerk, useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
+import * as Application from "expo-application";
 import { useRouter } from "expo-router";
 import {
   ScrollView,
@@ -15,6 +16,8 @@ export default function Settings() {
   const { signOut } = useClerk();
   const { user } = useUser();
   const router = useRouter();
+
+  const appVersion = Application.nativeApplicationVersion || "1.0.0";
 
   const handleSignOut = async () => {
     try {
@@ -212,7 +215,7 @@ export default function Settings() {
               </View>
               <View style={styles.menuTextContainer}>
                 <Text style={styles.menuTitle}>About</Text>
-                <Text style={styles.menuSubtitle}>App version 1.0.0</Text>
+                <Text style={styles.menuSubtitle}>App version {appVersion}</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#64748b" />
             </View>
