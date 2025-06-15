@@ -53,7 +53,8 @@
     "react-native-webview": "13.13.5",
     "svix": "^1.65.0",
     "zod": "^3.24.4",
-    "expo-camera": "~16.1.6"
+    "expo-camera": "~16.1.6",
+    "expo-application": "~6.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
