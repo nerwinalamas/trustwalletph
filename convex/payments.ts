@@ -3,7 +3,7 @@ import { mutation } from "./_generated/server";
 
 export const SERVICE_FEE = 15;
 
-export const payBill = mutation({
+const payBill = mutation({
   args: {
     companyId: v.string(),
     companyName: v.string(),
@@ -46,3 +46,6 @@ export const payBill = mutation({
     return transactionId;
   },
 });
+
+export { payBill };
+

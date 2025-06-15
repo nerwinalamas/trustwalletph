@@ -1,6 +1,6 @@
 import { query } from "./_generated/server";
 
-export const getUserTransactions = query({
+const getUserTransactions = query({
   handler: async (ctx) => {
     try {
       // 1. Authentication check
@@ -34,3 +34,6 @@ export const getUserTransactions = query({
     }
   },
 });
+
+export { getUserTransactions };
+

@@ -1,8 +1,9 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { generateAccountNumber } from "./utils/generate-account-number";
 
 // Create a new task with the given text
-export const createUser = mutation({
+const createUser = mutation({
   args: {
     clerkUserId: v.string(),
     firstName: v.string(),
@@ -68,15 +69,7 @@ export const createUser = mutation({
   },
 });
 
-function generateAccountNumber() {
-  const randomDigits = Array.from({ length: 8 }, () =>
-    Math.floor(Math.random() * 10)
-  ).join("");
-
-  return `TW-${randomDigits.slice(0, 4)}-${randomDigits.slice(4)}`;
-}
-
-export const getUserWallet = query({
+const getUserWallet = query({
   args: {},
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -97,7 +90,7 @@ export const getUserWallet = query({
   },
 });
 
-export const searchUserByEmail = mutation({
+const searchUserByEmail = mutation({
   args: { email: v.string() },
   handler: async (ctx, { email }) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -120,7 +113,7 @@ export const searchUserByEmail = mutation({
   },
 });
 
-export const sendMoney = mutation({
+const sendMoney = mutation({
   args: {
     recipientEmail: v.string(),
     amount: v.number(),
@@ -183,7 +176,7 @@ export const sendMoney = mutation({
   },
 });
 
-export const getRecentRecipients = query({
+const getRecentRecipients = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return [];
@@ -237,7 +230,7 @@ export const getRecentRecipients = query({
   },
 });
 
-export const getCurrentUser = query({
+const getCurrentUser = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return null;
@@ -248,3 +241,13 @@ export const getCurrentUser = query({
       .unique();
   },
 });
+
+export {
+  createUser,
+  getCurrentUser,
+  getRecentRecipients,
+  getUserWallet,
+  searchUserByEmail,
+  sendMoney
+};
+
