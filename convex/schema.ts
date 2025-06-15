@@ -20,6 +20,13 @@ export default defineSchema({
 
     // Security
     isVerified: v.boolean(),
+
+    // Verification Tier
+    verificationTier: v.union(
+      v.literal("basic"),
+      v.literal("verified"),
+      v.literal("premium")
+    ),
   })
     .index("by_clerk_user", ["clerkUserId"])
     .index("by_email", ["email"]),
