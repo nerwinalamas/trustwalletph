@@ -60,7 +60,7 @@ const createUser = mutation({
 
     const accountNumber = generateAccountNumber();
 
-    await ctx.db.insert("users", {
+    const userId = await ctx.db.insert("users", {
       clerkUserId: args.clerkUserId,
       firstName: args.firstName,
       lastName: args.lastName,
@@ -73,6 +73,24 @@ const createUser = mutation({
       isVerified: false,
       verificationTier: "basic",
     });
+
+    await ctx.db.insert("accountLimits", {
+      userId,
+      tier: "basic",
+      dailyLimit: 5000,
+      monthlyLimit: 25000,
+      singleTxLimit: 1000,
+      balanceLimit: 10000,
+      dailyUsed: 0,
+      monthlyUsed: 0,
+      lastDailyReset: Date.now(),
+      lastMonthlyReset: Date.now(),
+      p2pTransferLimit: 5000,
+      billPaymentLimit: 5000,
+      withdrawalLimit: 5000,
+    });
+
+    return userId;
   },
 });
 
@@ -130,28 +148,65 @@ const sendMoney = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
-    // Get sender
+    // Get sender and limits
     const sender = await ctx.db
       .query("users")
       .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", identity.subject))
       .unique();
     if (!sender) throw new Error("Sender not found");
 
-    // Get recipient
+    const senderLimits = await ctx.db
+      .query("accountLimits")
+      .withIndex("by_user", (q) => q.eq("userId", sender._id))
+      .unique();
+    if (!senderLimits) throw new Error("Sender limits not found");
+
+    // Check all limits
+    if (sender.walletBalance < args.amount) {
+      throw new Error("Insufficient balance");
+    }
+    if (args.amount > senderLimits.singleTxLimit) {
+      throw new Error(
+        `Amount exceeds single transaction limit of ₱${senderLimits.singleTxLimit}`
+      );
+    }
+    if (senderLimits.dailyUsed + args.amount > senderLimits.dailyLimit) {
+      throw new Error(
+        `Transaction would exceed daily limit of ₱${senderLimits.dailyLimit}`
+      );
+    }
+    if (senderLimits.monthlyUsed + args.amount > senderLimits.monthlyLimit) {
+      throw new Error(
+        `Transaction would exceed monthly limit of ₱${senderLimits.monthlyLimit}`
+      );
+    }
+
+    // Get recipient and their limits
     const recipient = await ctx.db
       .query("users")
       .withIndex("by_email", (q) => q.eq("email", args.recipientEmail))
       .unique();
     if (!recipient) throw new Error("Recipient not found");
 
-    // Validate balance
-    if (sender.walletBalance < args.amount) {
-      throw new Error("Insufficient balance");
+    const recipientLimits = await ctx.db
+      .query("accountLimits")
+      .withIndex("by_user", (q) => q.eq("userId", recipient._id))
+      .unique();
+    if (!recipientLimits) throw new Error("Recipient limits not found");
+
+    // Check recipient balance limit
+    if (recipient.walletBalance + args.amount > recipientLimits.balanceLimit) {
+      throw new Error("Recipient would exceed their account balance limit");
     }
 
-    // Perform transaction
+    // Perform transaction and update limits
     await ctx.db.patch(sender._id, {
       walletBalance: sender.walletBalance - args.amount,
+    });
+
+    await ctx.db.patch(senderLimits._id, {
+      dailyUsed: senderLimits.dailyUsed + args.amount,
+      monthlyUsed: senderLimits.monthlyUsed + args.amount,
     });
 
     await ctx.db.patch(recipient._id, {
