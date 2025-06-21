@@ -1,0 +1,14 @@
+{
+  "functions": "convex",
+  "authInfo": [],
+  "scheduledFunctions": {
+    "resetDailyLimits": {
+      "cronSchedule": "0 0 * * *",
+      "args": []
+    },
+    "resetMonthlyLimits": {
+      "cronSchedule": "0 0 1 * *",
+      "args": []
+    }
+  }
+}
