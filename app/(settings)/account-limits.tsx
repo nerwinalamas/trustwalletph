@@ -12,19 +12,19 @@ import {
 export default function AccountLimits() {
   const router = useRouter();
 
-  const handleIncreaseLimit = (limitType: string) => {
-    Alert.alert(
-      "Increase Limit",
-      `To increase your ${limitType} limit, please contact our support team or complete additional verification.`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Contact Support",
-          onPress: () => console.log("Contact support"),
-        },
-      ]
-    );
-  };
+  // const handleIncreaseLimit = (limitType: string) => {
+  //   Alert.alert(
+  //     "Increase Limit",
+  //     `To increase your ${limitType} limit, please contact our support team or complete additional verification.`,
+  //     [
+  //       { text: "Cancel", style: "cancel" },
+  //       {
+  //         text: "Contact Support",
+  //         onPress: () => console.log("Contact support"),
+  //       },
+  //     ]
+  //   );
+  // };
 
   const handleVerifyAccount = () => {
     Alert.alert(
@@ -112,7 +112,7 @@ export default function AccountLimits() {
                 <Text style={styles.limitTitle}>Daily Transaction Limit</Text>
                 <Text style={styles.limitAmount}>₱2,450 / ₱5,000</Text>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.increaseButton}
                 onPress={() => handleIncreaseLimit("daily transaction")}
               >
@@ -121,7 +121,7 @@ export default function AccountLimits() {
                   size={20}
                   color="#1e3a8a"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             {renderProgressBar(2450, 5000)}
             <Text style={styles.limitNote}>Resets daily at 12:00 AM UTC</Text>
@@ -141,7 +141,7 @@ export default function AccountLimits() {
                 <Text style={styles.limitTitle}>Monthly Transaction Limit</Text>
                 <Text style={styles.limitAmount}>₱18,750 / ₱25,000</Text>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.increaseButton}
                 onPress={() => handleIncreaseLimit("monthly transaction")}
               >
@@ -150,7 +150,7 @@ export default function AccountLimits() {
                   size={20}
                   color="#1e3a8a"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             {renderProgressBar(18750, 25000)}
             <Text style={styles.limitNote}>
@@ -168,7 +168,7 @@ export default function AccountLimits() {
                 <Text style={styles.limitTitle}>Single Transaction Limit</Text>
                 <Text style={styles.limitAmount}>₱0 / ₱1,000</Text>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.increaseButton}
                 onPress={() => handleIncreaseLimit("single transaction")}
               >
@@ -177,7 +177,7 @@ export default function AccountLimits() {
                   size={20}
                   color="#1e3a8a"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             {renderProgressBar(0, 1000)}
             <Text style={styles.limitNote}>Maximum amount per transaction</Text>
@@ -193,7 +193,7 @@ export default function AccountLimits() {
                 <Text style={styles.limitTitle}>Account Balance Limit</Text>
                 <Text style={styles.limitAmount}>₱8,950 / ₱10,000</Text>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.increaseButton}
                 onPress={() => handleIncreaseLimit("account balance")}
               >
@@ -202,7 +202,7 @@ export default function AccountLimits() {
                   size={20}
                   color="#1e3a8a"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             {renderProgressBar(8950, 10000)}
             <Text style={styles.limitNote}>Maximum balance you can hold</Text>
