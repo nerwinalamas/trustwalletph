@@ -64,6 +64,38 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_recipient", ["recipientType", "recipientId"]),
 
+  accountLimits: defineTable({
+    userId: v.id("users"),
+
+    // Tier-based limits
+    tier: v.union(
+      v.literal("basic"),
+      v.literal("verified"),
+      v.literal("premium")
+    ),
+
+    // Transaction limits
+    dailyLimit: v.number(),
+    monthlyLimit: v.number(),
+    singleTxLimit: v.number(),
+    balanceLimit: v.number(),
+
+    // Current usage
+    dailyUsed: v.number(),
+    monthlyUsed: v.number(),
+
+    // Reset timestamps
+    lastDailyReset: v.number(),
+    lastMonthlyReset: v.number(),
+
+    // Limits specific to features
+    p2pTransferLimit: v.number(),
+    billPaymentLimit: v.number(),
+    withdrawalLimit: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_tier", ["tier"]),
+
   cards: defineTable({
     // User reference
     userId: v.id("users"),
