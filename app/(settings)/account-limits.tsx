@@ -1,4 +1,7 @@
+import { api } from "@/convex/_generated/api";
+import { formatCurrency } from "@/utils/format-currency";
 import { Ionicons } from "@expo/vector-icons";
+import { useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import {
   Alert,
@@ -11,6 +14,8 @@ import {
 
 export default function AccountLimits() {
   const router = useRouter();
+
+  const limits = useQuery(api.limits.getUserLimits);
 
   // const handleIncreaseLimit = (limitType: string) => {
   //   Alert.alert(
@@ -41,7 +46,9 @@ export default function AccountLimits() {
   };
 
   const renderProgressBar = (current: number, max: number) => {
-    const percentage = (current / max) * 100;
+    const percentage = Math.min((current / max) * 100, 100); // Cap at 100%
+    const exceeded = current > max;
+
     return (
       <View style={styles.progressBarContainer}>
         <View style={styles.progressBarBackground}>
@@ -49,21 +56,51 @@ export default function AccountLimits() {
             style={[
               styles.progressBarFill,
               {
-                width: `${Math.min(percentage, 100)}%`,
-                backgroundColor:
-                  percentage >= 90
-                    ? "#ef4444"
+                width: `${percentage}%`,
+                backgroundColor: exceeded
+                  ? "#dc2626" // Red if exceeded
+                  : percentage >= 90
+                    ? "#ef4444" // Red if close to limit
                     : percentage >= 70
-                      ? "#f59e0b"
-                      : "#10b981",
+                      ? "#f59e0b" // Yellow if warning
+                      : "#10b981", // Green if safe
               },
             ]}
           />
+          {exceeded && (
+            <View
+              style={[
+                styles.progressBarFill,
+                {
+                  width: `${((current - max) / max) * 100}%`,
+                  backgroundColor: "#b91c1c",
+                  opacity: 0.5,
+                  position: "absolute",
+                  left: `${100}%`,
+                },
+              ]}
+            />
+          )}
         </View>
-        <Text style={styles.progressText}>{percentage.toFixed(0)}%</Text>
+        <Text
+          style={[
+            styles.progressText,
+            { color: exceeded ? "#dc2626" : "#64748b" },
+          ]}
+        >
+          {percentage.toFixed(0)}%{exceeded && " (exceeded)"}
+        </Text>
       </View>
     );
   };
+
+  if (!limits) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading limits...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -110,7 +147,10 @@ export default function AccountLimits() {
               </View>
               <View style={styles.limitInfo}>
                 <Text style={styles.limitTitle}>Daily Transaction Limit</Text>
-                <Text style={styles.limitAmount}>₱2,450 / ₱5,000</Text>
+                <Text style={styles.limitAmount}>
+                  {formatCurrency(limits.daily.used)} /{" "}
+                  {formatCurrency(limits.daily.limit)}
+                </Text>
               </View>
               {/* <TouchableOpacity
                 style={styles.increaseButton}
@@ -123,8 +163,10 @@ export default function AccountLimits() {
                 />
               </TouchableOpacity> */}
             </View>
-            {renderProgressBar(2450, 5000)}
-            <Text style={styles.limitNote}>Resets daily at 12:00 AM UTC</Text>
+            {renderProgressBar(limits.daily.used, limits.daily.limit)}
+            <Text style={styles.limitNote}>
+              Resets at {new Date(limits.daily.resetsAt).toLocaleTimeString()}
+            </Text>
           </View>
 
           {/* Monthly Transaction Limit */}
@@ -139,7 +181,10 @@ export default function AccountLimits() {
               </View>
               <View style={styles.limitInfo}>
                 <Text style={styles.limitTitle}>Monthly Transaction Limit</Text>
-                <Text style={styles.limitAmount}>₱18,750 / ₱25,000</Text>
+                <Text style={styles.limitAmount}>
+                  {formatCurrency(limits.monthly.used)} /{" "}
+                  {formatCurrency(limits.monthly.limit)}
+                </Text>
               </View>
               {/* <TouchableOpacity
                 style={styles.increaseButton}
@@ -152,9 +197,9 @@ export default function AccountLimits() {
                 />
               </TouchableOpacity> */}
             </View>
-            {renderProgressBar(18750, 25000)}
+            {renderProgressBar(limits.monthly.used, limits.monthly.limit)}
             <Text style={styles.limitNote}>
-              Resets on the 1st of each month
+              Resets on {new Date(limits.monthly.resetsAt).toLocaleDateString()}
             </Text>
           </View>
 
@@ -166,7 +211,9 @@ export default function AccountLimits() {
               </View>
               <View style={styles.limitInfo}>
                 <Text style={styles.limitTitle}>Single Transaction Limit</Text>
-                <Text style={styles.limitAmount}>₱0 / ₱1,000</Text>
+                <Text style={styles.limitAmount}>
+                  {formatCurrency(limits.singleTx)}
+                </Text>
               </View>
               {/* <TouchableOpacity
                 style={styles.increaseButton}
@@ -179,7 +226,7 @@ export default function AccountLimits() {
                 />
               </TouchableOpacity> */}
             </View>
-            {renderProgressBar(0, 1000)}
+            {renderProgressBar(0, limits.singleTx)}
             <Text style={styles.limitNote}>Maximum amount per transaction</Text>
           </View>
 
@@ -191,7 +238,10 @@ export default function AccountLimits() {
               </View>
               <View style={styles.limitInfo}>
                 <Text style={styles.limitTitle}>Account Balance Limit</Text>
-                <Text style={styles.limitAmount}>₱8,950 / ₱10,000</Text>
+                <Text style={styles.limitAmount}>
+                  {formatCurrency(limits.balance.current)} /{" "}
+                  {formatCurrency(limits.balance.limit)}
+                </Text>
               </View>
               {/* <TouchableOpacity
                 style={styles.increaseButton}
@@ -204,8 +254,12 @@ export default function AccountLimits() {
                 />
               </TouchableOpacity> */}
             </View>
-            {renderProgressBar(8950, 10000)}
-            <Text style={styles.limitNote}>Maximum balance you can hold</Text>
+            {renderProgressBar(limits.balance.current, limits.balance.limit)}
+            <Text style={styles.limitNote}>
+              {limits.balance.current >= limits.balance.limit * 0.9
+                ? "You're approaching your balance limit"
+                : "Maximum balance you can hold"}
+            </Text>
           </View>
         </View>
 
