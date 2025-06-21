@@ -4,12 +4,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import {
-  Alert,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 export default function AccountLimits() {
@@ -31,19 +30,19 @@ export default function AccountLimits() {
   //   );
   // };
 
-  const handleVerifyAccount = () => {
-    Alert.alert(
-      "Account Verification",
-      "Complete identity verification to increase your account limits.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Start Verification",
-          onPress: () => console.log("Start verification"),
-        },
-      ]
-    );
-  };
+  // const handleVerifyAccount = () => {
+  //   Alert.alert(
+  //     "Account Verification",
+  //     "Complete identity verification to increase your account limits.",
+  //     [
+  //       { text: "Cancel", style: "cancel" },
+  //       {
+  //         text: "Start Verification",
+  //         onPress: () => console.log("Start verification"),
+  //       },
+  //     ]
+  //   );
+  // };
 
   const renderProgressBar = (current: number, max: number) => {
     const percentage = Math.min((current / max) * 100, 100); // Cap at 100%
@@ -116,7 +115,7 @@ export default function AccountLimits() {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Account Status */}
-        <View style={styles.statusCard}>
+        {/* <View style={styles.statusCard}>
           <View style={styles.statusHeader}>
             <View style={styles.statusBadge}>
               <Ionicons name="checkmark-circle" size={20} color="#10b981" />
@@ -133,7 +132,7 @@ export default function AccountLimits() {
             Your account is verified. Complete additional verification to
             increase your limits.
           </Text>
-        </View>
+        </View> */}
 
         {/* Current Limits */}
         <View style={styles.section}>
@@ -264,7 +263,7 @@ export default function AccountLimits() {
         </View>
 
         {/* How to Increase Limits */}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>HOW TO INCREASE LIMITS</Text>
 
           <View style={styles.howToCard}>
@@ -314,7 +313,7 @@ export default function AccountLimits() {
               </View>
             </View>
           </View>
-        </View>
+        </View> */}
 
         {/* Limit Types */}
         <View style={styles.section}>
