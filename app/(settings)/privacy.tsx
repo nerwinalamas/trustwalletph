@@ -1,6 +1,6 @@
+import { usePrivacyStore } from "@/stores/privacy-store";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -12,17 +12,7 @@ import {
 
 export default function Privacy() {
   const router = useRouter();
-  const [settings, setSettings] = useState({
-    profileVisibility: true,
-    hideTransactionAmounts: false,
-  });
-
-  const toggleSetting = (key: keyof typeof settings) => {
-    setSettings((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
+  const { settings, toggleSetting } = usePrivacyStore();
 
   return (
     <View style={styles.container}>
