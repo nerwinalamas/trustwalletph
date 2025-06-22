@@ -1,6 +1,5 @@
 {
   "functions": "convex",
-  "authInfo": [],
   "scheduledFunctions": {
     "resetDailyLimits": {
       "cronSchedule": "0 0 * * *",
