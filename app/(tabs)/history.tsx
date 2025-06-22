@@ -1,5 +1,6 @@
 import Header from "@/components/header";
 import { api } from "@/convex/_generated/api";
+import { usePrivacyStore } from "@/stores/privacy-store";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { format, isToday, isYesterday } from "date-fns";
@@ -14,6 +15,7 @@ import { Transaction } from ".";
 
 export default function History() {
   const transactions = useQuery(api.transactions.getUserTransactions);
+  const { settings } = usePrivacyStore();
 
   // Transform data into sections
   const getSections = () => {
@@ -90,9 +92,14 @@ export default function History() {
             </Text>
           </View>
         </View>
-        <Text style={isReceive ? styles.incomeAmount : styles.expenseAmount}>
-          {isReceive ? "+" : "-"}₱{item.amount.toFixed(2)}
-        </Text>
+
+        {settings.hideTransactionAmounts ? (
+          <Text style={styles.hiddenAmountText}>₱***</Text>
+        ) : (
+          <Text style={isReceive ? styles.incomeAmount : styles.expenseAmount}>
+            {isReceive ? "+" : "-"}₱{item.amount.toFixed(2)}
+          </Text>
+        )}
       </TouchableOpacity>
     );
   };
@@ -233,5 +240,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#22c55e",
     marginRight: 6,
+  },
+  hiddenAmountText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#64748b",
+    marginRight: 8,
+    letterSpacing: 1,
   },
 });
