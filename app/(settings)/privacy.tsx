@@ -38,7 +38,7 @@ export default function Privacy() {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Profile Privacy Section */}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>PROFILE PRIVACY</Text>
 
           <View style={styles.settingCard}>
@@ -64,7 +64,7 @@ export default function Privacy() {
               />
             </View>
           </View>
-        </View>
+        </View> */}
 
         {/* Transaction Privacy Section */}
         <View style={styles.section}>
