@@ -1,6 +1,7 @@
 import BalanceCard from "@/components/balance-card";
 import Header from "@/components/header";
 import { api } from "@/convex/_generated/api";
+import { usePrivacyStore } from "@/stores/privacy-store";
 import { formatTransactionDate } from "@/utils/format-transaction-date";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
@@ -29,6 +30,7 @@ export interface Transaction {
 export default function Home() {
   const transactions = useQuery(api.transactions.getUserTransactions);
   const router = useRouter();
+  const { settings } = usePrivacyStore();
 
   const renderTransactionItem = ({ item }: { item: Transaction }) => {
     const isSend = item.transactionType === "send";
@@ -65,13 +67,19 @@ export default function Home() {
           </View>
         </View>
         <View style={styles.transactionRight}>
-          <Text style={isExpense ? styles.expenseAmount : styles.incomeAmount}>
-            {isExpense ? "-" : "+"}₱
-            {item.amount.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </Text>
+          {settings.hideTransactionAmounts ? (
+            <Text style={styles.hiddenAmountText}>₱***</Text>
+          ) : (
+            <Text
+              style={isExpense ? styles.expenseAmount : styles.incomeAmount}
+            >
+              {isExpense ? "-" : "+"}₱
+              {item.amount.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </Text>
+          )}
         </View>
       </View>
     );
@@ -281,6 +289,13 @@ const styles = StyleSheet.create({
   transactionRight: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  hiddenAmountText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#64748b",
+    marginRight: 8,
+    letterSpacing: 1,
   },
   expenseAmount: {
     fontSize: 16,
