@@ -27,6 +27,16 @@ export default defineSchema({
       v.literal("verified"),
       v.literal("premium")
     ),
+
+    notificationPreferences: v.object({
+      pushEnabled: v.boolean(),
+      transactionAlerts: v.boolean(),
+      soundEnabled: v.boolean(),
+      vibrationEnabled: v.boolean(),
+      quietHoursEnabled: v.boolean(),
+      quietHoursStart: v.string(),
+      quietHoursEnd: v.string(),
+    }),
   })
     .index("by_clerk_user", ["clerkUserId"])
     .index("by_email", ["email"]),
