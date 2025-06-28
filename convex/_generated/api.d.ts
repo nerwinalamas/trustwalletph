@@ -18,6 +18,8 @@ import type * as limits from "../limits.js";
 import type * as migrations_addNewColumn from "../migrations/addNewColumn.js";
 import type * as migrations_calculateUsage from "../migrations/calculateUsage.js";
 import type * as migrations_migrateLimits from "../migrations/migrateLimits.js";
+import type * as migrations_notificationPreferences from "../migrations/notificationPreferences.js";
+import type * as notifications from "../notifications.js";
 import type * as payments from "../payments.js";
 import type * as scheduled from "../scheduled.js";
 import type * as transactions from "../transactions.js";
@@ -37,6 +39,8 @@ declare const fullApi: ApiFromModules<{
   "migrations/addNewColumn": typeof migrations_addNewColumn;
   "migrations/calculateUsage": typeof migrations_calculateUsage;
   "migrations/migrateLimits": typeof migrations_migrateLimits;
+  "migrations/notificationPreferences": typeof migrations_notificationPreferences;
+  notifications: typeof notifications;
   payments: typeof payments;
   scheduled: typeof scheduled;
   transactions: typeof transactions;
