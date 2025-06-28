@@ -16,6 +16,7 @@ import type {
 import type * as http from "../http.js";
 import type * as limits from "../limits.js";
 import type * as migrations_addNewColumn from "../migrations/addNewColumn.js";
+import type * as migrations_addPushTokenColumn from "../migrations/addPushTokenColumn.js";
 import type * as migrations_calculateUsage from "../migrations/calculateUsage.js";
 import type * as migrations_migrateLimits from "../migrations/migrateLimits.js";
 import type * as migrations_notificationPreferences from "../migrations/notificationPreferences.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   limits: typeof limits;
   "migrations/addNewColumn": typeof migrations_addNewColumn;
+  "migrations/addPushTokenColumn": typeof migrations_addPushTokenColumn;
   "migrations/calculateUsage": typeof migrations_calculateUsage;
   "migrations/migrateLimits": typeof migrations_migrateLimits;
   "migrations/notificationPreferences": typeof migrations_notificationPreferences;
