@@ -16,15 +16,7 @@ export default function Notifications() {
   // Notification settings state
   const [settings, setSettings] = useState({
     pushNotifications: true,
-    emailNotifications: true,
-    smsNotifications: false,
     transactionAlerts: true,
-    securityAlerts: true,
-    promotionalEmails: false,
-    weeklyReports: true,
-    accountActivity: true,
-    paymentReminders: true,
-    newsUpdates: false,
     soundEnabled: true,
     vibrationEnabled: true,
   });
@@ -96,27 +88,11 @@ export default function Notifications() {
             "Receive notifications on your device",
             "phone-portrait-outline"
           )}
-
-          {renderToggleItem(
-            "emailNotifications",
-            "Email Notifications",
-            "Receive notifications via email",
-            "mail-outline",
-            settings.pushNotifications
-          )}
-
-          {renderToggleItem(
-            "smsNotifications",
-            "SMS Notifications",
-            "Receive important alerts via SMS",
-            "chatbubble-outline",
-            settings.pushNotifications
-          )}
         </View>
 
         {/* Transaction & Security */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>TRANSACTION & SECURITY</Text>
+          <Text style={styles.sectionTitle}>TRANSACTION</Text>
 
           {renderToggleItem(
             "transactionAlerts",
@@ -124,59 +100,6 @@ export default function Notifications() {
             "Get notified for all transactions",
             "card-outline",
             settings.pushNotifications
-          )}
-
-          {renderToggleItem(
-            "securityAlerts",
-            "Security Alerts",
-            "Important security notifications",
-            "shield-checkmark-outline",
-            settings.pushNotifications
-          )}
-
-          {renderToggleItem(
-            "accountActivity",
-            "Account Activity",
-            "Login attempts and account changes",
-            "person-circle-outline",
-            settings.pushNotifications
-          )}
-
-          {renderToggleItem(
-            "paymentReminders",
-            "Payment Reminders",
-            "Upcoming payment due dates",
-            "time-outline",
-            settings.pushNotifications
-          )}
-        </View>
-
-        {/* Marketing & Updates */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>MARKETING & UPDATES</Text>
-
-          {renderToggleItem(
-            "promotionalEmails",
-            "Promotional Emails",
-            "Special offers and promotions",
-            "pricetag-outline",
-            settings.emailNotifications
-          )}
-
-          {renderToggleItem(
-            "weeklyReports",
-            "Weekly Reports",
-            "Summary of your account activity",
-            "bar-chart-outline",
-            settings.emailNotifications
-          )}
-
-          {renderToggleItem(
-            "newsUpdates",
-            "News & Updates",
-            "Product updates and company news",
-            "newspaper-outline",
-            settings.emailNotifications
           )}
         </View>
 
@@ -215,42 +138,6 @@ export default function Notifications() {
                 <Text style={styles.menuSubtitle}>10:00 PM - 8:00 AM</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#64748b" />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Notification History */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>NOTIFICATION HISTORY</Text>
-
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons name="time-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Recent Notifications</Text>
-                <Text style={styles.menuSubtitle}>
-                  View your notification history
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#64748b" />
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons name="trash-outline" size={20} color="#ef4444" />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={[styles.menuTitle, { color: "#ef4444" }]}>
-                  Clear All Notifications
-                </Text>
-                <Text style={styles.menuSubtitle}>
-                  Remove all notification history
-                </Text>
-              </View>
             </View>
           </TouchableOpacity>
         </View>
