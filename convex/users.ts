@@ -243,6 +243,20 @@ const sendMoney = mutation({
       recipientId: sender._id,
     });
 
+    // await ctx.scheduler.runAfter(0, api.notifications., {
+    //   userId: sender._id,
+    //   title: "Money Sent",
+    //   message: `You sent ₱${args.amount} to ${recipient.fullName}`,
+    //   type: "transaction",
+    // });
+
+    // await ctx.scheduler.runAfter(0, api.notifications.createNotification, {
+    //   userId: recipient._id,
+    //   title: "Money Received",
+    //   message: `You received ₱${args.amount} from ${sender.fullName}`,
+    //   type: "transaction",
+    // });
+
     return transactionId;
   },
 });
@@ -313,12 +327,32 @@ const getCurrentUser = query({
   },
 });
 
+const storePushToken = mutation({
+  args: { token: v.string() },
+  handler: async (ctx, { token }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_user", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+
+    if (!user) throw new Error("User not found");
+
+    await ctx.db.patch(user._id, {
+      pushToken: token,
+    });
+  },
+});
+
 export {
   createUser,
   getCurrentUser,
   getRecentRecipients,
   getUserWallet,
   searchUserByEmail,
-  sendMoney
+  sendMoney,
+  storePushToken
 };
 
