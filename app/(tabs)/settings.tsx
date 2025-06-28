@@ -53,28 +53,6 @@ export default function Settings() {
 
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => router.push("/(settings)/security")}
-          >
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons
-                  name="shield-checkmark-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Security</Text>
-                <Text style={styles.menuSubtitle}>
-                  Manage security settings
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#64748b" />
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.menuItem}
             onPress={() => router.push("/(settings)/privacy")}
           >
             <View style={styles.menuLeft}>
@@ -89,6 +67,24 @@ export default function Settings() {
                 <Text style={styles.menuTitle}>Privacy</Text>
                 <Text style={styles.menuSubtitle}>
                   Control your data and privacy
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color="#64748b" />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/(settings)/account-limits")}
+          >
+            <View style={styles.menuLeft}>
+              <View style={[styles.menuIcon, styles.icon]}>
+                <Ionicons name="wallet-outline" size={20} color="#1e3a8a" />
+              </View>
+              <View style={styles.menuTextContainer}>
+                <Text style={styles.menuTitle}>Account Limits</Text>
+                <Text style={styles.menuSubtitle}>
+                  View and increase your limits
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#64748b" />
@@ -128,47 +124,6 @@ export default function Settings() {
               <View style={styles.menuTextContainer}>
                 <Text style={styles.menuTitle}>Language</Text>
                 <Text style={styles.menuSubtitle}>English (US)</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#64748b" />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Preferences Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>PREFERENCES</Text>
-
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => router.push("/(settings)/payment-method")}
-          >
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons name="card-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Payment Methods</Text>
-                <Text style={styles.menuSubtitle}>
-                  Manage your payment options
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#64748b" />
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => router.push("/(settings)/account-limits")}
-          >
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons name="wallet-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Account Limits</Text>
-                <Text style={styles.menuSubtitle}>
-                  View and increase your limits
-                </Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#64748b" />
             </View>
@@ -215,7 +170,9 @@ export default function Settings() {
               </View>
               <View style={styles.menuTextContainer}>
                 <Text style={styles.menuTitle}>About</Text>
-                <Text style={styles.menuSubtitle}>App version {appVersion}</Text>
+                <Text style={styles.menuSubtitle}>
+                  App version {appVersion}
+                </Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#64748b" />
             </View>
