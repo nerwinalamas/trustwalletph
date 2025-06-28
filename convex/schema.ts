@@ -37,6 +37,8 @@ export default defineSchema({
       quietHoursStart: v.string(),
       quietHoursEnd: v.string(),
     }),
+
+    pushToken: v.optional(v.string()),
   })
     .index("by_clerk_user", ["clerkUserId"])
     .index("by_email", ["email"]),
