@@ -1,6 +1,8 @@
+import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
+import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -10,26 +12,99 @@ import {
   View,
 } from "react-native";
 
+interface NotificationToggleSettings {
+  pushNotifications: boolean;
+  transactionAlerts: boolean;
+  soundEnabled: boolean;
+  vibrationEnabled: boolean;
+  quietHoursEnabled: boolean;
+}
+
+interface NotificationTimeSettings {
+  quietHoursStart: string;
+  quietHoursEnd: string;
+}
+
+type NotificationSettings = NotificationToggleSettings &
+  NotificationTimeSettings;
+
 export default function Notifications() {
   const router = useRouter();
+  const preferences = useQuery(api.notifications.getNotificationPreferences);
+  const updatePreferences = useMutation(
+    api.notifications.updateNotificationPreferences
+  );
 
   // Notification settings state
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<NotificationSettings>({
     pushNotifications: true,
     transactionAlerts: true,
     soundEnabled: true,
     vibrationEnabled: true,
+    quietHoursEnabled: false,
+    quietHoursStart: "22:00",
+    quietHoursEnd: "08:00",
   });
 
-  const toggleSetting = (key: keyof typeof settings) => {
-    setSettings((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+  useEffect(() => {
+    if (preferences) {
+      setSettings({
+        pushNotifications: preferences.pushEnabled,
+        transactionAlerts: preferences.transactionAlerts,
+        soundEnabled: preferences.soundEnabled,
+        vibrationEnabled: preferences.vibrationEnabled,
+        quietHoursEnabled: preferences.quietHoursEnabled,
+        quietHoursStart: preferences.quietHoursStart,
+        quietHoursEnd: preferences.quietHoursEnd,
+      });
+    }
+  }, [preferences]);
+
+  const toggleSetting = async (key: keyof typeof settings) => {
+    const newSettings = {
+      ...settings,
+      [key]: !settings[key],
+    };
+
+    setSettings(newSettings);
+
+    await updatePreferences({
+      preferences: {
+        pushEnabled: newSettings.pushNotifications,
+        transactionAlerts: newSettings.transactionAlerts,
+        soundEnabled: newSettings.soundEnabled,
+        vibrationEnabled: newSettings.vibrationEnabled,
+        quietHoursEnabled: newSettings.quietHoursEnabled,
+        quietHoursStart: newSettings.quietHoursStart,
+        quietHoursEnd: newSettings.quietHoursEnd,
+      },
+    });
   };
 
+  // const handleQuietHoursChange = async (start: string, end: string) => {
+  //   const newSettings = {
+  //     ...settings,
+  //     quietHoursStart: start,
+  //     quietHoursEnd: end,
+  //   };
+
+  //   setSettings(newSettings);
+
+  //   await updatePreferences({
+  //     preferences: {
+  //       pushEnabled: newSettings.pushNotifications,
+  //       transactionAlerts: newSettings.transactionAlerts,
+  //       soundEnabled: newSettings.soundEnabled,
+  //       vibrationEnabled: newSettings.vibrationEnabled,
+  //       quietHoursEnabled: newSettings.quietHoursEnabled,
+  //       quietHoursStart: newSettings.quietHoursStart,
+  //       quietHoursEnd: newSettings.quietHoursEnd,
+  //     },
+  //   });
+  // };
+
   const renderToggleItem = (
-    key: keyof typeof settings,
+    key: keyof NotificationToggleSettings,
     title: string,
     subtitle: string,
     iconName: keyof typeof Ionicons.glyphMap,
@@ -125,22 +200,33 @@ export default function Notifications() {
         </View>
 
         {/* Quiet Hours */}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>QUIET HOURS</Text>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons name="moon-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Do Not Disturb</Text>
-                <Text style={styles.menuSubtitle}>10:00 PM - 8:00 AM</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#64748b" />
+          {renderToggleItem(
+            "quietHoursEnabled",
+            "Do Not Disturb",
+            "Silence notifications during set hours",
+            "moon-outline"
+          )}
+
+          {settings.quietHoursEnabled && (
+            <View style={styles.timePickerContainer}>
+              <TouchableOpacity
+                style={styles.timePicker}
+                onPress={() => showTimePicker("start")}
+              >
+                <Text>Start: {settings.quietHoursStart}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.timePicker}
+                onPress={() => showTimePicker("end")}
+              >
+                <Text>End: {settings.quietHoursEnd}</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
+          )}
+        </View> */}
       </ScrollView>
     </View>
   );
@@ -260,5 +346,16 @@ const styles = StyleSheet.create({
   menuSubtitle: {
     fontSize: 14,
     color: "#64748b",
+  },
+  timePickerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  timePicker: {
+    backgroundColor: "white",
+    padding: 15,
+    borderRadius: 8,
+    width: "48%",
   },
 });
