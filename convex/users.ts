@@ -72,6 +72,15 @@ const createUser = mutation({
       accountNumber: accountNumber,
       isVerified: false,
       verificationTier: "basic",
+      notificationPreferences: {
+        pushEnabled: true,
+        transactionAlerts: true,
+        soundEnabled: true,
+        vibrationEnabled: true,
+        quietHoursEnabled: false,
+        quietHoursStart: "22:00",
+        quietHoursEnd: "08:00",
+      },
     });
 
     await ctx.db.insert("accountLimits", {
