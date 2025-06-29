@@ -244,41 +244,6 @@ export default function Language() {
             ))}
           </View>
         </View>
-
-        {/* Language Settings */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>LANGUAGE SETTINGS</Text>
-
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons name="download-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Download Languages</Text>
-                <Text style={styles.menuSubtitle}>
-                  Download languages for offline use
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons name="refresh-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Auto-detect Language</Text>
-                <Text style={styles.menuSubtitle}>
-                  Use device language settings
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </View>
   );
