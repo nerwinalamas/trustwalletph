@@ -329,43 +329,4 @@ const styles = StyleSheet.create({
   selectedSubtext: {
     color: "#3b82f6",
   },
-  menuItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  menuLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  menuIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
-  icon: {
-    backgroundColor: "#e0e7ff",
-  },
-  menuTextContainer: {
-    flex: 1,
-  },
-  menuTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#0f172a",
-    marginBottom: 2,
-  },
-  menuSubtitle: {
-    fontSize: 14,
-    color: "#64748b",
-  },
 });
