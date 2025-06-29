@@ -93,28 +93,6 @@ export default function Settings() {
 
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => router.push("/(settings)/notifications")}
-          >
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons
-                  name="notifications-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Notifications</Text>
-                <Text style={styles.menuSubtitle}>
-                  Manage notification preferences
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#64748b" />
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.menuItem}
             onPress={() => router.push("/(settings)/language")}
           >
             <View style={styles.menuLeft}>
