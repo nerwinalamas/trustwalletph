@@ -120,10 +120,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 80, // Add padding for bottom nav
   },
   pageTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "700",
     color: "#0f172a",
     marginBottom: 20,
