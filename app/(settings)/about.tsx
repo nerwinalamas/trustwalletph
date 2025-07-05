@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Application from "expo-application";
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Platform,
   ScrollView,
   StyleSheet,
@@ -11,12 +13,29 @@ import {
 } from "react-native";
 
 export default function About() {
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   const appName = Application.applicationName || "TrustWalletPH";
   const appVersion = Application.nativeApplicationVersion || "1.0.0";
   const appBuild = Application.nativeBuildVersion || "2024.01.15";
   const platformName = Platform.OS === "ios" ? "iOS" : "Android";
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500); // 500ms delay (half second)
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -175,6 +194,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f8fafc",
+  },
+  loading: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     flexDirection: "row",
