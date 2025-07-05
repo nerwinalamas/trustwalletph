@@ -20,7 +20,7 @@ export default function Privacy() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000); // 1 second delay
+    }, 500); // 500ms delay (half second)
 
     return () => clearTimeout(timer);
   }, []);
