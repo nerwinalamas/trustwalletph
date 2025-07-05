@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import {
+  ActivityIndicator,
   FlatList,
   ScrollView,
   StyleSheet,
@@ -146,7 +147,11 @@ export default function Home() {
             </TouchableOpacity>
           </View>
 
-          {transactions?.length === 0 ? (
+          {!transactions ? (
+            <View style={styles.loading}>
+              <ActivityIndicator size="large" color="#1e3a8a" />
+            </View>
+          ) : transactions?.length === 0 ? (
             <View style={styles.emptyState}>
               <Ionicons name="receipt-outline" size={48} color="#9ca3af" />
               <Text style={styles.emptyStateTitle}>No transactions yet</Text>
@@ -174,6 +179,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f8fafc",
+  },
+  loading: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   content: {
     flex: 1,
