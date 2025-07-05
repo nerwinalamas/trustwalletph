@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import {
   StatusBar,
   StyleSheet,
@@ -20,9 +19,9 @@ export default function Header() {
           <Text style={styles.logoText}>TrustWalletPH</Text>
         </View>
         <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.iconButton}>
+          {/* <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="notifications-outline" size={24} color="#1e3a8a" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity>
             <Avatar size={32} />
           </TouchableOpacity>
