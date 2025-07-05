@@ -93,27 +93,6 @@ export default function Settings() {
 
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => router.push("/(settings)/language")}
-          >
-            <View style={styles.menuLeft}>
-              <View style={[styles.menuIcon, styles.icon]}>
-                <Ionicons name="language-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.menuTextContainer}>
-                <Text style={styles.menuTitle}>Language</Text>
-                <Text style={styles.menuSubtitle}>English (US)</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#64748b" />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Support Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>SUPPORT</Text>
-
-          <TouchableOpacity
-            style={styles.menuItem}
             onPress={() => router.push("/(settings)/help-center")}
           >
             <View style={styles.menuLeft}>
