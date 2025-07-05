@@ -4,11 +4,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 
 export default function AccountLimits() {
@@ -95,8 +96,8 @@ export default function AccountLimits() {
 
   if (!limits) {
     return (
-      <View style={styles.container}>
-        <Text>Loading limits...</Text>
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
@@ -358,6 +359,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f8fafc",
+  },
+  loading: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     flexDirection: "row",
