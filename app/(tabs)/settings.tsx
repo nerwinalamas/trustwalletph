@@ -225,10 +225,10 @@ const styles = StyleSheet.create({
     color: "#64748b",
   },
   logoutButton: {
+    height: 40,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 16,
     backgroundColor: "#fee2e2",
     borderRadius: 12,
     marginBottom: 24,
