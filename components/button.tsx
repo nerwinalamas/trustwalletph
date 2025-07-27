@@ -1,8 +1,8 @@
 import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
 } from "react-native";
 
 interface ButtonProps {
@@ -11,6 +11,7 @@ interface ButtonProps {
   variant?: "primary" | "secondary";
   disabled?: boolean;
   loading?: boolean;
+  flex?: boolean;
 }
 
 export default function Button({
@@ -19,21 +20,29 @@ export default function Button({
   variant = "primary",
   disabled = false,
   loading = false,
+  flex = false,
 }: ButtonProps) {
   const getButtonStyle = () => {
     if (variant === "primary") {
       return [
-        styles.nextButton,
+        styles.button,
+        flex && { flex: 1 },
+        styles.primaryButton,
         (disabled || loading) && styles.disabledButton,
       ];
     }
-    return styles.backStepButton;
+    return [
+      styles.button,
+      flex && { flex: 1 },
+      styles.secondaryButton,
+    ];
   };
 
   const getTextStyle = () => {
-    return variant === "primary"
-      ? styles.nextButtonText
-      : styles.backStepButtonText;
+    return [
+      styles.buttonText,
+      variant === "primary" ? styles.primaryText : styles.secondaryText,
+    ];
   };
 
   return (
@@ -53,34 +62,31 @@ export default function Button({
 }
 
 const styles = StyleSheet.create({
-  nextButton: {
+  button: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#4f46e5",
     borderRadius: 8,
     paddingVertical: 14,
     paddingHorizontal: 24,
+  },
+  primaryButton: {
+    backgroundColor: "#4f46e5",
+  },
+  secondaryButton: {
+    backgroundColor: "transparent",
   },
   disabledButton: {
     backgroundColor: "#a5b4fc",
   },
-  nextButtonText: {
+  buttonText: {
     fontSize: 16,
     fontWeight: "600",
+  },
+  primaryText: {
     color: "#ffffff",
   },
-  backStepButton: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-  },
-  backStepButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
+  secondaryText: {
     color: "#4f46e5",
   },
 });
