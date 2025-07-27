@@ -42,3 +42,52 @@ export const companiesData: Record<string, Company[]> = {
     { id: "ateneo", name: "Ateneo de Manila University", type: "School" },
   ],
 };
+
+export const companyDetails: Record<
+  string,
+  { name: string; type: string; icon: string; color: string }
+> = {
+  meralco: {
+    name: "Manila Electric Company (MERALCO)",
+    type: "Electric",
+    icon: "flash",
+    color: "#f59e0b",
+  },
+  davao: {
+    name: "Davao Light & Power Co.",
+    type: "Electric",
+    icon: "flash",
+    color: "#f59e0b",
+  },
+  manila_water: {
+    name: "Manila Water Company",
+    type: "Water",
+    icon: "water",
+    color: "#3b82f6",
+  },
+  maynilad: {
+    name: "Maynilad Water Services",
+    type: "Water",
+    icon: "water",
+    color: "#3b82f6",
+  },
+  pldt: { name: "PLDT", type: "Internet", icon: "wifi", color: "#10b981" },
+  globe: {
+    name: "Globe Telecom",
+    type: "Internet",
+    icon: "wifi",
+    color: "#10b981",
+  },
+  up: {
+    name: "University of the Philippines",
+    type: "School",
+    icon: "school",
+    color: "#8b5cf6",
+  },
+  ust: {
+    name: "University of Santo Tomas",
+    type: "School",
+    icon: "school",
+    color: "#8b5cf6",
+  },
+};
