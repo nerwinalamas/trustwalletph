@@ -1,5 +1,6 @@
 import { companiesData } from "@/assets/data";
 import BackHeader from "@/components/back-header";
+import Input from "@/components/input";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -7,9 +8,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 export interface Company {
@@ -37,23 +37,15 @@ export default function CategoryList() {
 
       <View style={styles.mainContent}>
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          <View style={styles.searchContainer}>
-            <Ionicons
-              name="search"
-              size={20}
-              color="#9ca3af"
-              style={styles.searchIcon}
-            />
-            <TextInput
-              style={styles.searchInput}
-              placeholder={`Search ${categoryName.toLowerCase()} companies`}
-              placeholderTextColor="#9ca3af"
-              autoCapitalize="none"
-              autoCorrect={false}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-          </View>
+          <Input
+            variant="search"
+            leftIcon="search"
+            placeholder={`Search ${categoryName.toLowerCase()} companies`}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
 
           <View style={styles.line} />
 
@@ -113,27 +105,6 @@ const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
     paddingHorizontal: 16,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: 48,
-    fontSize: 16,
-    color: "#0f172a",
   },
   line: {
     height: 1,

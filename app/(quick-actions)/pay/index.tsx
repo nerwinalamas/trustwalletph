@@ -1,5 +1,6 @@
 import { categories, companiesData } from "@/assets/data";
 import BackHeader from "@/components/back-header";
+import Input from "@/components/input";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -7,7 +8,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -46,23 +46,15 @@ export default function Pay() {
 
       <View style={styles.mainContent}>
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          <View style={styles.searchContainer}>
-            <Ionicons
-              name="search"
-              size={20}
-              color="#9ca3af"
-              style={styles.searchIcon}
-            />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search companies..."
-              placeholderTextColor="#9ca3af"
-              autoCapitalize="none"
-              autoCorrect={false}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-          </View>
+          <Input
+            variant="search"
+            leftIcon="search"
+            placeholder="Search companies..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
 
           {showSearchResults && (
             <>
@@ -163,27 +155,6 @@ const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
     paddingHorizontal: 16,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: 48,
-    fontSize: 16,
-    color: "#0f172a",
   },
   line: {
     height: 1,

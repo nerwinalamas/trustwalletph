@@ -1,5 +1,6 @@
 import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
+import Input from "@/components/input";
 import { api } from "@/convex/_generated/api";
 import { SERVICE_FEE } from "@/convex/payments";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,7 +12,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -151,58 +151,40 @@ export default function Payment() {
           </View>
 
           <View style={styles.formContainer}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Account/Reference Number</Text>
-              <Controller
-                control={control}
-                name="accountNumber"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[
-                      styles.textInput,
-                      errors.accountNumber ? styles.errorInput : {},
-                    ]}
-                    placeholder="Enter account or reference number"
-                    placeholderTextColor="#9ca3af"
-                    value={value}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                  />
-                )}
-              />
-
-              {errors.accountNumber && (
-                <Text style={styles.errorText}>
-                  {errors.accountNumber.message}
-                </Text>
-              )}
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Amount</Text>
-              <View style={styles.amountInputContainer}>
-                <Text style={styles.currencySymbol}>₱</Text>
-                <Controller
-                  control={control}
-                  name="amount"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      style={styles.amountInput}
-                      placeholder="0.00"
-                      placeholderTextColor="#9ca3af"
-                      keyboardType="decimal-pad"
-                      value={value}
-                      onChangeText={onChange}
-                      onBlur={onBlur}
-                    />
-                  )}
+            <Controller
+              control={control}
+              name="accountNumber"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  label="Account/Reference Number"
+                  placeholder="Enter account or reference number"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  error={errors.accountNumber?.message}
+                  required
                 />
-              </View>
-
-              {errors.amount && (
-                <Text style={styles.errorText}>{errors.amount.message}</Text>
               )}
-            </View>
+            />
+
+            <Controller
+              control={control}
+              name="amount"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  label="Amount"
+                  variant="amount"
+                  prefix="₱"
+                  placeholder="0.00"
+                  keyboardType="decimal-pad"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  error={errors.amount?.message}
+                  required
+                />
+              )}
+            />
           </View>
 
           <View style={styles.summaryContainer}>
@@ -285,51 +267,6 @@ const styles = StyleSheet.create({
     gap: 20,
     marginBottom: 24,
   },
-  inputGroup: {
-    gap: 8,
-  },
-  inputLabel: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#0f172a",
-  },
-  textInput: {
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: "#0f172a",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  amountInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  currencySymbol: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#0f172a",
-    marginRight: 4,
-  },
-  amountInput: {
-    flex: 1,
-    fontSize: 16,
-    color: "#0f172a",
-  },
   summaryContainer: {
     backgroundColor: "#ffffff",
     borderRadius: 12,
@@ -383,15 +320,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#ffffff",
-  },
-  errorText: {
-    color: "#ef4444",
-    fontSize: 12,
-    marginTop: -12,
-    marginBottom: 4,
-  },
-  errorInput: {
-    borderColor: "#ef4444",
-    borderWidth: 1,
   },
 });

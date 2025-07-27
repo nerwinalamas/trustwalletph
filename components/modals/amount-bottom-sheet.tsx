@@ -1,5 +1,6 @@
 import Button from "@/components/button";
-import { Modal, StyleSheet, Text, TextInput, View } from "react-native";
+import Input from "@/components/input";
+import { Modal, StyleSheet, Text, View } from "react-native";
 
 interface AmountBottomSheetProps {
   visible: boolean;
@@ -27,18 +28,15 @@ export default function AmountBottomsheet({
         <View style={styles.bottomSheetContainer}>
           <Text style={styles.bottomSheetTitle}>Enter Amount</Text>
 
-          <View style={styles.amountInputContainer}>
-            <Text style={styles.currencySymbol}>₱</Text>
-            <TextInput
-              style={styles.amountInput}
-              placeholder="0.00"
-              placeholderTextColor="#9ca3af"
-              keyboardType="decimal-pad"
-              value={amount}
-              onChangeText={setAmount}
-              autoFocus={true}
-            />
-          </View>
+          <Input
+            variant="amount"
+            prefix="₱"
+            placeholder="0.00"
+            keyboardType="decimal-pad"
+            value={amount}
+            onChangeText={setAmount}
+            autoFocus={true}
+          />
 
           <View style={styles.bottomSheetButtons}>
             <Button
@@ -79,29 +77,6 @@ const styles = StyleSheet.create({
     color: "#0f172a",
     marginBottom: 24,
     textAlign: "center",
-  },
-  amountInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 4,
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-    marginBottom: 24,
-  },
-  currencySymbol: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#0f172a",
-    marginRight: 8,
-  },
-  amountInput: {
-    flex: 1,
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#0f172a",
   },
   bottomSheetButtons: {
     flexDirection: "row",

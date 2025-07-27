@@ -1,15 +1,14 @@
+import Input from "@/components/input";
 import RecipientCard from "@/components/recipient-card";
 import StepHeader from "@/components/step-header";
 import { SendMoneyFormData } from "@/utils/schema";
-import { Ionicons } from "@expo/vector-icons";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
 import { Recipient } from "./send";
 
@@ -52,45 +51,34 @@ export default function StepOne({
         description="Enter email address or select from recent"
       />
 
-      <View style={styles.searchContainer}>
-        <Ionicons
-          name="search"
-          size={20}
-          color="#9ca3af"
-          style={styles.searchIcon}
-        />
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Email address"
-              placeholderTextColor="#9ca3af"
-              value={value}
-              onChangeText={(text) => {
-                onChange(text);
-                if (selectedRecipient && text !== selectedRecipient.email) {
-                  setSelectedRecipient(null);
-                }
-                setSearchError("");
-              }}
-              onBlur={onBlur}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          )}
-        />
-      </View>
-
-      {errors.email && (
-        <Text style={styles.errorText}>{errors.email.message}</Text>
-      )}
-
-      {searchError !== "" && (
-        <Text style={styles.errorText}>{searchError}</Text>
-      )}
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Input
+            variant="search"
+            leftIcon="search"
+            placeholder="Email address"
+            value={value}
+            onChangeText={(text) => {
+              onChange(text);
+              if (selectedRecipient && text !== selectedRecipient.email) {
+                setSelectedRecipient(null);
+              }
+              setSearchError("");
+            }}
+            onBlur={onBlur}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            error={
+              errors.email?.message ||
+              (searchError !== "" ? searchError : undefined)
+            }
+            containerStyle={{ marginBottom: 24 }}
+          />
+        )}
+      />
 
       {isSearching && (
         <View style={styles.loadingContainer}>
@@ -124,28 +112,6 @@ export default function StepOne({
 }
 
 const styles = StyleSheet.create({
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginBottom: 24,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: 48,
-    fontSize: 16,
-    color: "#0f172a",
-  },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "600",
@@ -164,13 +130,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,
-  },
-  errorText: {
-    color: "#ef4444",
-    fontSize: 12,
-    marginTop: -16,
-    marginBottom: 16,
-    paddingHorizontal: 12,
   },
   selectedRecipientPreview: {
     flexDirection: "row",
