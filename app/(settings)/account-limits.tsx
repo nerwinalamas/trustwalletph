@@ -1,20 +1,17 @@
+import BackHeader from "@/components/back-header";
 import { api } from "@/convex/_generated/api";
 import { formatCurrency } from "@/utils/format-currency";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
-import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 
 export default function AccountLimits() {
-  const router = useRouter();
-
   const limits = useQuery(api.limits.getUserLimits);
 
   // const handleIncreaseLimit = (limitType: string) => {
@@ -104,15 +101,7 @@ export default function AccountLimits() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <Ionicons name="arrow-back" size={24} color="#1e3a8a" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Account Limits</Text>
-      </View>
+      <BackHeader title="Account Limits" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Account Status */}
@@ -364,21 +353,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#0f172a",
   },
   content: {
     flex: 1,

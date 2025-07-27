@@ -1,5 +1,5 @@
+import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -11,7 +11,6 @@ import {
 } from "react-native";
 
 export default function HelpCenter() {
-  const router = useRouter();
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -70,15 +69,7 @@ export default function HelpCenter() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <Ionicons name="arrow-back" size={24} color="#1e3a8a" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Help Center</Text>
-      </View>
+      <BackHeader title="Help Center" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Quick Actions */}
@@ -263,21 +254,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#0f172a",
   },
   content: {
     flex: 1,

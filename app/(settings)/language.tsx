@@ -1,5 +1,5 @@
+import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
@@ -23,7 +23,6 @@ interface LanguageItemProps {
 }
 
 export default function Language() {
-  const router = useRouter();
   const [selectedLanguage, setSelectedLanguage] = useState("en-US");
 
   const languages = [
@@ -206,15 +205,7 @@ export default function Language() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <Ionicons name="arrow-back" size={24} color="#1e3a8a" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Language</Text>
-      </View>
+      <BackHeader title="Language" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Popular Languages */}
@@ -253,22 +244,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f8fafc",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
-    backgroundColor: "#ffffff",
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#0f172a",
   },
   content: {
     flex: 1,

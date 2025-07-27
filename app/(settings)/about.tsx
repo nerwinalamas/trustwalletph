@@ -1,6 +1,6 @@
+import BackHeader from "@/components/back-header";
 import { Ionicons } from "@expo/vector-icons";
 import * as Application from "expo-application";
-import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -14,7 +14,6 @@ import {
 
 export default function About() {
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   const appName = Application.applicationName || "TrustWalletPH";
   const appVersion = Application.nativeApplicationVersion || "1.0.0";
@@ -39,15 +38,7 @@ export default function About() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <Ionicons name="arrow-back" size={24} color="#1e3a8a" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>About</Text>
-      </View>
+      <BackHeader title="About" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* App Info Section */}
@@ -199,21 +190,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#0f172a",
   },
   content: {
     flex: 1,

@@ -1,16 +1,9 @@
+import BackHeader from "@/components/back-header";
 import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
-import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Switch, Text, View } from "react-native";
 
 interface NotificationToggleSettings {
   pushNotifications: boolean;
@@ -29,7 +22,6 @@ type NotificationSettings = NotificationToggleSettings &
   NotificationTimeSettings;
 
 export default function Notifications() {
-  const router = useRouter();
   const preferences = useQuery(api.notifications.getNotificationPreferences);
   const updatePreferences = useMutation(
     api.notifications.updateNotificationPreferences
@@ -142,15 +134,7 @@ export default function Notifications() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <Ionicons name="arrow-back" size={24} color="#1e3a8a" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Notifications</Text>
-      </View>
+      <BackHeader title="Notifications" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* General Notifications */}
@@ -236,21 +220,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f8fafc",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#0f172a",
   },
   content: {
     flex: 1,

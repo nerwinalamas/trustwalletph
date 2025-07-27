@@ -1,6 +1,6 @@
+import BackHeader from "@/components/back-header";
 import { usePrivacyStore } from "@/stores/privacy-store";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -8,12 +8,10 @@ import {
   StyleSheet,
   Switch,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 
 export default function Privacy() {
-  const router = useRouter();
   const { settings, toggleSetting } = usePrivacyStore();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,15 +33,7 @@ export default function Privacy() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <Ionicons name="arrow-back" size={24} color="#1e3a8a" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Privacy</Text>
-      </View>
+      <BackHeader title="Privacy" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Profile Privacy Section */}
@@ -121,21 +111,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#0f172a",
   },
   content: {
     flex: 1,
