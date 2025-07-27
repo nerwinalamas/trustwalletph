@@ -1,16 +1,12 @@
 import { companiesData } from "@/assets/data";
 import BackHeader from "@/components/back-header";
+import CompanyItem from "@/components/cards/company-item";
+import EmptyState from "@/components/empty-state";
 import Input from "@/components/input";
-import { Ionicons } from "@expo/vector-icons";
-import { Link, useLocalSearchParams } from "expo-router";
+import Separator from "@/components/separator";
+import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 export interface Company {
   id: string;
@@ -31,6 +27,20 @@ export default function CategoryList() {
     company.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const getEmptyStateProps = () => {
+    if (searchQuery.trim() !== "") {
+      return {
+        title: "No companies found",
+        description: "No results match your search query",
+      };
+    }
+    return {
+      icon: "business-outline" as const,
+      title: "No companies available",
+      description: "No companies available for this category",
+    };
+  };
+
   return (
     <View style={styles.container}>
       <BackHeader title="Category List" />
@@ -47,46 +57,16 @@ export default function CategoryList() {
             autoCorrect={false}
           />
 
-          <View style={styles.line} />
+          <Separator />
 
           {filteredCompanies.length > 0 ? (
             <View style={styles.companiesList}>
               {filteredCompanies.map((company) => (
-                <Link
-                  key={company.id}
-                  href={{
-                    pathname: "/(quick-actions)/pay/[categoryId]/[companyId]",
-                    params: {
-                      categoryId: categoryName,
-                      companyId: company.id,
-                    },
-                  }}
-                  asChild
-                >
-                  <TouchableOpacity style={styles.companyItem}>
-                    <View style={styles.companyIcon}>
-                      <Ionicons name="business" size={20} color="#3b82f6" />
-                    </View>
-                    <Text style={styles.companyName}>{company.name}</Text>
-                  </TouchableOpacity>
-                </Link>
+                <CompanyItem key={company.id} company={company} />
               ))}
             </View>
           ) : (
-            <View style={styles.emptyState}>
-              <Ionicons
-                name="search-outline"
-                size={48}
-                color="#cbd5e1"
-                style={styles.emptyIcon}
-              />
-              <Text style={styles.emptyTitle}>No companies found</Text>
-              <Text style={styles.emptyText}>
-                {searchQuery.trim() !== ""
-                  ? "No results match your search query"
-                  : "No companies available for this category"}
-              </Text>
-            </View>
+            <EmptyState {...getEmptyStateProps()} />
           )}
         </ScrollView>
       </View>
@@ -106,62 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
   },
-  line: {
-    height: 1,
-    backgroundColor: "#e2e8f0",
-    marginVertical: 16,
-  },
   companiesList: {
     gap: 8,
-  },
-  companyItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    padding: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  companyIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "#eff6ff",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-  },
-  companyName: {
-    flex: 1,
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#0f172a",
-  },
-  emptyState: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-  },
-  emptyIcon: {
-    marginBottom: 16,
-  },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#0f172a",
-    marginBottom: 8,
-    textAlign: "center",
-  },
-  emptyText: {
-    fontSize: 14,
-    color: "#64748b",
-    textAlign: "center",
-    lineHeight: 20,
   },
 });
