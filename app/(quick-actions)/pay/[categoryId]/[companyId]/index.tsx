@@ -1,5 +1,7 @@
+import { companyDetails } from "@/assets/data";
 import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
+import Button from "@/components/button";
 import Input from "@/components/input";
 import { api } from "@/convex/_generated/api";
 import { SERVICE_FEE } from "@/convex/payments";
@@ -8,63 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { z } from "zod";
-
-const companyDetails: Record<
-  string,
-  { name: string; type: string; icon: string; color: string }
-> = {
-  meralco: {
-    name: "Manila Electric Company (MERALCO)",
-    type: "Electric",
-    icon: "flash",
-    color: "#f59e0b",
-  },
-  davao: {
-    name: "Davao Light & Power Co.",
-    type: "Electric",
-    icon: "flash",
-    color: "#f59e0b",
-  },
-  manila_water: {
-    name: "Manila Water Company",
-    type: "Water",
-    icon: "water",
-    color: "#3b82f6",
-  },
-  maynilad: {
-    name: "Maynilad Water Services",
-    type: "Water",
-    icon: "water",
-    color: "#3b82f6",
-  },
-  pldt: { name: "PLDT", type: "Internet", icon: "wifi", color: "#10b981" },
-  globe: {
-    name: "Globe Telecom",
-    type: "Internet",
-    icon: "wifi",
-    color: "#10b981",
-  },
-  up: {
-    name: "University of the Philippines",
-    type: "School",
-    icon: "school",
-    color: "#8b5cf6",
-  },
-  ust: {
-    name: "University of Santo Tomas",
-    type: "School",
-    icon: "school",
-    color: "#8b5cf6",
-  },
-};
 
 const paymentSchema = z.object({
   accountNumber: z
@@ -188,28 +135,39 @@ export default function Payment() {
           </View>
 
           <View style={styles.summaryContainer}>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Amount</Text>
-              <Text style={styles.summaryValue}>₱{amountValue.toFixed(2)}</Text>
-            </View>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Service Fee</Text>
-              <Text style={styles.summaryValue}>₱{SERVICE_FEE.toFixed(2)}</Text>
-            </View>
-            <View style={[styles.summaryRow, styles.totalRow]}>
-              <Text style={styles.totalLabel}>Total</Text>
-              <Text style={styles.totalValue}>₱{totalAmount.toFixed(2)}</Text>
-            </View>
+            {[
+              { label: "Amount", value: `₱${amountValue.toFixed(2)}` },
+              { label: "Service Fee", value: `₱${SERVICE_FEE.toFixed(2)}` },
+              { label: "Total", value: `₱${totalAmount.toFixed(2)}` },
+            ].map((item, index, array) => {
+              const isLastItem = index === array.length - 1;
+              return (
+                <View
+                  key={index}
+                  style={[styles.summaryRow, isLastItem && styles.totalRow]}
+                >
+                  <Text
+                    style={isLastItem ? styles.totalLabel : styles.summaryLabel}
+                  >
+                    {item.label}
+                  </Text>
+                  <Text
+                    style={isLastItem ? styles.totalValue : styles.summaryValue}
+                  >
+                    {item.value}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
 
           <Alerts description="Payment processing may take up to 24 hours. You will receive a notification once the payment is complete." />
 
-          <TouchableOpacity
-            style={styles.payButton}
+          <Button
+            title="Pay Now"
             onPress={handleSubmit(onSubmit)}
-          >
-            <Text style={styles.payButtonText}>Pay Now</Text>
-          </TouchableOpacity>
+            variant="primary"
+          />
         </ScrollView>
       </View>
     </View>
@@ -308,17 +266,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
     color: "#0f172a",
-  },
-  payButton: {
-    backgroundColor: "#4f46e5",
-    borderRadius: 8,
-    paddingVertical: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  payButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#ffffff",
   },
 });
