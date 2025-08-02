@@ -36,35 +36,6 @@ export default function Privacy() {
       <BackHeader title="Privacy" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Profile Privacy Section */}
-        {/* <View style={styles.section}>
-          <Text style={styles.sectionTitle}>PROFILE PRIVACY</Text>
-
-          <View style={styles.settingCard}>
-            <View style={styles.settingRow}>
-              <View style={styles.settingLeft}>
-                <View
-                  style={[styles.settingIcon, { backgroundColor: "#e0e7ff" }]}
-                >
-                  <Ionicons name="person-outline" size={20} color="#1e3a8a" />
-                </View>
-                <View style={styles.settingInfo}>
-                  <Text style={styles.settingTitle}>Profile Visibility</Text>
-                  <Text style={styles.settingDescription}>
-                    Make your profile visible to other users
-                  </Text>
-                </View>
-              </View>
-              <Switch
-                value={settings.profileVisibility}
-                onValueChange={() => toggleSetting("profileVisibility")}
-                trackColor={{ false: "#e2e8f0", true: "#3b82f6" }}
-                thumbColor={settings.profileVisibility ? "#ffffff" : "#94a3b8"}
-              />
-            </View>
-          </View>
-        </View> */}
-
         {/* Transaction Privacy Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>TRANSACTION PRIVACY</Text>
@@ -116,12 +87,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-  },
-  pageTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#0f172a",
-    marginBottom: 20,
   },
   section: {
     marginBottom: 24,
