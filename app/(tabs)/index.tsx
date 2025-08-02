@@ -9,7 +9,6 @@ import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
   FlatList,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -28,10 +27,63 @@ export interface Transaction {
   recipientId?: string;
 }
 
+interface QuickAction {
+  id: string;
+  title: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  route: string;
+  isSpecial?: boolean;
+}
+
 export default function Home() {
   const transactions = useQuery(api.transactions.getUserTransactions);
   const router = useRouter();
   const { settings } = usePrivacyStore();
+
+  const quickActions: QuickAction[] = [
+    {
+      id: "send",
+      title: "Send",
+      icon: "arrow-up-outline",
+      route: "/(quick-actions)/send",
+    },
+    {
+      id: "receive",
+      title: "Receive",
+      icon: "arrow-down-outline",
+      route: "/(quick-actions)/receive",
+    },
+    {
+      id: "scan",
+      title: "Scan",
+      icon: "qr-code-outline",
+      route: "/(quick-actions)/scan",
+      isSpecial: true,
+    },
+    {
+      id: "pay",
+      title: "Pay",
+      icon: "card-outline",
+      route: "/(quick-actions)/pay",
+    },
+  ];
+
+  const recentTransactions =
+    transactions
+      ?.sort((a, b) => b._creationTime - a._creationTime)
+      .slice(0, 4) || [];
+
+  const renderQuickAction = ({ item }: { item: QuickAction }) => (
+    <TouchableOpacity
+      style={styles.actionButton}
+      onPress={() => router.push(item.route as any)}
+    >
+      <View style={[styles.actionIcon, item.isSpecial && styles.scanIcon]}>
+        <Ionicons name={item.icon} size={20} color="#1e3a8a" />
+      </View>
+      <Text style={styles.actionText}>{item.title}</Text>
+    </TouchableOpacity>
+  );
 
   const renderTransactionItem = ({ item }: { item: Transaction }) => {
     const isSend = item.transactionType === "send";
@@ -86,91 +138,74 @@ export default function Home() {
     );
   };
 
+  const ListHeaderComponent = () => (
+    <>
+      {/* Balance Card */}
+      <BalanceCard />
+
+      {/* Quick Actions */}
+      <View style={styles.quickActionsContainer}>
+        <FlatList
+          data={quickActions}
+          renderItem={renderQuickAction}
+          keyExtractor={(item) => item.id}
+          horizontal={false}
+          numColumns={4}
+          scrollEnabled={false}
+          columnWrapperStyle={styles.quickActionsRow}
+        />
+      </View>
+
+      {/* Transactions Header */}
+      <View style={styles.transactionsHeader}>
+        <Text style={styles.transactionsTitle}>Recent Transactions</Text>
+        <TouchableOpacity onPress={() => router.replace("/(tabs)/history")}>
+          <Text style={styles.seeAllText}>See All</Text>
+        </TouchableOpacity>
+      </View>
+    </>
+  );
+
+  const renderEmptyState = () => (
+    <View style={styles.emptyState}>
+      <Ionicons name="receipt-outline" size={48} color="#9ca3af" />
+      <Text style={styles.emptyStateTitle}>No transactions yet</Text>
+      <Text style={styles.emptyStateText}>
+        Your recent transactions will appear here
+      </Text>
+    </View>
+  );
+
+  const renderLoadingState = () => (
+    <View style={styles.loadingState}>
+      <ActivityIndicator size="large" color="#1e3a8a" />
+    </View>
+  );
+
+  if (!transactions) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <ListHeaderComponent />
+        {renderLoadingState()}
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {/* Header */}
       <Header />
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Balance Card */}
-        <BalanceCard />
-
-        {/* Quick Actions */}
-        <View style={styles.quickActions}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => router.push("/(quick-actions)/send")}
-          >
-            <View style={styles.actionIcon}>
-              <Ionicons name="arrow-up-outline" size={20} color="#1e3a8a" />
-            </View>
-            <Text style={styles.actionText}>Send</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => router.push("/(quick-actions)/receive")}
-          >
-            <View style={styles.actionIcon}>
-              <Ionicons name="arrow-down-outline" size={20} color="#1e3a8a" />
-            </View>
-            <Text style={styles.actionText}>Receive</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => router.push("/(quick-actions)/scan")}
-          >
-            <View style={[styles.actionIcon, styles.scanIcon]}>
-              <Ionicons name="qr-code-outline" size={20} color="#1e3a8a" />
-            </View>
-            <Text style={styles.actionText}>Scan</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => router.push("/(quick-actions)/pay")}
-          >
-            <View style={styles.actionIcon}>
-              <Ionicons name="card-outline" size={20} color="#1e3a8a" />
-            </View>
-            <Text style={styles.actionText}>Pay</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Recent Transactions */}
-        <View style={styles.transactionsContainer}>
-          <View style={styles.transactionsHeader}>
-            <Text style={styles.transactionsTitle}>Recent Transactions</Text>
-            <TouchableOpacity onPress={() => router.replace("/(tabs)/history")}>
-              <Text style={styles.seeAllText}>See All</Text>
-            </TouchableOpacity>
-          </View>
-
-          {!transactions ? (
-            <View style={styles.loading}>
-              <ActivityIndicator size="large" color="#1e3a8a" />
-            </View>
-          ) : transactions?.length === 0 ? (
-            <View style={styles.emptyState}>
-              <Ionicons name="receipt-outline" size={48} color="#9ca3af" />
-              <Text style={styles.emptyStateTitle}>No transactions yet</Text>
-              <Text style={styles.emptyStateText}>
-                Your recent transactions will appear here
-              </Text>
-            </View>
-          ) : (
-            <FlatList
-              data={transactions
-                ?.sort((a, b) => b._creationTime - a._creationTime)
-                .slice(0, 4)}
-              renderItem={renderTransactionItem}
-              keyExtractor={(item) => item._id}
-              scrollEnabled={false}
-            />
-          )}
-        </View>
-      </ScrollView>
+      <FlatList
+        style={styles.content}
+        data={recentTransactions}
+        renderItem={renderTransactionItem}
+        keyExtractor={(item) => item._id}
+        ListHeaderComponent={ListHeaderComponent}
+        ListEmptyComponent={renderEmptyState}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainer}
+      />
     </View>
   );
 }
@@ -180,23 +215,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f8fafc",
   },
-  loading: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   content: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingTop: 16,
   },
-  quickActions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  contentContainer: {
+    paddingTop: 16,
+    paddingBottom: 24,
+  },
+  quickActionsContainer: {
     marginBottom: 24,
+  },
+  quickActionsRow: {
+    justifyContent: "space-between",
   },
   actionButton: {
     alignItems: "center",
+    flex: 1,
   },
   actionIcon: {
     width: 50,
@@ -215,10 +250,6 @@ const styles = StyleSheet.create({
     color: "#334155",
     fontWeight: "500",
   },
-  transactionsContainer: {
-    flex: 1,
-    paddingBottom: 16,
-  },
   transactionsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -233,6 +264,12 @@ const styles = StyleSheet.create({
   seeAllText: {
     color: "#4f46e5",
     fontWeight: "500",
+  },
+  loadingState: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
   },
   emptyState: {
     alignItems: "center",
@@ -251,9 +288,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#6b7280",
     textAlign: "center",
-  },
-  transactionsList: {
-    flex: 1,
   },
   transactionItem: {
     flexDirection: "row",
