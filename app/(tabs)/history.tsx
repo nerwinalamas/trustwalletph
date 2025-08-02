@@ -105,7 +105,7 @@ export default function History() {
   };
 
   const renderSectionHeader = ({ section }: { section: any }) => (
-    <View style={styles.dateSection}>
+    <View>
       <Text style={styles.dateLabel}>{section.title}</Text>
       <View style={styles.dateDivider} />
     </View>
@@ -134,6 +134,7 @@ export default function History() {
             </Text>
           </View>
         }
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -175,9 +176,6 @@ const styles = StyleSheet.create({
     color: "#6b7280",
     textAlign: "center",
   },
-  dateSection: {
-    marginBottom: 20,
-  },
   dateLabel: {
     fontSize: 16,
     fontWeight: "500",
@@ -187,7 +185,6 @@ const styles = StyleSheet.create({
   dateDivider: {
     height: 1,
     backgroundColor: "#e2e8f0",
-    marginBottom: 12,
   },
   transactionItem: {
     flexDirection: "row",
