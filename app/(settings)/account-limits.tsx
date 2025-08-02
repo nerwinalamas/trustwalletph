@@ -11,6 +11,43 @@ import {
   View,
 } from "react-native";
 
+interface ExplanationItem {
+  title: string;
+  description: string;
+}
+
+interface LimitCardProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  title: string;
+  current: number;
+  limit: number;
+  note: string;
+  showProgress?: boolean;
+}
+
+const EXPLANATIONS: ExplanationItem[] = [
+  {
+    title: "Daily Limits",
+    description:
+      "Maximum amount you can transact in a 24-hour period. Resets every midnight.",
+  },
+  {
+    title: "Monthly Limits",
+    description:
+      "Total transaction volume allowed per calendar month. Helps manage spending patterns.",
+  },
+  {
+    title: "Transaction Limits",
+    description:
+      "Maximum amount allowed for a single transaction. Provides security against large unauthorized transfers.",
+  },
+  {
+    title: "Balance Limits",
+    description:
+      "Maximum amount you can store in your account. Upgrade your account for higher limits.",
+  },
+];
+
 export default function AccountLimits() {
   const limits = useQuery(api.limits.getUserLimits);
 
@@ -63,6 +100,40 @@ export default function AccountLimits() {
     );
   };
 
+  const renderLimitCard = ({
+    icon,
+    title,
+    current,
+    limit,
+    note,
+    showProgress = true,
+  }: LimitCardProps) => (
+    <View style={styles.limitCard}>
+      <View style={styles.limitHeader}>
+        <View style={styles.limitIcon}>
+          <Ionicons name={icon} size={20} color="#1e3a8a" />
+        </View>
+        <View style={styles.limitInfo}>
+          <Text style={styles.limitTitle}>{title}</Text>
+          <Text style={styles.limitAmount}>
+            {limit > 0
+              ? `${formatCurrency(current)} / ${formatCurrency(limit)}`
+              : formatCurrency(current)}
+          </Text>
+        </View>
+      </View>
+      {showProgress && renderProgressBar(current, limit)}
+      <Text style={styles.limitNote}>{note}</Text>
+    </View>
+  );
+
+  const renderExplanationItem = (item: ExplanationItem) => (
+    <View key={item.title} style={styles.explanationItem}>
+      <Text style={styles.explanationTitle}>{item.title}</Text>
+      <Text style={styles.explanationText}>{item.description}</Text>
+    </View>
+  );
+
   if (!limits) {
     return (
       <View style={styles.loading}>
@@ -71,131 +142,58 @@ export default function AccountLimits() {
     );
   }
 
+  const limitCards: LimitCardProps[] = [
+    {
+      icon: "calendar-outline",
+      title: "Daily Transaction Limit",
+      current: limits.daily.used,
+      limit: limits.daily.limit,
+      note: `Resets at ${new Date(limits.daily.resetsAt).toLocaleTimeString()}`,
+    },
+    {
+      icon: "calendar-number-outline",
+      title: "Monthly Transaction Limit",
+      current: limits.monthly.used,
+      limit: limits.monthly.limit,
+      note: `Resets on ${new Date(limits.monthly.resetsAt).toLocaleDateString()}`,
+    },
+    {
+      icon: "card-outline",
+      title: "Single Transaction Limit",
+      current: 0,
+      limit: limits.singleTx,
+      note: "Maximum amount per transaction",
+    },
+    {
+      icon: "wallet-outline",
+      title: "Account Balance Limit",
+      current: limits.balance.current,
+      limit: limits.balance.limit,
+      note:
+        limits.balance.current >= limits.balance.limit * 0.9
+          ? "You're approaching your balance limit"
+          : "Maximum balance you can hold",
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <BackHeader title="Account Limits" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Current Limits */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>CURRENT LIMITS</Text>
 
-          {/* Daily Transaction Limit */}
-          <View style={styles.limitCard}>
-            <View style={styles.limitHeader}>
-              <View style={styles.limitIcon}>
-                <Ionicons name="calendar-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.limitInfo}>
-                <Text style={styles.limitTitle}>Daily Transaction Limit</Text>
-                <Text style={styles.limitAmount}>
-                  {formatCurrency(limits.daily.used)} /{" "}
-                  {formatCurrency(limits.daily.limit)}
-                </Text>
-              </View>
-            </View>
-            {renderProgressBar(limits.daily.used, limits.daily.limit)}
-            <Text style={styles.limitNote}>
-              Resets at {new Date(limits.daily.resetsAt).toLocaleTimeString()}
-            </Text>
-          </View>
-
-          {/* Monthly Transaction Limit */}
-          <View style={styles.limitCard}>
-            <View style={styles.limitHeader}>
-              <View style={styles.limitIcon}>
-                <Ionicons
-                  name="calendar-number-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </View>
-              <View style={styles.limitInfo}>
-                <Text style={styles.limitTitle}>Monthly Transaction Limit</Text>
-                <Text style={styles.limitAmount}>
-                  {formatCurrency(limits.monthly.used)} /{" "}
-                  {formatCurrency(limits.monthly.limit)}
-                </Text>
-              </View>
-            </View>
-            {renderProgressBar(limits.monthly.used, limits.monthly.limit)}
-            <Text style={styles.limitNote}>
-              Resets on {new Date(limits.monthly.resetsAt).toLocaleDateString()}
-            </Text>
-          </View>
-
-          {/* Single Transaction Limit */}
-          <View style={styles.limitCard}>
-            <View style={styles.limitHeader}>
-              <View style={styles.limitIcon}>
-                <Ionicons name="card-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.limitInfo}>
-                <Text style={styles.limitTitle}>Single Transaction Limit</Text>
-                <Text style={styles.limitAmount}>
-                  {formatCurrency(limits.singleTx)}
-                </Text>
-              </View>
-            </View>
-            {renderProgressBar(0, limits.singleTx)}
-            <Text style={styles.limitNote}>Maximum amount per transaction</Text>
-          </View>
-
-          {/* Account Balance Limit */}
-          <View style={styles.limitCard}>
-            <View style={styles.limitHeader}>
-              <View style={styles.limitIcon}>
-                <Ionicons name="wallet-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.limitInfo}>
-                <Text style={styles.limitTitle}>Account Balance Limit</Text>
-                <Text style={styles.limitAmount}>
-                  {formatCurrency(limits.balance.current)} /{" "}
-                  {formatCurrency(limits.balance.limit)}
-                </Text>
-              </View>
-            </View>
-            {renderProgressBar(limits.balance.current, limits.balance.limit)}
-            <Text style={styles.limitNote}>
-              {limits.balance.current >= limits.balance.limit * 0.9
-                ? "You're approaching your balance limit"
-                : "Maximum balance you can hold"}
-            </Text>
-          </View>
+          {limitCards.map((cardProps, index) => (
+            <View key={index}>{renderLimitCard(cardProps)}</View>
+          ))}
         </View>
 
-        {/* Limit Types */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>LIMIT TYPES EXPLAINED</Text>
 
           <View style={styles.explanationCard}>
-            <View style={styles.explanationItem}>
-              <Text style={styles.explanationTitle}>Daily Limits</Text>
-              <Text style={styles.explanationText}>
-                Maximum amount you can transact in a 24-hour period
-              </Text>
-            </View>
-
-            <View style={styles.explanationItem}>
-              <Text style={styles.explanationTitle}>Monthly Limits</Text>
-              <Text style={styles.explanationText}>
-                Total transaction volume allowed per calendar month
-              </Text>
-            </View>
-
-            <View style={styles.explanationItem}>
-              <Text style={styles.explanationTitle}>Transaction Limits</Text>
-              <Text style={styles.explanationText}>
-                Maximum amount allowed for a single transaction
-              </Text>
-            </View>
-
-            <View style={styles.explanationItem}>
-              <Text style={styles.explanationTitle}>Balance Limits</Text>
-              <Text style={styles.explanationText}>
-                Maximum amount you can store in your account
-              </Text>
-            </View>
+            {EXPLANATIONS.map(renderExplanationItem)}
           </View>
         </View>
       </ScrollView>
