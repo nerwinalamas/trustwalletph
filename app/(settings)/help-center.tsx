@@ -10,6 +10,120 @@ import {
   View,
 } from "react-native";
 
+interface ActionCardProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  iconColor: string;
+  iconBackgroundColor: string;
+  title: string;
+  subtitle: string;
+}
+
+interface CategoryCardProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  title: string;
+  subtitle: string;
+}
+
+interface ResourceItemProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  text: string;
+}
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const QUICK_ACTIONS: ActionCardProps[] = [
+  {
+    icon: "mail-outline",
+    iconColor: "#1e3a8a",
+    iconBackgroundColor: "#dbeafe",
+    title: "Contact Support",
+    subtitle: "Get help from our team",
+  },
+  {
+    icon: "call-outline",
+    iconColor: "#16a34a",
+    iconBackgroundColor: "#dcfce7",
+    title: "Call Support",
+    subtitle: "+1 (234) 567-8900",
+  },
+  {
+    icon: "chatbubble-outline",
+    iconColor: "#d97706",
+    iconBackgroundColor: "#fef3c7",
+    title: "Live Chat",
+    subtitle: "Chat with our support team",
+  },
+];
+
+const HELP_CATEGORIES: CategoryCardProps[] = [
+  {
+    icon: "person-outline",
+    title: "Account & Profile",
+    subtitle: "Manage your account settings",
+  },
+  {
+    icon: "card-outline",
+    title: "Payments & Billing",
+    subtitle: "Payment methods and billing",
+  },
+  {
+    icon: "shield-outline",
+    title: "Security & Privacy",
+    subtitle: "Keep your account secure",
+  },
+  {
+    icon: "bug-outline",
+    title: "Report a Problem",
+    subtitle: "Something not working?",
+  },
+];
+
+const ADDITIONAL_RESOURCES: ResourceItemProps[] = [
+  {
+    icon: "pulse-outline",
+    text: "System Status",
+  },
+  {
+    icon: "people-outline",
+    text: "Community Forum",
+  },
+  {
+    icon: "book-outline",
+    text: "User Guides",
+  },
+];
+
+const FAQ: FAQItem[] = [
+  {
+    question: "Lorem ipsum dolor sit amet.",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
+  },
+  {
+    question: "Lorem ipsum dolor sit amet.",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
+  },
+  {
+    question: "Lorem ipsum dolor sit amet.",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
+  },
+  {
+    question: "Lorem ipsum dolor sit amet.",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
+  },
+  {
+    question: "Lorem ipsum dolor sit amet.",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
+  },
+];
+
 export default function HelpCenter() {
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,38 +140,53 @@ export default function HelpCenter() {
     setExpandedFAQ(expandedFAQ === index ? null : index);
   };
 
-  const faqData = [
-    {
-      question: "How do I reset my password?",
-      answer:
-        "Go to the Security section in Settings and tap 'Change Password'. You'll need to verify your current password before setting a new one.",
-    },
-    {
-      question: "How do I update my payment method?",
-      answer:
-        "Navigate to Settings > Payment Methods to add, edit, or remove your payment options. All changes are secured with encryption.",
-    },
-    {
-      question: "Why can't I access my account?",
-      answer:
-        "This could be due to several reasons: incorrect login credentials, account suspension, or network issues. Try resetting your password or contact support.",
-    },
-    {
-      question: "How do I change my notification preferences?",
-      answer:
-        "Go to Settings > Notifications to customize which notifications you receive and how you want to be notified.",
-    },
-    {
-      question: "Is my data secure?",
-      answer:
-        "Yes, we use industry-standard encryption and security measures to protect your data. Review our Privacy Policy for detailed information.",
-    },
-    {
-      question: "How do I delete my account?",
-      answer:
-        "Account deletion is permanent and cannot be undone. Contact our support team to request account deletion, and we'll guide you through the process.",
-    },
-  ];
+  const renderActionCard = ({
+    icon,
+    iconColor,
+    iconBackgroundColor,
+    title,
+    subtitle,
+  }: ActionCardProps) => (
+    <TouchableOpacity style={styles.actionCard}>
+      <View style={styles.actionLeft}>
+        <View
+          style={[styles.actionIcon, { backgroundColor: iconBackgroundColor }]}
+        >
+          <Ionicons name={icon} size={24} color={iconColor} />
+        </View>
+        <View>
+          <Text style={styles.actionTitle}>{title}</Text>
+          <Text style={styles.actionSubtitle}>{subtitle}</Text>
+        </View>
+      </View>
+      <Ionicons name="chevron-forward" size={20} color="#64748b" />
+    </TouchableOpacity>
+  );
+
+  const renderCategoryCard = ({ icon, title, subtitle }: CategoryCardProps) => {
+    return (
+      <TouchableOpacity style={styles.categoryCard}>
+        <View style={styles.categoryLeft}>
+          <View style={styles.categoryIcon}>
+            <Ionicons name={icon} size={20} color="#1e3a8a" />
+          </View>
+          <View>
+            <Text style={styles.categoryTitle}>{title}</Text>
+            <Text style={styles.categorySubtitle}>{subtitle}</Text>
+          </View>
+        </View>
+        <Ionicons name="chevron-forward" size={20} color="#64748b" />
+      </TouchableOpacity>
+    );
+  };
+
+  const renderResourceItem = ({ icon, text }: ResourceItemProps) => (
+    <TouchableOpacity style={styles.resourceItem}>
+      <Ionicons name={icon} size={20} color="#1e3a8a" />
+      <Text style={styles.resourceText}>{text}</Text>
+      <Ionicons name="open-outline" size={16} color="#64748b" />
+    </TouchableOpacity>
+  );
 
   if (isLoading) {
     return (
@@ -72,59 +201,18 @@ export default function HelpCenter() {
       <BackHeader title="Help Center" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Quick Actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
 
-          <TouchableOpacity style={styles.actionCard}>
-            <View style={styles.actionLeft}>
-              <View style={[styles.actionIcon, { backgroundColor: "#dbeafe" }]}>
-                <Ionicons name="mail-outline" size={24} color="#1e3a8a" />
-              </View>
-              <View>
-                <Text style={styles.actionTitle}>Contact Support</Text>
-                <Text style={styles.actionSubtitle}>
-                  Get help from our team
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.actionCard}>
-            <View style={styles.actionLeft}>
-              <View style={[styles.actionIcon, { backgroundColor: "#dcfce7" }]}>
-                <Ionicons name="call-outline" size={24} color="#16a34a" />
-              </View>
-              <View>
-                <Text style={styles.actionTitle}>Call Support</Text>
-                <Text style={styles.actionSubtitle}>+1 (234) 567-8900</Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.actionCard}>
-            <View style={styles.actionLeft}>
-              <View style={[styles.actionIcon, { backgroundColor: "#fef3c7" }]}>
-                <Ionicons name="chatbubble-outline" size={24} color="#d97706" />
-              </View>
-              <View>
-                <Text style={styles.actionTitle}>Live Chat</Text>
-                <Text style={styles.actionSubtitle}>
-                  Chat with our support team
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
+          {QUICK_ACTIONS.map((action, index) => (
+            <View key={index}>{renderActionCard(action)}</View>
+          ))}
         </View>
 
-        {/* Frequently Asked Questions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>FREQUENTLY ASKED QUESTIONS</Text>
 
-          {faqData.map((faq, index) => (
+          {FAQ.map((faq, index) => (
             <TouchableOpacity
               key={index}
               style={styles.faqItem}
@@ -145,100 +233,20 @@ export default function HelpCenter() {
           ))}
         </View>
 
-        {/* Help Categories */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>HELP CATEGORIES</Text>
 
-          <TouchableOpacity style={styles.categoryCard}>
-            <View style={styles.categoryLeft}>
-              <View
-                style={[styles.categoryIcon, { backgroundColor: "#e0e7ff" }]}
-              >
-                <Ionicons name="person-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View>
-                <Text style={styles.categoryTitle}>Account & Profile</Text>
-                <Text style={styles.categorySubtitle}>
-                  Manage your account settings
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.categoryCard}>
-            <View style={styles.categoryLeft}>
-              <View
-                style={[styles.categoryIcon, { backgroundColor: "#e0e7ff" }]}
-              >
-                <Ionicons name="card-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View>
-                <Text style={styles.categoryTitle}>Payments & Billing</Text>
-                <Text style={styles.categorySubtitle}>
-                  Payment methods and billing
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.categoryCard}>
-            <View style={styles.categoryLeft}>
-              <View
-                style={[styles.categoryIcon, { backgroundColor: "#e0e7ff" }]}
-              >
-                <Ionicons name="shield-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View>
-                <Text style={styles.categoryTitle}>Security & Privacy</Text>
-                <Text style={styles.categorySubtitle}>
-                  Keep your account secure
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.categoryCard}>
-            <View style={styles.categoryLeft}>
-              <View
-                style={[styles.categoryIcon, { backgroundColor: "#e0e7ff" }]}
-              >
-                <Ionicons name="bug-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View>
-                <Text style={styles.categoryTitle}>Report a Problem</Text>
-                <Text style={styles.categorySubtitle}>
-                  Something not working?
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#64748b" />
-          </TouchableOpacity>
+          {HELP_CATEGORIES.map((category, index) => (
+            <View key={index}>{renderCategoryCard(category)}</View>
+          ))}
         </View>
 
-        {/* Additional Resources */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>ADDITIONAL RESOURCES</Text>
 
-          <TouchableOpacity style={styles.resourceItem}>
-            <Ionicons name="pulse-outline" size={20} color="#1e3a8a" />
-            <Text style={styles.resourceText}>System Status</Text>
-            <Ionicons name="open-outline" size={16} color="#64748b" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.resourceItem}>
-            <Ionicons name="people-outline" size={20} color="#1e3a8a" />
-            <Text style={styles.resourceText}>Community Forum</Text>
-            <Ionicons name="open-outline" size={16} color="#64748b" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.resourceItem}>
-            <Ionicons name="book-outline" size={20} color="#1e3a8a" />
-            <Text style={styles.resourceText}>User Guides</Text>
-            <Ionicons name="open-outline" size={16} color="#64748b" />
-          </TouchableOpacity>
+          {ADDITIONAL_RESOURCES.map((resource, index) => (
+            <View key={index}>{renderResourceItem(resource)}</View>
+          ))}
         </View>
       </ScrollView>
     </View>
@@ -349,6 +357,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
+    backgroundColor: "#e0e7ff",
   },
   categoryTitle: {
     fontSize: 16,
