@@ -14,34 +14,6 @@ import {
 export default function AccountLimits() {
   const limits = useQuery(api.limits.getUserLimits);
 
-  // const handleIncreaseLimit = (limitType: string) => {
-  //   Alert.alert(
-  //     "Increase Limit",
-  //     `To increase your ${limitType} limit, please contact our support team or complete additional verification.`,
-  //     [
-  //       { text: "Cancel", style: "cancel" },
-  //       {
-  //         text: "Contact Support",
-  //         onPress: () => console.log("Contact support"),
-  //       },
-  //     ]
-  //   );
-  // };
-
-  // const handleVerifyAccount = () => {
-  //   Alert.alert(
-  //     "Account Verification",
-  //     "Complete identity verification to increase your account limits.",
-  //     [
-  //       { text: "Cancel", style: "cancel" },
-  //       {
-  //         text: "Start Verification",
-  //         onPress: () => console.log("Start verification"),
-  //       },
-  //     ]
-  //   );
-  // };
-
   const renderProgressBar = (current: number, max: number) => {
     const percentage = Math.min((current / max) * 100, 100); // Cap at 100%
     const exceeded = current > max;
@@ -104,26 +76,6 @@ export default function AccountLimits() {
       <BackHeader title="Account Limits" />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Account Status */}
-        {/* <View style={styles.statusCard}>
-          <View style={styles.statusHeader}>
-            <View style={styles.statusBadge}>
-              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
-              <Text style={styles.statusText}>Verified Account</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.upgradeButton}
-              onPress={handleVerifyAccount}
-            >
-              <Text style={styles.upgradeButtonText}>Upgrade Limits</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.statusDescription}>
-            Your account is verified. Complete additional verification to
-            increase your limits.
-          </Text>
-        </View> */}
-
         {/* Current Limits */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>CURRENT LIMITS</Text>
@@ -141,16 +93,6 @@ export default function AccountLimits() {
                   {formatCurrency(limits.daily.limit)}
                 </Text>
               </View>
-              {/* <TouchableOpacity
-                style={styles.increaseButton}
-                onPress={() => handleIncreaseLimit("daily transaction")}
-              >
-                <Ionicons
-                  name="arrow-up-circle-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </TouchableOpacity> */}
             </View>
             {renderProgressBar(limits.daily.used, limits.daily.limit)}
             <Text style={styles.limitNote}>
@@ -175,16 +117,6 @@ export default function AccountLimits() {
                   {formatCurrency(limits.monthly.limit)}
                 </Text>
               </View>
-              {/* <TouchableOpacity
-                style={styles.increaseButton}
-                onPress={() => handleIncreaseLimit("monthly transaction")}
-              >
-                <Ionicons
-                  name="arrow-up-circle-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </TouchableOpacity> */}
             </View>
             {renderProgressBar(limits.monthly.used, limits.monthly.limit)}
             <Text style={styles.limitNote}>
@@ -204,16 +136,6 @@ export default function AccountLimits() {
                   {formatCurrency(limits.singleTx)}
                 </Text>
               </View>
-              {/* <TouchableOpacity
-                style={styles.increaseButton}
-                onPress={() => handleIncreaseLimit("single transaction")}
-              >
-                <Ionicons
-                  name="arrow-up-circle-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </TouchableOpacity> */}
             </View>
             {renderProgressBar(0, limits.singleTx)}
             <Text style={styles.limitNote}>Maximum amount per transaction</Text>
@@ -232,16 +154,6 @@ export default function AccountLimits() {
                   {formatCurrency(limits.balance.limit)}
                 </Text>
               </View>
-              {/* <TouchableOpacity
-                style={styles.increaseButton}
-                onPress={() => handleIncreaseLimit("account balance")}
-              >
-                <Ionicons
-                  name="arrow-up-circle-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </TouchableOpacity> */}
             </View>
             {renderProgressBar(limits.balance.current, limits.balance.limit)}
             <Text style={styles.limitNote}>
@@ -251,59 +163,6 @@ export default function AccountLimits() {
             </Text>
           </View>
         </View>
-
-        {/* How to Increase Limits */}
-        {/* <View style={styles.section}>
-          <Text style={styles.sectionTitle}>HOW TO INCREASE LIMITS</Text>
-
-          <View style={styles.howToCard}>
-            <View style={styles.howToItem}>
-              <View style={styles.howToIcon}>
-                <Ionicons
-                  name="document-text-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </View>
-              <View style={styles.howToContent}>
-                <Text style={styles.howToTitle}>
-                  Complete Identity Verification
-                </Text>
-                <Text style={styles.howToDescription}>
-                  Provide additional documentation to verify your identity
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.howToItem}>
-              <View style={styles.howToIcon}>
-                <Ionicons name="time-outline" size={20} color="#1e3a8a" />
-              </View>
-              <View style={styles.howToContent}>
-                <Text style={styles.howToTitle}>Account History</Text>
-                <Text style={styles.howToDescription}>
-                  Maintain good account standing for 30+ days
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.howToItem}>
-              <View style={styles.howToIcon}>
-                <Ionicons
-                  name="shield-checkmark-outline"
-                  size={20}
-                  color="#1e3a8a"
-                />
-              </View>
-              <View style={styles.howToContent}>
-                <Text style={styles.howToTitle}>Enhanced Security</Text>
-                <Text style={styles.howToDescription}>
-                  Enable two-factor authentication and security features
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View> */}
 
         {/* Limit Types */}
         <View style={styles.section}>
@@ -359,44 +218,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
   },
-  statusCard: {
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 24,
-  },
-  statusHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  statusBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  statusText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#10b981",
-    marginLeft: 8,
-  },
-  upgradeButton: {
-    backgroundColor: "#1e3a8a",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-  },
-  upgradeButtonText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "white",
-  },
-  statusDescription: {
-    fontSize: 14,
-    color: "#64748b",
-    lineHeight: 20,
-  },
   section: {
     marginBottom: 24,
   },
@@ -440,9 +261,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#1e3a8a",
   },
-  increaseButton: {
-    padding: 4,
-  },
   progressBarContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -469,39 +287,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#94a3b8",
     fontStyle: "italic",
-  },
-  howToCard: {
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 16,
-  },
-  howToItem: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    marginBottom: 16,
-  },
-  howToIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: "#e0e7ff",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
-  howToContent: {
-    flex: 1,
-  },
-  howToTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#0f172a",
-    marginBottom: 4,
-  },
-  howToDescription: {
-    fontSize: 14,
-    color: "#64748b",
-    lineHeight: 20,
   },
   explanationCard: {
     backgroundColor: "white",

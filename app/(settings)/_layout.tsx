@@ -20,11 +20,7 @@ export default function SettingsLayout() {
           contentStyle: { backgroundColor: "transparent" },
         }}
       >
-        <Stack.Screen name="security" />
         <Stack.Screen name="privacy" />
-        <Stack.Screen name="notifications" />
-        <Stack.Screen name="language" />
-        <Stack.Screen name="payment-method" />
         <Stack.Screen name="account-limits" />
         <Stack.Screen name="help-center" />
         <Stack.Screen name="about" />
