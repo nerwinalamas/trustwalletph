@@ -1,4 +1,15 @@
 import BackHeader from "@/components/back-header";
+import {
+  ADDITIONAL_RESOURCES,
+  FAQ,
+  HELP_CATEGORIES,
+  QUICK_ACTIONS,
+} from "@/constants/help-center";
+import {
+  ActionCardProps,
+  CategoryCardProps,
+  ResourceItemProps,
+} from "@/types/help-center";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import {
@@ -9,120 +20,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-interface ActionCardProps {
-  icon: keyof typeof Ionicons.glyphMap;
-  iconColor: string;
-  iconBackgroundColor: string;
-  title: string;
-  subtitle: string;
-}
-
-interface CategoryCardProps {
-  icon: keyof typeof Ionicons.glyphMap;
-  title: string;
-  subtitle: string;
-}
-
-interface ResourceItemProps {
-  icon: keyof typeof Ionicons.glyphMap;
-  text: string;
-}
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-const QUICK_ACTIONS: ActionCardProps[] = [
-  {
-    icon: "mail-outline",
-    iconColor: "#1e3a8a",
-    iconBackgroundColor: "#dbeafe",
-    title: "Contact Support",
-    subtitle: "Get help from our team",
-  },
-  {
-    icon: "call-outline",
-    iconColor: "#16a34a",
-    iconBackgroundColor: "#dcfce7",
-    title: "Call Support",
-    subtitle: "+1 (234) 567-8900",
-  },
-  {
-    icon: "chatbubble-outline",
-    iconColor: "#d97706",
-    iconBackgroundColor: "#fef3c7",
-    title: "Live Chat",
-    subtitle: "Chat with our support team",
-  },
-];
-
-const HELP_CATEGORIES: CategoryCardProps[] = [
-  {
-    icon: "person-outline",
-    title: "Account & Profile",
-    subtitle: "Manage your account settings",
-  },
-  {
-    icon: "card-outline",
-    title: "Payments & Billing",
-    subtitle: "Payment methods and billing",
-  },
-  {
-    icon: "shield-outline",
-    title: "Security & Privacy",
-    subtitle: "Keep your account secure",
-  },
-  {
-    icon: "bug-outline",
-    title: "Report a Problem",
-    subtitle: "Something not working?",
-  },
-];
-
-const ADDITIONAL_RESOURCES: ResourceItemProps[] = [
-  {
-    icon: "pulse-outline",
-    text: "System Status",
-  },
-  {
-    icon: "people-outline",
-    text: "Community Forum",
-  },
-  {
-    icon: "book-outline",
-    text: "User Guides",
-  },
-];
-
-const FAQ: FAQItem[] = [
-  {
-    question: "Lorem ipsum dolor sit amet.",
-    answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
-  },
-  {
-    question: "Lorem ipsum dolor sit amet.",
-    answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
-  },
-  {
-    question: "Lorem ipsum dolor sit amet.",
-    answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
-  },
-  {
-    question: "Lorem ipsum dolor sit amet.",
-    answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
-  },
-  {
-    question: "Lorem ipsum dolor sit amet.",
-    answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore non iusto tempora veritatis architecto quam qui dolores natus voluptates rem?",
-  },
-];
 
 export default function HelpCenter() {
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);

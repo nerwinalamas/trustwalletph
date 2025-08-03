@@ -1,88 +1,21 @@
 import BackHeader from "@/components/back-header";
+import {
+  APP_CONFIG,
+  APP_INFO_ITEMS,
+  CONTACT_ITEMS,
+  LEGAL_ITEMS,
+} from "@/constants/about";
+import { MenuItemProps } from "@/types/about";
 import { Ionicons } from "@expo/vector-icons";
-import * as Application from "expo-application";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Linking,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-
-const APP_CONFIG = {
-  name: Application.applicationName || "TrustWalletPH",
-  version: Application.nativeApplicationVersion || "1.0.0",
-  build: Application.nativeBuildVersion || "2024.01.15",
-  platform: Platform.OS === "ios" ? "iOS" : "Android",
-  lastUpdated: "January 15, 2024",
-  description:
-    "A modern and secure mobile application designed to provide you with the best user experience.",
-  copyright: "© 2025 TrustWalletPH. All rights reserved.",
-};
-
-const APP_INFO_ITEMS = [
-  { label: "Version", value: APP_CONFIG.version },
-  { label: "Build", value: APP_CONFIG.build },
-  { label: "Platform", value: APP_CONFIG.platform },
-  { label: "Last Updated", value: APP_CONFIG.lastUpdated },
-];
-
-const LEGAL_ITEMS = [
-  {
-    title: "Terms of Service",
-    subtitle: "Read our terms and conditions",
-    icon: "document-text-outline" as keyof typeof Ionicons.glyphMap,
-    onPress: () => {
-      console.log("Navigate to Terms of Service");
-    },
-  },
-  {
-    title: "Privacy Policy",
-    subtitle: "How we handle your data",
-    icon: "shield-outline" as keyof typeof Ionicons.glyphMap,
-    onPress: () => {
-      console.log("Navigate to Privacy Policy");
-    },
-  },
-  {
-    title: "Open Source Licenses",
-    subtitle: "Third-party licenses",
-    icon: "library-outline" as keyof typeof Ionicons.glyphMap,
-    onPress: () => {
-      console.log("Navigate to Open Source Licenses");
-    },
-  },
-];
-
-const CONTACT_ITEMS = [
-  {
-    title: "Contact Support",
-    subtitle: "support@trustwalletph.com",
-    icon: "mail-outline" as keyof typeof Ionicons.glyphMap,
-    onPress: () => {
-      Linking.openURL("mailto:support@trustwalletph.com");
-    },
-  },
-  {
-    title: "Website",
-    subtitle: "Visit our website",
-    icon: "globe-outline" as keyof typeof Ionicons.glyphMap,
-    onPress: () => {
-      Linking.openURL("https://trustwalletph.com");
-    },
-  },
-];
-
-interface MenuItemProps {
-  title: string;
-  subtitle: string;
-  icon: keyof typeof Ionicons.glyphMap;
-  onPress: () => void;
-}
 
 export default function About() {
   const [isLoading, setIsLoading] = useState(true);
@@ -95,13 +28,8 @@ export default function About() {
     return () => clearTimeout(timer);
   }, []);
 
-  const renderMenuItem = ({
-    title,
-    subtitle,
-    icon,
-    onPress,
-  }: MenuItemProps) => (
-    <TouchableOpacity key={title} style={styles.menuItem} onPress={onPress}>
+  const renderMenuItem = ({ title, subtitle, icon }: MenuItemProps) => (
+    <TouchableOpacity key={title} style={styles.menuItem}>
       <View style={styles.menuLeft}>
         <View style={styles.menuIcon}>
           <Ionicons name={icon} size={20} color="#1e3a8a" />

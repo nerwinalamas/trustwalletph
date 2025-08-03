@@ -1,5 +1,7 @@
 import BackHeader from "@/components/back-header";
+import { EXPLANATIONS } from "@/constants/account-limits";
 import { api } from "@/convex/_generated/api";
+import { ExplanationItem, LimitCardProps } from "@/types/account-limits";
 import { formatCurrency } from "@/utils/format-currency";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
@@ -10,43 +12,6 @@ import {
   Text,
   View,
 } from "react-native";
-
-interface ExplanationItem {
-  title: string;
-  description: string;
-}
-
-interface LimitCardProps {
-  icon: keyof typeof Ionicons.glyphMap;
-  title: string;
-  current: number;
-  limit: number;
-  note: string;
-  showProgress?: boolean;
-}
-
-const EXPLANATIONS: ExplanationItem[] = [
-  {
-    title: "Daily Limits",
-    description:
-      "Maximum amount you can transact in a 24-hour period. Resets every midnight.",
-  },
-  {
-    title: "Monthly Limits",
-    description:
-      "Total transaction volume allowed per calendar month. Helps manage spending patterns.",
-  },
-  {
-    title: "Transaction Limits",
-    description:
-      "Maximum amount allowed for a single transaction. Provides security against large unauthorized transfers.",
-  },
-  {
-    title: "Balance Limits",
-    description:
-      "Maximum amount you can store in your account. Upgrade your account for higher limits.",
-  },
-];
 
 export default function AccountLimits() {
   const limits = useQuery(api.limits.getUserLimits);
