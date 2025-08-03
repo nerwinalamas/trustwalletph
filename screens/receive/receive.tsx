@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
@@ -48,6 +48,12 @@ export default function ReceiveScreen() {
     ? `•••• ${user.accountNumber.slice(-4)}`
     : "•••• ••••";
 
+  const accountInfo = [
+    { label: "Name", value: user?.fullName },
+    { label: "Email", value: user?.email },
+    { label: "Account Number", value: maskedAccount },
+  ];
+
   return (
     <View style={styles.container}>
       <BackHeader title="Receive" />
@@ -66,11 +72,7 @@ export default function ReceiveScreen() {
 
         <View style={styles.detailsContainer}>
           <View style={styles.accountInfo}>
-            {[
-              { label: "Name", value: user?.fullName },
-              { label: "Email", value: user?.email },
-              { label: "Account Number", value: maskedAccount },
-            ].map((item, index) => (
+            {accountInfo.map((item, index) => (
               <View key={index} style={styles.infoRow}>
                 <Text style={styles.infoLabel}>{item.label}</Text>
                 <View style={styles.infoValueContainer}>
