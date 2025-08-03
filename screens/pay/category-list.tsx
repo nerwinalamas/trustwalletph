@@ -1,9 +1,9 @@
-import { companiesData } from "@/assets/data";
 import BackHeader from "@/components/back-header";
 import CompanyItem from "@/components/cards/company-item";
 import EmptyState from "@/components/empty-state";
 import Input from "@/components/input";
 import Separator from "@/components/separator";
+import { companiesData } from "@/constants/pay";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";

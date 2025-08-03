@@ -1,8 +1,8 @@
-import { companyDetails } from "@/assets/data";
 import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
 import Button from "@/components/button";
 import Input from "@/components/input";
+import { companyDetails } from "@/constants/pay";
 import { api } from "@/convex/_generated/api";
 import { SERVICE_FEE } from "@/convex/payments";
 import { Ionicons } from "@expo/vector-icons";

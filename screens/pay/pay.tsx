@@ -1,10 +1,10 @@
-import { categories, companiesData } from "@/assets/data";
 import BackHeader from "@/components/back-header";
 import CategoryCard from "@/components/cards/category-card";
 import CompanyItem from "@/components/cards/company-item";
 import EmptyState from "@/components/empty-state";
 import Input from "@/components/input";
 import Separator from "@/components/separator";
+import { categories, companiesData } from "@/constants/pay";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
