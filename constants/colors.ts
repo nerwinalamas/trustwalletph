@@ -5,6 +5,7 @@ export const COLORS = {
     dark: "#1e3a8a", // Dark blue for icons and text
     light: "#e0e7ff", // Light blue for backgrounds
     lighter: "#dbeafe", // Even lighter blue
+    green: "#10b981", // Light Green
   },
 
   // Background Colors
@@ -13,6 +14,7 @@ export const COLORS = {
     card: "#ffffff", // Card backgrounds
     surface: "#f1f5f9", // Surface backgrounds (slate-100)
     danger: "#fee2e2", // Logout backgrounds
+    lightBlue: "#eff6ff",
   },
 
   // Text Colors
@@ -22,7 +24,7 @@ export const COLORS = {
     tertiary: "#64748b", // Tertiary text (slate-500)
     muted: "#9ca3af", // Muted text (gray-400)
     light: "#6b7280", // Light text (gray-500)
-    danger: "#ef4444"
+    danger: "#ef4444",
   },
 
   // Border Colors
@@ -52,9 +54,10 @@ export const COLORS = {
     info: "#3b82f6", // Blue
   },
 
-  // White and Transparent
+  // White, Transparent and Black
   white: "#ffffff",
   transparent: "transparent",
+  black: "#000000",
 
   // Opacity variants for white
   whiteOpacity: {
@@ -62,6 +65,14 @@ export const COLORS = {
     60: "rgba(255, 255, 255, 0.6)",
     40: "rgba(255, 255, 255, 0.4)",
     20: "rgba(255, 255, 255, 0.2)",
+  },
+
+  // Opacity variants for black
+  blackOpacity: {
+    80: "rgba(0, 0, 0, 0.8)",
+    60: "rgba(0, 0, 0, 0.6)",
+    40: "rgba(0, 0, 0, 0.4)",
+    20: "rgba(0, 0, 0, 0.2)",
   },
 
   // Shadow Colors

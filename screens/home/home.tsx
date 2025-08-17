@@ -172,7 +172,7 @@ export default function HomeScreen() {
 
   const renderLoadingState = () => (
     <View style={styles.loadingState}>
-      <ActivityIndicator size="large" color={COLORS.primary.dark} />
+      <ActivityIndicator size="large" color={COLORS.primary.main} />
     </View>
   );
 

@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -53,7 +54,7 @@ export default function Button({
       activeOpacity={0.8}
     >
       {loading ? (
-        <ActivityIndicator size="small" color="#ffffff" />
+        <ActivityIndicator size="small" color={COLORS.primary.main} />
       ) : (
         <Text style={getTextStyle()}>{title}</Text>
       )}

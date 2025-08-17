@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, View } from "react-native";
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
-    backgroundColor: "#e0e7ff",
+    backgroundColor: COLORS.primary.light,
   },
 });
 

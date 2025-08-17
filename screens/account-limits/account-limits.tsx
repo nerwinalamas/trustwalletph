@@ -1,5 +1,6 @@
 import BackHeader from "@/components/back-header";
 import { EXPLANATIONS } from "@/constants/account-limits";
+import { COLORS } from "@/constants/colors";
 import { api } from "@/convex/_generated/api";
 import { ExplanationItem, LimitCardProps } from "@/types/account-limits";
 import { formatCurrency } from "@/utils/format-currency";
@@ -56,7 +57,7 @@ export default function AccountLimitsScreen() {
         <Text
           style={[
             styles.progressText,
-            { color: exceeded ? "#dc2626" : "#64748b" },
+            { color: exceeded ? COLORS.text.danger : COLORS.text.tertiary },
           ]}
         >
           {percentage.toFixed(0)}%{exceeded && " (exceeded)"}
@@ -76,7 +77,7 @@ export default function AccountLimitsScreen() {
     <View style={styles.limitCard}>
       <View style={styles.limitHeader}>
         <View style={styles.limitIcon}>
-          <Ionicons name={icon} size={20} color="#1e3a8a" />
+          <Ionicons name={icon} size={20} color={COLORS.primary.dark} />
         </View>
         <View style={styles.limitInfo}>
           <Text style={styles.limitTitle}>{title}</Text>
@@ -102,7 +103,7 @@ export default function AccountLimitsScreen() {
   if (!limits) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={COLORS.primary.main} />
       </View>
     );
   }
@@ -169,7 +170,7 @@ export default function AccountLimitsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   loading: {
     flex: 1,
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginBottom: 12,
   },
   limitCard: {
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: "#e0e7ff",
+    backgroundColor: COLORS.primary.light,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
@@ -216,13 +217,13 @@ const styles = StyleSheet.create({
   limitTitle: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   limitAmount: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#1e3a8a",
+    color: COLORS.primary.dark,
   },
   progressBarContainer: {
     flexDirection: "row",
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
   progressBarBackground: {
     flex: 1,
     height: 8,
-    backgroundColor: "#f1f5f9",
+    backgroundColor: COLORS.background.surface,
     borderRadius: 4,
     marginRight: 12,
   },
@@ -243,12 +244,12 @@ const styles = StyleSheet.create({
   progressText: {
     fontSize: 12,
     fontWeight: "500",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     minWidth: 32,
   },
   limitNote: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: COLORS.text.muted,
     fontStyle: "italic",
   },
   explanationCard: {
@@ -262,12 +263,12 @@ const styles = StyleSheet.create({
   explanationTitle: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 4,
   },
   explanationText: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     lineHeight: 20,
   },
 });

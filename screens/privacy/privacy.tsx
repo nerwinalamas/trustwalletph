@@ -1,4 +1,5 @@
 import BackHeader from "@/components/back-header";
+import { COLORS } from "@/constants/colors";
 import { usePrivacyStore } from "@/stores/privacy-store";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
@@ -26,7 +27,7 @@ export default function PrivacyScreen() {
   if (isLoading) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={COLORS.primary.main} />
       </View>
     );
   }
@@ -76,7 +77,7 @@ export default function PrivacyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   loading: {
     flex: 1,
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginBottom: 12,
   },
   settingCard: {
@@ -129,12 +130,12 @@ const styles = StyleSheet.create({
   settingTitle: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   settingDescription: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     lineHeight: 18,
   },
 });

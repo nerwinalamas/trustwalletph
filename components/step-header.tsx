@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -22,13 +23,13 @@ const styles = StyleSheet.create({
   stepTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     textAlign: "center",
     marginBottom: 8,
   },
   stepDescription: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     textAlign: "center",
   },
 });

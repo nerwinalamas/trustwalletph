@@ -1,12 +1,13 @@
+import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
-    StyleSheet,
-    Text,
-    TextInput,
-    TextInputProps,
-    View,
-    ViewStyle,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  View,
+  ViewStyle,
 } from "react-native";
 
 interface InputProps extends TextInputProps {
@@ -72,7 +73,7 @@ export default function Input({
           <Ionicons
             name={leftIcon}
             size={20}
-            color="#9ca3af"
+            color={COLORS.text.muted}
             style={styles.leftIcon}
           />
         )}
@@ -81,7 +82,7 @@ export default function Input({
 
         <TextInput
           style={getInputStyle()}
-          placeholderTextColor="#9ca3af"
+          placeholderTextColor={COLORS.text.muted}
           {...props}
         />
 
@@ -91,7 +92,7 @@ export default function Input({
           <Ionicons
             name={rightIcon}
             size={20}
-            color="#9ca3af"
+            color={COLORS.text.muted}
             style={styles.rightIcon}
           />
         )}
@@ -109,33 +110,33 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 8,
   },
   required: {
-    color: "#ef4444",
+    color: COLORS.text.danger,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderRadius: 8,
     paddingHorizontal: 16,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 1,
     elevation: 1,
   },
   errorContainer: {
-    borderColor: "#ef4444",
+    borderColor: COLORS.text.danger,
     borderWidth: 1,
   },
   input: {
     flex: 1,
     height: 48,
     fontSize: 16,
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
   leftIcon: {
     marginRight: 8,
@@ -146,17 +147,17 @@ const styles = StyleSheet.create({
   prefix: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginRight: 4,
   },
   suffix: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginLeft: 4,
   },
   errorText: {
-    color: "#ef4444",
+    color: COLORS.text.danger,
     fontSize: 12,
     marginTop: 4,
   },

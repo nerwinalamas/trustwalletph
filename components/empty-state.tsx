@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -46,13 +47,13 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 8,
     textAlign: "center",
   },
   emptyText: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     textAlign: "center",
     lineHeight: 20,
   },

@@ -1,6 +1,7 @@
 import Input from "@/components/input";
 import RecipientCard from "@/components/recipient-card";
 import StepHeader from "@/components/step-header";
+import { COLORS } from "@/constants/colors";
 import { SendMoneyFormData } from "@/utils/schema";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { StyleSheet, Text } from "react-native";
@@ -96,11 +97,11 @@ const styles = StyleSheet.create({
   recipientCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.background.card,
     borderRadius: 8,
     padding: 16,
     marginBottom: 24,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -108,11 +109,11 @@ const styles = StyleSheet.create({
   },
   balanceText: {
     fontSize: 14,
-    color: "#64748b",
+    color:  COLORS.text.tertiary,
     textAlign: "center",
     marginBottom: 24,
   },
   negativeBalance: {
-    color: "#ef4444",
+    color: COLORS.text.danger,
   },
 });

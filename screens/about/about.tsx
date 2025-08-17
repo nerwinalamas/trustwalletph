@@ -5,6 +5,7 @@ import {
   CONTACT_ITEMS,
   LEGAL_ITEMS,
 } from "@/constants/about";
+import { COLORS } from "@/constants/colors";
 import { MenuItemProps } from "@/types/about";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
@@ -32,13 +33,17 @@ export default function AboutScreen() {
     <TouchableOpacity key={title} style={styles.menuItem}>
       <View style={styles.menuLeft}>
         <View style={styles.menuIcon}>
-          <Ionicons name={icon} size={20} color="#1e3a8a" />
+          <Ionicons name={icon} size={20} color={COLORS.primary.dark} />
         </View>
         <View style={styles.menuTextContainer}>
           <Text style={styles.menuTitle}>{title}</Text>
           <Text style={styles.menuSubtitle}>{subtitle}</Text>
         </View>
-        <Ionicons name="chevron-forward-outline" size={20} color="#64748b" />
+        <Ionicons
+          name="chevron-forward-outline"
+          size={20}
+          color={COLORS.text.tertiary}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -59,7 +64,7 @@ export default function AboutScreen() {
   if (isLoading) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#1e3a8a" />
+        <ActivityIndicator size="large" color={COLORS.primary.main} />
       </View>
     );
   }
@@ -76,7 +81,7 @@ export default function AboutScreen() {
               <Ionicons
                 name="phone-portrait-outline"
                 size={40}
-                color="#1e3a8a"
+                color={COLORS.primary.dark}
               />
             </View>
             <Text style={styles.appName}>{APP_CONFIG.name}</Text>
@@ -117,7 +122,7 @@ export default function AboutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   loading: {
     flex: 1,
@@ -135,13 +140,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginBottom: 12,
   },
   appInfoContainer: {
     alignItems: "center",
     paddingVertical: 20,
-    backgroundColor: "white",
+    backgroundColor: COLORS.white,
     borderRadius: 12,
     marginBottom: 8,
   },
@@ -149,7 +154,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 20,
-    backgroundColor: "#e0e7ff",
+    backgroundColor: COLORS.primary.light,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 12,
@@ -157,17 +162,17 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 4,
   },
   appVersion: {
     fontSize: 16,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginBottom: 12,
   },
   appDescription: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     textAlign: "center",
     lineHeight: 20,
     paddingHorizontal: 20,
@@ -186,17 +191,17 @@ const styles = StyleSheet.create({
   },
   infoRowBorder: {
     borderTopWidth: 1,
-    borderTopColor: "#f1f5f9",
+    borderTopColor: COLORS.border.light,
   },
   infoLabel: {
     fontSize: 16,
     fontWeight: "400",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   infoValue: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
   menuItem: {
     backgroundColor: "white",
@@ -216,7 +221,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
-    backgroundColor: "#e0e7ff",
+    backgroundColor: COLORS.primary.light,
   },
   menuTextContainer: {
     flex: 1,
@@ -224,12 +229,12 @@ const styles = StyleSheet.create({
   menuTitle: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   menuSubtitle: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   copyrightSection: {
     alignItems: "center",
@@ -238,7 +243,7 @@ const styles = StyleSheet.create({
   },
   copyrightText: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: COLORS.text.muted,
     textAlign: "center",
   },
 });

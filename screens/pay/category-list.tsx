@@ -3,6 +3,7 @@ import CompanyItem from "@/components/cards/company-item";
 import EmptyState from "@/components/empty-state";
 import Input from "@/components/input";
 import Separator from "@/components/separator";
+import { COLORS } from "@/constants/colors";
 import { companiesData } from "@/constants/pay";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -77,7 +78,7 @@ export default function CategoryListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   content: {
     paddingTop: 16,

@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -9,7 +10,7 @@ interface AlertsProps {
 export default function Alerts({ description }: AlertsProps) {
   return (
     <View style={styles.container}>
-      <Ionicons name="information-circle" size={20} color="#4f46e5" />
+      <Ionicons name="information-circle" size={20} color={COLORS.primary.main} />
       <Text style={styles.description}>{description}</Text>
     </View>
   );
@@ -18,7 +19,7 @@ export default function Alerts({ description }: AlertsProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    backgroundColor: "#eff6ff",
+    backgroundColor: COLORS.background.lightBlue,
     borderRadius: 8,
     padding: 16,
     marginBottom: 24,
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   description: {
     flex: 1,
     fontSize: 14,
-    color: "#4f46e5",
+    color: COLORS.primary.main,
     marginLeft: 8,
   },
 });

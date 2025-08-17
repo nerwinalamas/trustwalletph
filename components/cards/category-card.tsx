@@ -1,4 +1,5 @@
 import { Category } from "@/app/(quick-actions)/pay";
+import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -35,13 +36,13 @@ export default function CategoryCard({ category }: CategoryCardProps) {
 const styles = StyleSheet.create({
   categoryCard: {
     width: "30%",
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderRadius: 12,
     padding: 11,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   categoryName: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     textAlign: "center",
   },
 });

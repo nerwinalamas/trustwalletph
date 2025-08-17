@@ -1,6 +1,7 @@
 import Input from "@/components/input";
 import RecipientCard from "@/components/recipient-card";
 import StepHeader from "@/components/step-header";
+import { COLORS } from "@/constants/colors";
 import { SendMoneyFormData } from "@/utils/schema";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import {
@@ -8,7 +9,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 import { Recipient } from "./send";
 
@@ -82,7 +83,7 @@ export default function StepOne({
 
       {isSearching && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#4f46e5" />
+          <ActivityIndicator size="small" color={COLORS.primary.main} />
           <Text style={styles.loadingText}>Searching for user...</Text>
         </View>
       )}
@@ -115,17 +116,17 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 8,
   },
   recipientItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.background.card,
     borderRadius: 8,
     padding: 16,
     marginBottom: 8,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -134,11 +135,11 @@ const styles = StyleSheet.create({
   selectedRecipientPreview: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.background.card,
     borderRadius: 8,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 14,
-    color: "#4f46e5",
+    color: COLORS.primary.main,
     marginLeft: 8,
   },
 });

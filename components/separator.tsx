@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import { StyleSheet, View } from "react-native";
 
 interface SeparatorProps {
@@ -7,7 +8,7 @@ interface SeparatorProps {
 }
 
 export default function Separator({
-  color = "#e2e8f0",
+  color = COLORS.border.main,
   height = 1,
   marginVertical = 16,
 }: SeparatorProps) {

@@ -1,4 +1,5 @@
 import BackHeader from "@/components/back-header";
+import { COLORS } from "@/constants/colors";
 import {
   ADDITIONAL_RESOURCES,
   FAQ,
@@ -56,7 +57,7 @@ export default function HelpCenterScreen() {
           <Text style={styles.actionSubtitle}>{subtitle}</Text>
         </View>
       </View>
-      <Ionicons name="chevron-forward" size={20} color="#64748b" />
+      <Ionicons name="chevron-forward" size={20} color={COLORS.text.tertiary} />
     </TouchableOpacity>
   );
 
@@ -65,30 +66,34 @@ export default function HelpCenterScreen() {
       <TouchableOpacity style={styles.categoryCard}>
         <View style={styles.categoryLeft}>
           <View style={styles.categoryIcon}>
-            <Ionicons name={icon} size={20} color="#1e3a8a" />
+            <Ionicons name={icon} size={20} color={COLORS.primary.dark} />
           </View>
           <View>
             <Text style={styles.categoryTitle}>{title}</Text>
             <Text style={styles.categorySubtitle}>{subtitle}</Text>
           </View>
         </View>
-        <Ionicons name="chevron-forward" size={20} color="#64748b" />
+        <Ionicons
+          name="chevron-forward"
+          size={20}
+          color={COLORS.text.tertiary}
+        />
       </TouchableOpacity>
     );
   };
 
   const renderResourceItem = ({ icon, text }: ResourceItemProps) => (
     <TouchableOpacity style={styles.resourceItem}>
-      <Ionicons name={icon} size={20} color="#1e3a8a" />
+      <Ionicons name={icon} size={20} color={COLORS.primary.dark} />
       <Text style={styles.resourceText}>{text}</Text>
-      <Ionicons name="open-outline" size={16} color="#64748b" />
+      <Ionicons name="open-outline" size={16} color={COLORS.text.tertiary} />
     </TouchableOpacity>
   );
 
   if (isLoading) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={COLORS.primary.main} />
       </View>
     );
   }
@@ -120,7 +125,7 @@ export default function HelpCenterScreen() {
                 <Ionicons
                   name={expandedFAQ === index ? "chevron-up" : "chevron-down"}
                   size={20}
-                  color="#64748b"
+                  color={COLORS.text.tertiary}
                 />
               </View>
               {expandedFAQ === index && (
@@ -153,7 +158,7 @@ export default function HelpCenterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   loading: {
     flex: 1,
@@ -171,7 +176,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginBottom: 12,
   },
   actionCard: {
@@ -199,12 +204,12 @@ const styles = StyleSheet.create({
   actionTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   actionSubtitle: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   faqItem: {
     backgroundColor: "white",
@@ -220,18 +225,18 @@ const styles = StyleSheet.create({
   faqQuestion: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     flex: 1,
     marginRight: 12,
   },
   faqAnswer: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     lineHeight: 20,
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "#f1f5f9",
+    borderTopColor: COLORS.border.light,
   },
   categoryCard: {
     flexDirection: "row",
@@ -254,17 +259,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
-    backgroundColor: "#e0e7ff",
+    backgroundColor: COLORS.primary.light,
   },
   categoryTitle: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   categorySubtitle: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   resourceItem: {
     flexDirection: "row",
@@ -277,7 +282,7 @@ const styles = StyleSheet.create({
   resourceText: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     flex: 1,
     marginLeft: 12,
   },

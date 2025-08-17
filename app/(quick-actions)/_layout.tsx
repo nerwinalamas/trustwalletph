@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import { Stack } from "expo-router";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -11,7 +12,7 @@ export default function QuickActionsLayout() {
         flex: 1,
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
-        backgroundColor: "#f8fafc",
+        backgroundColor: COLORS.background.main,
       }}
     >
       <Stack

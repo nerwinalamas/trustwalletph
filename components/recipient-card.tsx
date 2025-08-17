@@ -1,4 +1,5 @@
 import Avatar from "@/components/avatar";
+import { COLORS } from "@/constants/colors";
 import { Recipient } from "@/screens/send/send";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -53,7 +54,7 @@ export default function RecipientCard({
       </View>
 
       {showChevron && (
-        <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
+        <Ionicons name="chevron-forward" size={20} color={COLORS.text.muted} />
       )}
 
       {showCloseButton && onClose && (
@@ -61,7 +62,7 @@ export default function RecipientCard({
           onPress={onClose}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Ionicons name="close" size={20} color="#9ca3af" />
+          <Ionicons name="close" size={20} color={COLORS.text.muted} />
         </TouchableOpacity>
       )}
     </CardWrapper>
@@ -72,10 +73,10 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderRadius: 8,
     padding: 16,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -88,11 +89,11 @@ const styles = StyleSheet.create({
   recipientName: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   recipientEmail: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
 });

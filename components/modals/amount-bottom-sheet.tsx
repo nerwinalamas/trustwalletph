@@ -1,5 +1,6 @@
 import Button from "@/components/button";
 import Input from "@/components/input";
+import { COLORS } from "@/constants/colors";
 import { Modal, StyleSheet, Text, View } from "react-native";
 
 interface AmountBottomSheetProps {
@@ -61,11 +62,11 @@ export default function AmountBottomsheet({
 const styles = StyleSheet.create({
   bottomSheetOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: COLORS.blackOpacity[40],
     justifyContent: "flex-end",
   },
   bottomSheetContainer: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     padding: 24,
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   bottomSheetTitle: {
     fontSize: 20,
     fontWeight: "600",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 24,
     textAlign: "center",
   },

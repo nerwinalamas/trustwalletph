@@ -1,4 +1,5 @@
 import { Company } from "@/app/(quick-actions)/pay/[categoryId]";
+import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -36,10 +37,10 @@ const styles = StyleSheet.create({
   companyItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderRadius: 8,
     padding: 16,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "#eff6ff",
+    backgroundColor: COLORS.background.lightBlue,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
@@ -60,11 +61,11 @@ const styles = StyleSheet.create({
   companyName: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   companyType: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
 });

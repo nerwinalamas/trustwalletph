@@ -2,6 +2,7 @@ import Alerts from "@/components/alerts";
 import BackHeader from "@/components/back-header";
 import Button from "@/components/button";
 import Input from "@/components/input";
+import { COLORS } from "@/constants/colors";
 import { companyDetails } from "@/constants/pay";
 import { api } from "@/convex/_generated/api";
 import { SERVICE_FEE } from "@/convex/payments";
@@ -49,7 +50,7 @@ export default function PaymentScreen() {
     name: "Unknown Company",
     type: "Unknown",
     icon: "business",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   };
 
   const amountValue = Number(watch("amount")) || 0;
@@ -177,7 +178,7 @@ export default function PaymentScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   content: {
     paddingTop: 16,
@@ -189,11 +190,11 @@ const styles = StyleSheet.create({
   companyHeader: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -214,23 +215,23 @@ const styles = StyleSheet.create({
   companyHeaderTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   companyHeaderSubtitle: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   formContainer: {
     gap: 20,
     marginBottom: 24,
   },
   summaryContainer: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -244,27 +245,27 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: 16,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   summaryValue: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
   totalRow: {
     borderTopWidth: 1,
-    borderTopColor: "#e2e8f0",
+    borderTopColor: COLORS.border.main,
     paddingTop: 12,
     marginTop: 8,
   },
   totalLabel: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
   totalValue: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
 });

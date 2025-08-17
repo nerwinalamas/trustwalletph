@@ -1,5 +1,6 @@
 import Alerts from "@/components/alerts";
 import StepHeader from "@/components/step-header";
+import { COLORS } from "@/constants/colors";
 import { StyleSheet, Text, View } from "react-native";
 import { Recipient } from "./send";
 
@@ -49,11 +50,11 @@ export default function StepThree({
 
 const styles = StyleSheet.create({
   confirmationCard: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.background.card,
     borderRadius: 8,
     padding: 16,
     marginBottom: 24,
-    shadowColor: "#000",
+    shadowColor: COLORS.shadow.light,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -64,17 +65,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#f1f5f9",
+    borderBottomColor: COLORS.background.surface,
     paddingBottom: 12,
   },
   confirmationLabel: {
     fontSize: 16,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   confirmationValue: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     textAlign: "right",
   },
 });

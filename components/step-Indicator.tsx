@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -56,12 +57,12 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: "#e2e8f0",
+    backgroundColor: COLORS.border.main,
     justifyContent: "center",
     alignItems: "center",
   },
   activeStep: {
-    backgroundColor: "#4f46e5",
+    backgroundColor: COLORS.primary.main,
   },
   stepNumber: {
     fontSize: 14,
@@ -69,15 +70,15 @@ const styles = StyleSheet.create({
     color: "#64748b",
   },
   activeStepNumber: {
-    color: "#ffffff",
+    color: COLORS.white,
   },
   stepLine: {
     width: 40,
     height: 2,
-    backgroundColor: "#e2e8f0",
+    backgroundColor: COLORS.border.main,
     marginHorizontal: 8,
   },
   activeStepLine: {
-    backgroundColor: "#4f46e5",
+    backgroundColor: COLORS.primary.main,
   },
 });

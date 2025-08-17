@@ -1,5 +1,6 @@
 import BackHeader from "@/components/back-header";
 import AmountBottomsheet from "@/components/modals/amount-bottom-sheet";
+import { COLORS } from "@/constants/colors";
 import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
@@ -64,8 +65,8 @@ export default function ReceiveScreen() {
             <QRCode
               value={getQRValue()}
               size={200}
-              color="#0f172a"
-              backgroundColor="#ffffff"
+              color={COLORS.text.primary}
+              backgroundColor={COLORS.white}
             />
           </View>
         </View>
@@ -92,7 +93,9 @@ export default function ReceiveScreen() {
               <Ionicons
                 name={confirmedAmount ? "checkmark-circle" : "add-circle"}
                 size={20}
-                color={confirmedAmount ? "#10b981" : "#4f46e5"}
+                color={
+                  confirmedAmount ? COLORS.primary.green : COLORS.primary.main
+                }
               />
               <Text style={styles.amountButtonText}>
                 {confirmedAmount
@@ -119,27 +122,27 @@ export default function ReceiveScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   content: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
   },
   qrContainer: {
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
   },
   qrCodeWrapper: {
     padding: 16,
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderRadius: 8,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: COLORS.border.main,
   },
   detailsContainer: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     padding: 16,
   },
   accountInfo: {
@@ -151,16 +154,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#f1f5f9",
+    borderBottomColor: COLORS.border.light,
   },
   infoLabel: {
     fontSize: 16,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   infoValue: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
   infoValueContainer: {
     flexDirection: "row",
@@ -172,14 +175,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: COLORS.border.main,
     borderRadius: 8,
     marginTop: 16,
   },
   amountButtonText: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginLeft: 8,
   },
   buttonsContainer: {
@@ -198,12 +201,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   downloadButton: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: "#4f46e5",
+    borderColor: COLORS.primary.main,
   },
   shareButton: {
-    backgroundColor: "#4f46e5",
+    backgroundColor: COLORS.primary.main,
   },
   actionButtonText: {
     fontSize: 16,

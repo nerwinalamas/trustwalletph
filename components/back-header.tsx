@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -12,7 +13,7 @@ export default function BackHeader({ title }: BackHeaderProps) {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#1e3a8a" />
+        <Ionicons name="arrow-back" size={24} color={COLORS.primary.dark} />
       </TouchableOpacity>
       <Text style={styles.headerTitle}>{title}</Text>
     </View>
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
+    borderBottomColor: COLORS.border.main,
   },
   backButton: {
     marginRight: 16,
@@ -33,6 +34,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
 });

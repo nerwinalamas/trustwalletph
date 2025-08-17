@@ -1,16 +1,17 @@
+import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
-    Alert,
-    Animated,
-    Dimensions,
-    Easing,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  Animated,
+  Dimensions,
+  Easing,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function ScanScreen() {
@@ -233,29 +234,29 @@ const cornerWidth = 5;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: COLORS.black,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   permissionContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   permissionText: {
     fontSize: 16,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     textAlign: "center",
     marginBottom: 20,
   },
   permissionButton: {
-    backgroundColor: "#4f46e5",
+    backgroundColor: COLORS.primary.main,
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,
@@ -304,7 +305,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: cornerSize,
     height: cornerSize,
-    borderColor: "#4f46e5",
+    borderColor: COLORS.primary.main,
   },
   topLeftCorner: {
     top: 0,
@@ -333,7 +334,7 @@ const styles = StyleSheet.create({
   scanLine: {
     height: 4,
     width: scanFrameSize,
-    backgroundColor: "#4f46e5",
+    backgroundColor: COLORS.primary.main,
     position: "absolute",
   },
   bottomOverlay: {
@@ -348,7 +349,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   subInstructionText: {
-    color: "rgba(255,255,255,0.7)",
+    color: COLORS.whiteOpacity[80],
     fontSize: 14,
     textAlign: "center",
     paddingHorizontal: 40,

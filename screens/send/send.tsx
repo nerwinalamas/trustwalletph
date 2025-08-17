@@ -1,6 +1,7 @@
 import BackHeader from "@/components/back-header";
 import Button from "@/components/button";
 import StepIndicator from "@/components/step-Indicator";
+import { COLORS } from "@/constants/colors";
 import { api } from "@/convex/_generated/api";
 import StepOne from "@/screens/send/1-who-are-sending-to";
 import StepTwo from "@/screens/send/2-how-much";
@@ -32,7 +33,7 @@ export default function SendScreen() {
   );
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState("");
-  const [qrDataProcessed, setQrDataProcessed] = useState(false); // Add this flag
+  const [qrDataProcessed, setQrDataProcessed] = useState(false);
 
   const searchUserByEmail = useMutation(api.users.searchUserByEmail);
   const sendMoney = useMutation(api.users.sendMoney);
@@ -305,7 +306,7 @@ export default function SendScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   content: {
     paddingTop: 16,
@@ -325,7 +326,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "#e2e8f0",
+    borderTopColor: COLORS.border.main,
     gap: 8,
   },
 });
