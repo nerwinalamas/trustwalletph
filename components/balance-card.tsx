@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import { api } from "@/convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
@@ -29,7 +30,7 @@ export default function BalanceCard() {
           <Ionicons
             name={showBalance ? "eye-outline" : "eye-off-outline"}
             size={24}
-            color="white"
+            color={COLORS.white}
           />
         </TouchableOpacity>
       </View>
@@ -47,12 +48,12 @@ export default function BalanceCard() {
 
 const styles = StyleSheet.create({
   balanceCard: {
-    backgroundColor: "#4f46e5",
+    backgroundColor: COLORS.primary.main,
     borderRadius: 16,
     padding: 20,
     marginBottom: 24,
     // Create linear gradient effect
-    shadowColor: "#1e3a8a",
+    shadowColor: COLORS.shadow.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -66,13 +67,13 @@ const styles = StyleSheet.create({
   },
   balanceLabel: {
     fontSize: 16,
-    color: "white",
+    color: COLORS.white,
     fontWeight: "500",
   },
   balanceAmount: {
     fontSize: 32,
     fontWeight: "700",
-    color: "white",
+    color: COLORS.white,
     marginBottom: 12,
   },
   accountRow: {
@@ -81,6 +82,6 @@ const styles = StyleSheet.create({
   },
   accountNumber: {
     fontSize: 14,
-    color: "rgba(255,255,255,0.8)",
+    color: COLORS.whiteOpacity[80],
   },
 });

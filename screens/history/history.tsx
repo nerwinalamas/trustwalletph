@@ -1,6 +1,8 @@
 import Header from "@/components/header";
+import { COLORS } from "@/constants/colors";
 import { api } from "@/convex/_generated/api";
 import { usePrivacyStore } from "@/stores/privacy-store";
+import { Transaction } from "@/types/transaction";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { format, isToday, isYesterday } from "date-fns";
@@ -11,7 +13,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Transaction } from "../home/home";
 
 export default function HistoryScreen() {
   const transactions = useQuery(api.transactions.getUserTransactions);
@@ -76,7 +77,11 @@ export default function HistoryScreen() {
             <Ionicons
               name={isReceive ? "arrow-down-outline" : "arrow-up-outline"}
               size={16}
-              color={isReceive ? "#22c55e" : "#f43f5e"}
+              color={
+                isReceive
+                  ? COLORS.transaction.income.color
+                  : COLORS.transaction.expense.rose
+              }
             />
           </View>
           <View style={styles.transactionDetails}>
@@ -127,7 +132,11 @@ export default function HistoryScreen() {
         }
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Ionicons name="receipt-outline" size={48} color="#9ca3af" />
+            <Ionicons
+              name="receipt-outline"
+              size={48}
+              color={COLORS.text.muted}
+            />
             <Text style={styles.emptyStateTitle}>No transactions yet</Text>
             <Text style={styles.emptyStateText}>
               Your transaction history will appear here
@@ -143,7 +152,7 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   content: {
     flexGrow: 1,
@@ -153,7 +162,7 @@ const styles = StyleSheet.create({
   pageTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 20,
   },
   emptyState: {
@@ -167,24 +176,24 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#374151",
+    color: COLORS.text.primary,
     marginTop: 16,
     marginBottom: 8,
   },
   emptyStateText: {
     fontSize: 14,
-    color: "#6b7280",
+    color: COLORS.text.light,
     textAlign: "center",
   },
   dateLabel: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginBottom: 8,
   },
   dateDivider: {
     height: 1,
-    backgroundColor: "#e2e8f0",
+    backgroundColor: COLORS.border.main,
   },
   transactionItem: {
     flexDirection: "row",
@@ -207,10 +216,10 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   expenseIcon: {
-    backgroundColor: "#fee2e2",
+    backgroundColor: COLORS.transaction.expense.background,
   },
   incomeIcon: {
-    backgroundColor: "#dcfce7",
+    backgroundColor: COLORS.transaction.income.background,
   },
   transactionDetails: {
     flex: 1,
@@ -220,28 +229,28 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     fontSize: 16,
     fontWeight: "600",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
   transactionDate: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   expenseAmount: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#ef4444",
+    color: COLORS.transaction.expense.color,
     marginRight: 6,
   },
   incomeAmount: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#22c55e",
+    color: COLORS.transaction.income.color,
     marginRight: 6,
   },
   hiddenAmountText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginRight: 8,
     letterSpacing: 1,
   },

@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import {
   StatusBar,
   StyleSheet,
@@ -13,14 +14,17 @@ export default function Header() {
 
   return (
     <View style={[styles.header, { paddingTop: insets.top }]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={COLORS.background.main}
+      />
       <View style={styles.headerContent}>
         <View style={styles.logoContainer}>
           <Text style={styles.logoText}>TrustWalletPH</Text>
         </View>
         <View style={styles.headerRight}>
           {/* <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="notifications-outline" size={24} color="#1e3a8a" />
+            <Ionicons name="notifications-outline" size={24} color={COLORS.primary.dark} />
           </TouchableOpacity> */}
           <TouchableOpacity>
             <Avatar size={32} />
@@ -33,9 +37,9 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
     borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
+    borderBottomColor: COLORS.border.main,
   },
   headerContent: {
     flexDirection: "row",
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
     marginLeft: 8,
-    color: "#1e3a8a",
+    color: COLORS.primary.dark,
   },
   headerRight: {
     flexDirection: "row",

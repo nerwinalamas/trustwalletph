@@ -1,7 +1,9 @@
 import BalanceCard from "@/components/balance-card";
 import Header from "@/components/header";
+import { COLORS } from "@/constants/colors";
 import { api } from "@/convex/_generated/api";
 import { usePrivacyStore } from "@/stores/privacy-store";
+import { Transaction } from "@/types/transaction";
 import { formatTransactionDate } from "@/utils/format-transaction-date";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
@@ -14,18 +16,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-export interface Transaction {
-  _id: string;
-  _creationTime: number;
-  userId: string;
-  transactionType: "receive" | "send" | "bill";
-  title: string;
-  amount: number;
-  description?: string;
-  recipientType?: "user" | "bill";
-  recipientId?: string;
-}
 
 interface QuickAction {
   id: string;
@@ -79,7 +69,7 @@ export default function HomeScreen() {
       onPress={() => router.push(item.route as any)}
     >
       <View style={[styles.actionIcon, item.isSpecial && styles.scanIcon]}>
-        <Ionicons name={item.icon} size={20} color="#1e3a8a" />
+        <Ionicons name={item.icon} size={20} color={COLORS.primary.dark} />
       </View>
       <Text style={styles.actionText}>{item.title}</Text>
     </TouchableOpacity>
@@ -103,7 +93,11 @@ export default function HomeScreen() {
             <Ionicons
               name={isExpense ? "arrow-up-outline" : "arrow-down-outline"}
               size={16}
-              color={isExpense ? "#f43f5e" : "#22c55e"}
+              color={
+                isExpense
+                  ? COLORS.transaction.expense.rose
+                  : COLORS.transaction.income.color
+              }
             />
           </View>
           <View style={styles.transactionDetails}>
@@ -168,7 +162,7 @@ export default function HomeScreen() {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <Ionicons name="receipt-outline" size={48} color="#9ca3af" />
+      <Ionicons name="receipt-outline" size={48} color={COLORS.text.muted} />
       <Text style={styles.emptyStateTitle}>No transactions yet</Text>
       <Text style={styles.emptyStateText}>
         Your recent transactions will appear here
@@ -178,7 +172,7 @@ export default function HomeScreen() {
 
   const renderLoadingState = () => (
     <View style={styles.loadingState}>
-      <ActivityIndicator size="large" color="#1e3a8a" />
+      <ActivityIndicator size="large" color={COLORS.primary.dark} />
     </View>
   );
 
@@ -213,7 +207,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   content: {
     flex: 1,
@@ -237,17 +231,17 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#e0e7ff",
+    backgroundColor: COLORS.primary.light,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 8,
   },
   scanIcon: {
-    backgroundColor: "#dbeafe",
+    backgroundColor: COLORS.primary.lighter,
   },
   actionText: {
     fontSize: 14,
-    color: "#334155",
+    color: COLORS.text.secondary,
     fontWeight: "500",
   },
   transactionsHeader: {
@@ -259,10 +253,10 @@ const styles = StyleSheet.create({
   transactionsTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
   seeAllText: {
-    color: "#4f46e5",
+    color: COLORS.primary.main,
     fontWeight: "500",
   },
   loadingState: {
@@ -280,13 +274,13 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#374151",
+    color: COLORS.text.secondary,
     marginTop: 16,
     marginBottom: 8,
   },
   emptyStateText: {
     fontSize: 14,
-    color: "#6b7280",
+    color: COLORS.text.light,
     textAlign: "center",
   },
   transactionItem: {
@@ -295,7 +289,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#e2e8f0",
+    borderBottomColor: COLORS.border.main,
   },
   transactionLeft: {
     width: "75%",
@@ -311,10 +305,10 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   expenseIcon: {
-    backgroundColor: "#fee2e2",
+    backgroundColor: COLORS.transaction.expense.background,
   },
   incomeIcon: {
-    backgroundColor: "#dcfce7",
+    backgroundColor: COLORS.transaction.income.background,
   },
   transactionDetails: {
     flex: 1,
@@ -324,11 +318,11 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
   },
   transactionDate: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   transactionRight: {
     flexDirection: "row",
@@ -337,20 +331,20 @@ const styles = StyleSheet.create({
   hiddenAmountText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginRight: 8,
     letterSpacing: 1,
   },
   expenseAmount: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#ef4444",
+    color: COLORS.transaction.expense.color,
     marginRight: 8,
   },
   incomeAmount: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#22c55e",
+    color: COLORS.transaction.income.color,
     marginRight: 8,
   },
 });

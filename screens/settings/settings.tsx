@@ -1,6 +1,7 @@
 import Avatar from "@/components/avatar";
 import Header from "@/components/header";
 import Icon from "@/components/icon";
+import { COLORS } from "@/constants/colors";
 import { useClerk, useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import * as Application from "expo-application";
@@ -67,12 +68,16 @@ export default function SettingsScreen() {
     return (
       <TouchableOpacity style={styles.menuItem} onPress={item.action}>
         <View style={styles.menuLeft}>
-          <Icon name={item.icon} size={20} color="#1e3a8a" />
+          <Icon name={item.icon} size={20} color={COLORS.primary.dark} />
           <View style={styles.menuTextContainer}>
             <Text style={styles.menuTitle}>{item.title}</Text>
             <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
           </View>
-          <Ionicons name="chevron-forward" size={20} color="#64748b" />
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color={COLORS.text.tertiary}
+          />
         </View>
       </TouchableOpacity>
     );
@@ -100,7 +105,7 @@ export default function SettingsScreen() {
 
   const ListFooterComponent = () => (
     <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
-      <Ionicons name="log-out-outline" size={20} color="#ef4444" />
+      <Ionicons name="log-out-outline" size={20} color={COLORS.text.danger} />
       <Text style={styles.logoutText}>Log Out</Text>
     </TouchableOpacity>
   );
@@ -126,7 +131,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   content: {
     flex: 1,
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
   pageTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 20,
   },
   profileSection: {
@@ -152,17 +157,17 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 4,
   },
   profileEmail: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   sectionTitle: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#64748b",
+    color: COLORS.text.tertiary,
     marginBottom: 12,
   },
   menuItem: {
@@ -171,7 +176,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#f1f5f9",
+    borderBottomColor: COLORS.border.light,
   },
   menuLeft: {
     flexDirection: "row",
@@ -183,26 +188,26 @@ const styles = StyleSheet.create({
   menuTitle: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 2,
   },
   menuSubtitle: {
     fontSize: 14,
-    color: "#64748b",
+    color: COLORS.text.tertiary,
   },
   logoutButton: {
     height: 40,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fee2e2",
+    backgroundColor: COLORS.background.danger,
     borderRadius: 12,
     marginTop: 12,
   },
   logoutText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#ef4444",
+    color: COLORS.text.danger,
     marginLeft: 8,
   },
 });

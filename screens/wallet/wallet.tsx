@@ -1,5 +1,6 @@
 import BalanceCard from "@/components/balance-card";
 import Header from "@/components/header";
+import { COLORS } from "@/constants/colors";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function WalletScreen() {
@@ -19,7 +20,7 @@ export default function WalletScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: COLORS.background.main,
   },
   content: {
     flex: 1,
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   pageTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#0f172a",
+    color: COLORS.text.primary,
     marginBottom: 20,
   },
 });
