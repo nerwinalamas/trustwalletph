@@ -24,32 +24,48 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="home" size={size} color={color} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
       <Tabs.Screen
         name="wallet"
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="wallet-outline" size={size} color={color} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <Ionicons
+              name={focused ? "wallet" : "wallet-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="card-outline" size={size} color={color} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <Ionicons
+              name={focused ? "card" : "card-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <Ionicons
+              name={focused ? "settings" : "settings-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
